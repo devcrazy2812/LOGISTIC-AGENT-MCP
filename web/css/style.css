@@ -1,84 +1,168 @@
 /* ==========================================================================
-   LogiSwarm AI - Core Theme, Contrast & Master Blueprint Styles
+   LogiSwarm TMS - Professional Enterprise Design System & Styling
+   High-Contrast Dark Theme • Linear/Vercel Aesthetic • WCAG AA Accessible
    ========================================================================== */
 
-/* Custom High-Contrast Scrollbar */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  
+  --bg-app: #080c14;
+  --bg-surface: #0f172a;
+  --bg-surface-elevated: #15203b;
+  --border-subtle: #1e293b;
+  --border-muted: #334155;
+  
+  --brand-primary: #0284c7;
+  --brand-primary-hover: #0369a1;
+  --status-success: #10b981;
+  --status-warning: #f59e0b;
+  --status-danger: #f43f5e;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-app);
+  color: #f1f5f9;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Tabular digits for telemetry metrics, times and counters */
+.font-mono, #live-clock, [id^="metric-"], .tabular-nums {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle, elegant scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0b0f19;
+  background: #080c14;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
+  background: #27354f;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #3b4e6f;
 }
 
-/* Dark mode styling for OpenStreetMap Leaflet tiles */
-.leaflet-tile {
-  filter: brightness(0.65) invert(1) contrast(2.8) hue-rotate(200deg) saturate(0.35) brightness(0.75);
+/* WCAG AA Visible Focus Indicators */
+:focus-visible {
+  outline: 2px solid #38bdf8 !important;
+  outline-offset: 2px !important;
 }
 
+/* ==========================================================================
+   Leaflet Geo-Spatial Map: Enterprise Dark Theme & Custom Overlays
+   ========================================================================== */
 .leaflet-container {
-  background-color: #0b0f19 !important;
-  font-family: inherit;
+  background-color: #0b1120 !important;
+  font-family: var(--font-sans) !important;
 }
 
-/* Custom Marker Pulsing for Hazards */
-@keyframes pulse-ring {
+/* Sleek dark Leaflet Popups */
+.leaflet-popup-content-wrapper {
+  background: #0f172a !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+  padding: 0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px 14px !important;
+  line-height: 1.45 !important;
+}
+
+.leaflet-popup-tip {
+  background: #0f172a !important;
+  border: 1px solid #1e293b !important;
+}
+
+.leaflet-popup-close-button {
+  color: #94a3b8 !important;
+  padding: 6px !important;
+}
+.leaflet-popup-close-button:hover {
+  color: #ffffff !important;
+}
+
+/* Subtle Pulsing for Hazard Corridors */
+@keyframes hazard-pulse {
   0% {
-    transform: scale(0.95);
-    opacity: 0.85;
+    stroke-opacity: 0.9;
+    stroke-width: 2px;
   }
   50% {
-    transform: scale(1.35);
-    opacity: 0.2;
+    stroke-opacity: 0.4;
+    stroke-width: 3.5px;
   }
   100% {
-    transform: scale(0.95);
-    opacity: 0.85;
+    stroke-opacity: 0.9;
+    stroke-width: 2px;
   }
 }
 
-.pulse-hazard {
-  animation: pulse-ring 2s infinite ease-in-out;
+.hazard-circle-pulse {
+  animation: hazard-pulse 2.5s infinite ease-in-out;
 }
 
-/* Blueprint 1.A: Floating Dock Slide Transitions */
+/* Focused Vehicle Route Highlight */
+.route-highlighted {
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8));
+}
+
+/* ==========================================================================
+   Floating Dock & Drawer Animation Curves
+   ========================================================================== */
 #floating-dock {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
 }
 
-/* Blueprint 1.C: Decoupled AI Agent Drawer Slide Transitions */
 #chat-drawer {
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Blueprint 1.B & Point 20: Primary Call-To-Action Glow & Pulse */
-@keyframes cta-glow {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4), 0 0 30px rgba(59, 130, 246, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(6, 182, 212, 0.65), 0 0 45px rgba(59, 130, 246, 0.4);
-  }
+/* Toast Notification System */
+#toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
 }
 
-.cta-pulse {
-  animation: cta-glow 3s infinite ease-in-out;
+.toast {
+  pointer-events: auto;
+  transform: translateX(120%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  min-width: 280px;
+  max-width: 380px;
 }
 
-/* High Contrast Text Glows */
-.glow-cyan {
-  text-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
+.toast.show {
+  transform: translateX(0);
 }
 
-.glow-red {
-  text-shadow: 0 0 12px rgba(239, 68, 68, 0.7);
+/* Drag and Drop Upload Area */
+.drag-drop-zone {
+  border: 2px dashed #334155;
+  transition: all 0.2s ease;
+}
+.drag-drop-zone.drag-active {
+  border-color: #38bdf8;
+  background-color: rgba(56, 189, 248, 0.05);
 }
 
 /* Mobile Touch Optimization (Minimum 44px tap target heights) */
@@ -86,14 +170,13 @@
   button, a {
     min-height: 40px;
   }
-  
   #map {
-    height: 320px;
+    height: 320px !important;
   }
 }
 
 /* ==========================================================================
-   Blueprint 1.D: 1-Click Official Business & Diagnostic PDF Print Styles
+   Official Business & Diagnostic PDF Print Styles
    ========================================================================== */
 @media print {
   body * {
@@ -109,13 +192,13 @@
     width: 100% !important;
     max-width: 100% !important;
     background: #ffffff !important;
-    color: #000000 !important;
-    padding: 20px !important;
+    color: #0f172a !important;
+    padding: 24px !important;
     margin: 0 !important;
     box-shadow: none !important;
     border: none !important;
   }
-  .no-print, header, footer, #floating-dock, #ai-agent-fab, #cookie-banner {
+  .no-print, header, footer, #floating-dock, #ai-agent-fab, #cookie-banner, #toast-container {
     display: none !important;
   }
 }
