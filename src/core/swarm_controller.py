@@ -78,7 +78,7 @@ class SwarmController:
         )
 
         # Google Gemini Client for Online Multimodal Vision & Conversation (Tier 2)
-        self.gemini = GoogleGeminiClient()
+        self.gemini = GoogleGeminiClient(state_provider=self.get_state)
 
         self.depots: Dict[str, Depot] = {}
         self.vehicles: List[Vehicle] = []
@@ -257,7 +257,8 @@ class SwarmController:
         reply = self.gemini.generate_chat_response(
             user_message=user_message,
             system_context=system_context,
-            conversation_history=self.chat_history
+            conversation_history=self.chat_history,
+            state=self.get_state()
         )
         self.chat_history.append({"role": "assistant", "content": reply})
 
