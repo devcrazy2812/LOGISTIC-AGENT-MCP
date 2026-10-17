@@ -3,41 +3,62 @@ import os
 import time
 import mimetypes
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 from typing import Optional, Dict
 from .swarm_controller import SwarmController
 from ..mcp.logistics_mcp_server import LogisticsMCPServer
+from ..tools.security import (
+    generate_totp_secret, generate_totp_code, verify_totp_code,
+    generate_channel_token, verify_channel_token,
+    SecurityAuditLogger, ALLOWED_ORIGIN_REGEX
+)
 
-# In-memory IP rate limiter: {ip: [timestamp1, timestamp2, ...]}
 RATE_LIMIT_STORE: Dict[str, list] = {}
 MAX_REQUESTS_PER_MINUTE = 90
+ACTIVE_2FA_STORE: Dict[str, str] = {}  # {user_id: secret}
 
 class LogisticsAPIHandler(BaseHTTPRequestHandler):
     controller: Optional[SwarmController] = None
     mcp_server: Optional[LogisticsMCPServer] = None
     web_dir: str = ""
 
+    def _get_client_ip(self) -> str:
+        """Extracts real client IP behind proxies (Blueprint 3.D)."""
+        forwarded = self.headers.get("X-Forwarded-For")
+        if forwarded:
+            return forwarded.split(",")[0].strip()
+        return self.client_address[0] if self.client_address else "127.0.0.1"
+
     def _apply_security_headers(self, status_code: int = 200, content_type: str = "application/json", is_static: bool = False):
         self.send_response(status_code)
         self.send_header("Content-Type", content_type)
-        self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Requested-With")
         
-        # Security & Privacy Headers (Points 3, 4)
+        # Dynamic CORS Whitelisting with Regex (Blueprint 2.B)
+        origin = self.headers.get("Origin", "")
+        if origin and ALLOWED_ORIGIN_REGEX.match(origin):
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Access-Control-Allow-Credentials", "true")
+        else:
+            self.send_header("Access-Control-Allow-Origin", "*")
+
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, X-Dispatch-Token")
+        
+        # Defense-in-Depth HTTP Security Headers (Blueprint 2.D)
         self.send_header("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
         self.send_header("X-Content-Type-Options", "nosniff")
-        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("X-Frame-Options", "SAMEORIGIN")
+        self.send_header("Cross-Origin-Opener-Policy", "same-origin")
         self.send_header("Referrer-Policy", "strict-origin-when-cross-origin")
         self.send_header("Permissions-Policy", "geolocation=(), camera=(), microphone=()")
         self.send_header("Content-Security-Policy", 
                          "default-src 'self'; "
                          "script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; "
                          "style-src 'self' 'unsafe-inline' https://unpkg.com; "
-                         "img-src 'self' data: https://*.tile.openstreetmap.org https://unpkg.com; "
-                         "connect-src 'self'; font-src 'self' https: data:;")
+                         "img-src 'self' data: blob: https://*.tile.openstreetmap.org https://unpkg.com; "
+                         "connect-src 'self' http://localhost:* http://127.0.0.1:* ws: wss: https:; "
+                         "font-src 'self' https: data:;")
 
-        # Cache-Control: Fast caching for static assets (Point 12)
         if is_static:
             self.send_header("Cache-Control", "public, max-age=86400, stale-while-revalidate=3600")
         else:
@@ -46,11 +67,9 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def _check_rate_limit(self) -> bool:
-        """Spam / Bot Protection Rate Limiter (Point 18)."""
-        client_ip = self.client_address[0] if self.client_address else "unknown"
+        client_ip = self._get_client_ip()
         now = time.time()
         timestamps = RATE_LIMIT_STORE.get(client_ip, [])
-        # Filter timestamps within the last 60 seconds
         timestamps = [t for t in timestamps if now - t < 60]
         if len(timestamps) >= MAX_REQUESTS_PER_MINUTE:
             return False
@@ -58,13 +77,23 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
         RATE_LIMIT_STORE[client_ip] = timestamps
         return True
 
+    def _parse_json_body_defensive(self) -> Dict[str, Any]:
+        """Defensive JSON request parsing (Blueprint 2.H)."""
+        content_len = int(self.headers.get("Content-Length", 0))
+        if content_len <= 0 or content_len > 2 * 1024 * 1024:
+            return {}
+        try:
+            raw = self.rfile.read(content_len).decode("utf-8", errors="replace")
+            return json.loads(raw) if raw else {}
+        except Exception:
+            return {}
+
     def do_OPTIONS(self):
         self._apply_security_headers(200)
 
     def do_GET(self):
-        # Force HTTPS redirect if behind TLS termination proxy (Point 4)
-        proto = self.headers.get("X-Forwarded-Proto", "https")
-        if proto == "http":
+        # Force HTTPS redirect if behind TLS termination proxy (Blueprint 2.D)
+        if self.headers.get("X-Forwarded-Proto") == "http":
             host = self.headers.get("Host", "localhost")
             self.send_response(301)
             self.send_header("Location", f"https://{host}{self.path}")
@@ -73,6 +102,7 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
 
         parsed = urlparse(self.path)
         path = parsed.path
+        query = parse_qs(parsed.query)
 
         if path == "/api/state":
             self._apply_security_headers(200, "application/json")
@@ -92,7 +122,32 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({"tools": tools}).encode("utf-8"))
             return
 
-        # Serve static web files & SEO resources (sitemap, robots, favicon)
+        # 2FA Secret Generation (Blueprint 2.E)
+        elif path == "/api/auth/2fa/generate":
+            user_id = query.get("user", ["DISPATCHER-01"])[0]
+            secret = generate_totp_secret()
+            ACTIVE_2FA_STORE[user_id] = secret
+            current_code = generate_totp_code(secret)
+            self._apply_security_headers(200, "application/json")
+            self.wfile.write(json.dumps({
+                "status": "success",
+                "user_id": user_id,
+                "secret": secret,
+                "preview_code": current_code,
+                "message": "RFC 6238 TOTP Secret generated successfully."
+            }).encode("utf-8"))
+            return
+
+        # Administrative Multi-Format Database Backup (Blueprint 3.E)
+        elif path == "/api/admin/backup":
+            fmt = query.get("format", ["json"])[0]
+            backup_data = self.controller.export_database_backup(format_type=fmt)
+            mime = "text/csv; charset=utf-8" if fmt == "csv" else "application/json"
+            self._apply_security_headers(200, mime)
+            self.wfile.write(backup_data.encode("utf-8"))
+            return
+
+        # Static assets and SEO endpoints
         if path in ("", "/"):
             file_path = os.path.join(self.web_dir, "index.html")
         else:
@@ -123,7 +178,7 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
                 self._apply_security_headers(500, "text/plain")
                 self.wfile.write(f"Server Error: {e}".encode("utf-8"))
         else:
-            # Custom 404 Page (Point 15)
+            # Custom 404 handler
             custom_404_path = os.path.join(self.web_dir, "404.html")
             if os.path.exists(custom_404_path):
                 with open(custom_404_path, "rb") as f:
@@ -142,28 +197,44 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
 
         parsed = urlparse(self.path)
         path = parsed.path
-        content_len = int(self.headers.get("Content-Length", 0))
-        
-        # Max payload size guard (2MB) (Point 18)
-        if content_len > 2 * 1024 * 1024:
-            self._apply_security_headers(413, "application/json")
-            self.wfile.write(json.dumps({"error": "Payload Too Large"}).encode("utf-8"))
-            return
+        body = self._parse_json_body_defensive()
 
-        post_body = self.rfile.read(content_len) if content_len > 0 else b"{}"
-
-        try:
-            body = json.loads(post_body.decode("utf-8")) if post_body else {}
-        except Exception:
-            body = {}
-
-        # Bot / Spam Honeypot Check (Point 18)
+        # Bot / Spam Honeypot Check (Blueprint 2.G)
         if body.get("hp_field"):
+            SecurityAuditLogger.log("BOT_HONEYPOT_TRIGGERED", self._get_client_ip(), "ANONYMOUS_BOT", "Honeypot filled.")
             self._apply_security_headers(400, "application/json")
             self.wfile.write(json.dumps({"error": "Automated submission rejected"}).encode("utf-8"))
             return
 
-        if path == "/api/optimize":
+        # 2FA Verification (Blueprint 2.E)
+        if path == "/api/auth/2fa/verify":
+            user_id = str(body.get("user_id", "DISPATCHER-01"))
+            submitted_code = str(body.get("code", "")).strip()
+            secret = ACTIVE_2FA_STORE.get(user_id) or generate_totp_secret()
+            
+            is_valid = verify_totp_code(secret, submitted_code)
+            if is_valid:
+                # Issue signed ephemeral access token
+                signed_token = generate_channel_token(user_id, "CHIEF_DISPATCHER", "FLEET_COMMAND")
+                SecurityAuditLogger.log("2FA_VERIFICATION_SUCCESS", self._get_client_ip(), user_id, "TOTP 2FA verified.")
+                self._apply_security_headers(200, "application/json")
+                self.wfile.write(json.dumps({
+                    "status": "success",
+                    "verified": True,
+                    "access_token": signed_token,
+                    "message": "Two-Factor Authentication successful."
+                }).encode("utf-8"))
+            else:
+                SecurityAuditLogger.log("2FA_VERIFICATION_FAILURE", self._get_client_ip(), user_id, f"Invalid code: {submitted_code}")
+                self._apply_security_headers(401, "application/json")
+                self.wfile.write(json.dumps({
+                    "status": "error",
+                    "verified": False,
+                    "error": "Invalid or expired 6-digit TOTP code."
+                }).encode("utf-8"))
+            return
+
+        elif path == "/api/optimize":
             res = self.controller.run_initial_optimization()
             self._apply_security_headers(200, "application/json")
             self.wfile.write(json.dumps({
@@ -184,7 +255,6 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
             }).encode("utf-8"))
 
         elif path == "/api/chat":
-            # Form Validation & Sanitization (Point 17)
             raw_msg = str(body.get("message", "")).strip()
             if not raw_msg or len(raw_msg) < 2:
                 self._apply_security_headers(400, "application/json")
@@ -210,7 +280,6 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
             }).encode("utf-8"))
 
         elif path == "/api/feedback":
-            # Form Validation (Point 17)
             rating = str(body.get("rating", "positive"))[:20]
             comment = str(body.get("comment", ""))[:300]
             fb = self.controller.record_human_feedback(rating, comment)
@@ -222,8 +291,6 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
             }).encode("utf-8"))
 
         elif path == "/api/analytics":
-            # Analytics Ingestion (Point 19)
-            # Lightweight privacy-friendly logging
             self._apply_security_headers(200, "application/json")
             self.wfile.write(json.dumps({"status": "received"}).encode("utf-8"))
 

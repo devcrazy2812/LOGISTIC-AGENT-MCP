@@ -1,19 +1,21 @@
 # 📦 LogiSwarm AI: Autonomous Logistics Handler
 ### *Multi-Agent Swarm with Multimodal Vision, Conversational Dispatch, MCP, & Self-Healing Feedback Loops*
-**Competition:** AI Agent Wars 2026 | **Problem Statement:** Logistics Handler
+**Competition:** AI Agent Wars 2026 | **Problem Statement:** Logistics Handler  
+**Engineering Standard:** Universal Full-Stack & AI Engineering Master Blueprint
 
 ---
 
 ## 📑 Table of Contents
 1. [Overview & Problem Statement](#-overview--problem-statement)
 2. [Compliance with Competition Criteria](#-compliance-with-competition-criteria)
-3. [System Architecture](#-system-architecture)
-4. [Tool Sets & Google Products Integration](#-tool-sets--google-products-integration)
-5. [A-to-Z Step-by-Step Setup Guide](#-a-to-z-step-by-step-setup-guide)
-6. [How to Run the Application](#-how-to-run-the-application)
-7. [MCP (Model Context Protocol) Integration](#-mcp-model-context-protocol-integration)
-8. [Live Demo Walkthrough for Judges](#-live-demo-walkthrough-for-judges)
-9. [How to Submit & Push to GitHub](#-how-to-submit--push-to-github)
+3. [Master Blueprint Engineering Upgrades](#-master-blueprint-engineering-upgrades)
+4. [System Architecture](#-system-architecture)
+5. [Tool Sets & Google Products Integration](#-tool-sets--google-products-integration)
+6. [A-to-Z Step-by-Step Setup Guide](#-a-to-z-step-by-step-setup-guide)
+7. [How to Run the Application](#-how-to-run-the-application)
+8. [MCP (Model Context Protocol) Integration](#-mcp-model-context-protocol-integration)
+9. [Live Demo Walkthrough for Judges](#-live-demo-walkthrough-for-judges)
+10. [How to Submit & Push to GitHub](#-how-to-submit--push-to-github)
 
 ---
 
@@ -22,6 +24,39 @@
 Global logistics networks frequently suffer catastrophic bottlenecks when static, rule-based dispatchers encounter real-world chaos: traffic gridlocks, highway washouts, vehicle mechanical failures, cold-chain temperature breaches, and emergency priority surges.
 
 **LogiSwarm AI** is an enterprise-grade autonomous multi-agent logistics orchestrator. A swarm of specialized AI agents autonomously monitors telematics, balances multi-depot inventory, inspects cargo with multimodal vision, converses with human dispatchers, audits route quality via continuous feedback loops, and self-heals disruptions in under 2 seconds.
+
+---
+
+## 🛡️ Master Blueprint Engineering Upgrades
+
+Our system adheres strictly to the **Universal Full-Stack & AI Engineering Master Blueprint**:
+
+### 1. UI / UX Architecture
+- **macOS-Style Floating Bottom Dock with Scroll Auto-Hide**: Route navigation is centered in a glassmorphic floating bottom dock that hides when scrolling down and reveals when scrolling up or moving the cursor to the bottom viewport edge.
+- **Clean Uncluttered Top Bar**: Left side features institutional brand identity; right side houses live clock, 2FA status, printable official report CTA, and the primary "Deploy Swarm" action.
+- **Decoupled Floating AI Agent Drawer**: Ambient floating action button (`bottom-6 right-6`) with expandable drawer modal preserving conversation state via `sessionStorage`.
+- **1-Click Official Business / Consignment PDF Dossier**: Print-ready modal dossier with standardized institutional letterhead, benchmark variance table, SVG verification QR code, and `@media print` styling (`window.print()`).
+- **De-Hyped Enterprise Copy**: Removed emojis and hyperbole in favor of crisp, institutional logistics terminology.
+
+### 2. Defensive Cybersecurity
+- **Standard-Library Two-Factor Authentication (2FA / TOTP RFC 6238)**: Zero external dependencies; Google Authenticator / Authy compatible TOTP generator and validator.
+- **Ephemeral HMAC-SHA256 Signed Access Tokens**: Cryptographically signed, time-limited channel tokens for mission dispatch authorizations.
+- **Dynamic CORS Whitelisting with Regex**: Enforces strict origin matching against trusted development and production domains.
+- **Defense-in-Depth HTTP Headers & CSP**: Injects HSTS, CSP, COOP, and `X-Frame-Options: SAMEORIGIN`.
+- **Anti-Bot Honeypots & Submission Debouncing**: Invisible form honeypots and client-side 1200ms submission debouncing.
+- **Defensive JSON Request Parsing**: Fails gracefully on malformed payloads or empty bodies.
+
+### 3. Database Architecture & Data Protection
+- **Field-Level PII Encryption**: Authenticated symmetric encryption for sensitive customer addresses and medical consignment notes.
+- **Immutable Security Audit Logging**: Append-only SHA-256 hashed audit log tracking all dispatch events, agent decisions, and IP addresses.
+- **Live Multi-Format Administrative Database Backups**: 1-click JSON and CSV database backups at `/api/admin/backup`.
+
+### 4. AI Agent & Intelligent System Architecture
+- **Three-Tier Hybrid Architecture**:
+  1. *Tier 1 (Deterministic Rules Matrix)*: Evaluates cold-chain temperature boundaries ($2\text{–}8^\circ\text{C}$), vehicle compatibility, and hazmat rules (<1ms execution, 0% hallucination).
+  2. *Tier 2 (Online Cloud LLM)*: Google Gemini 2.5 Flash for natural multimodal vision analysis and conversational dialogue.
+  3. *Tier 3 (Verified FAQ & Semantic Fallback Bank)*: Instant, verified domain response bank when offline or without API keys.
+- **Longitudinal Trajectory Analysis**: Tracks rate of change ($\Delta t$) across runs (Cost reduction velocity, CO₂ abatement velocity, MTTR recovery speed).
 
 ---
 
@@ -64,22 +99,6 @@ Global logistics networks frequently suffer catastrophic bottlenecks when static
                                └───────────────────────┘
 ```
 
-### The 6 Swarm Agents
-1. **Commander-Prime (Master Orchestrator)**: Manages global mission state, delegates sub-tasks, and resolves multi-objective trade-offs.
-2. **Sentinel-Risk (Anomaly & Hazard Radar)**: Continuously monitors telematics, road closures, and weather warnings. Triggers self-healing when disruptions occur.
-3. **StockMaster (Warehouse & Inventory Specialist)**: Audits multi-depot stock, allocates orders, and schedules inter-warehouse transfers.
-4. **RouteOptima (Fleet & Routing Specialist)**: Solves Capacitated Vehicle Routing (CVRP) with priority deadlines, weight/volume constraints, and electric vehicle (EV) emission minimization.
-5. **QualityGuard (Evaluator-Optimizer & Feedback Loop)**: Scores route plans on SLA safety, carbon abatement, and load balance. Triggers iterative plan refinement.
-6. **CommLiaison (Customer SLA & Carrier Negotiator)**: Formulates customer delay notifications, protects contractual SLAs, issues courtesy compensation credits, and simulates spot-carrier bidding.
-
----
-
-## 🛠️ Tool Sets & Google Products Integration
-
-- **Google Gemini 2.5 Flash**: Powering the Multimodal Cargo Inspector (detecting physical box puncture, temperature breach, and estimated insurance liability) and the interactive Conversation Agent.
-- **Model Context Protocol (MCP)**: Native JSON-RPC 2.0 tool server compatible with Claude Desktop, Cursor, Antigravity, and custom LLM sidecars.
-- **Geo-Spatial Routing Solver**: Haversine distance matrix with 2-Opt local search refinement.
-
 ---
 
 ## 💻 A-to-Z Step-by-Step Setup Guide
@@ -87,7 +106,7 @@ Global logistics networks frequently suffer catastrophic bottlenecks when static
 ### Prerequisites
 - Python 3.9 or higher (tested on Python 3.10, 3.11, 3.12, 3.14)
 - Web Browser (Chrome, Edge, Firefox, Brave)
-- *Optional:* Google Gemini API Key (if omitted, the system seamlessly runs in embedded high-fidelity offline mode so your live demo never fails).
+- *Optional:* Google Gemini API Key in `.env` (if omitted, the system seamlessly runs on its embedded offline reasoning engine so your demo never fails).
 
 ---
 
@@ -99,7 +118,7 @@ Double-click [`start_app.bat`](start_app.bat) in the project root.
 ### Method 2: From Terminal / PowerShell
 ```bash
 # Navigate to the project directory
-cd C:\Users\ABHAY\LogisticsHandlerAI
+cd E:\LOGISTIC AGENT MCP
 
 # Launch the full application
 python run.py
@@ -114,7 +133,7 @@ The script will automatically:
 ```bash
 python -m unittest tests/test_swarm.py
 ```
-*(All 7 unit tests pass in $<0.01$ seconds!)*
+*(All 11 unit tests pass in $<0.05$ seconds!)*
 
 ---
 
@@ -127,73 +146,37 @@ LogiSwarm includes a built-in MCP server that implements the standard **JSON-RPC
 python mcp_server.py
 ```
 
-### Example MCP Configuration for Claude Desktop / Antigravity / Cursor
-Add this to your `claude_desktop_config.json`:
-```json
-{
-  "mcpServers": {
-    "logiswarm": {
-      "command": "python",
-      "args": ["C:\\Users\\ABHAY\\LogisticsHandlerAI\\mcp_server.py"]
-    }
-  }
-}
-```
-
-### Exposed MCP Tools:
-- `get_fleet_status`: Returns telematics, battery/fuel levels, and active route stops.
-- `optimize_cvrp_routes`: Executes multi-agent Capacitated Vehicle Routing.
-- `inject_disruption`: Simulates breakdown, weather hazard, or demand surge.
-- `inspect_cargo_multimodal`: Runs Google Gemini Vision analysis on cargo photos.
-- `evaluate_feedback_loop`: Audits solution quality and returns feedback loop scores.
-
 ---
 
 ## 🎭 Live Demo Walkthrough for Judges
 
-Follow this exact 3-minute sequence to demonstrate all required criteria:
-
 1. **Nominal Swarm Overview (30s)**:
    - Point out the 3 Regional Depots, 4 Fleet Vehicles (EV, Diesel, CNG, Reefer), and 8 Deliveries on the interactive map.
    - Point to the **Feedback Score Card (`92.5/100`)**: Explain that `QualityGuard` evaluated SLA risk, carbon footprint, and load balance before approving dispatch.
-2. **Conversation Agent Tab (45s)**:
-   - Click the **Conversation Agent** tab in the right pane.
-   - Type: *"What is the status of VoltHauler EV?"*
+2. **Conversation Agent Drawer (45s)**:
+   - Click the ambient floating bot button (`bottom-6 right-6`).
+   - Ask: *"What is the status of VoltHauler EV?"*
    - Watch `Commander-Prime` reply with real-time telematics and cargo status.
 3. **Multimodal Vision Tab (45s)**:
    - Click the **Multimodal Vision** tab.
-   - Click **"Inspect Sample Damaged Vaccine Pallet"**.
+   - Click **"Inspect Sample Compromised Vaccine Pallet"**.
    - Show Google Gemini Vision diagnosing container puncture, temperature breach ($>8^\circ\text{C}$), insurance estimate (\$1,450), and auto-dispatching replacement stock from Hub-North.
 4. **Self-Healing Disruption Trigger (45s)**:
-   - Click **"Truck Breakdown"** in the Disruption Simulator.
+   - Click **"Mechanical Breakdown"** in the Disruption Simulator.
    - Watch the Swarm War Room Feed:
      - `Sentinel-Risk` flags the engine failure.
      - `RouteOptima` unassigns affected deliveries and re-routes them onto backup vehicles.
      - `CommLiaison` broadcasts real-time courtesy credits to customers.
-   - The map dynamically updates and the **Self-Healed Events** metric increments with zero manual dispatch.
-5. **Human Feedback & Audit Export (15s)**:
-   - Click **"Prioritize Green"** in the Human Dispatcher Feedback bar.
-   - Click **"Audit Report"** to copy the complete markdown execution audit.
+5. **Official 1-Click Dossier & 2FA (15s)**:
+   - Click **"Official Dossier"** in the top bar to generate the print-ready institutional report with QR verification hash.
+   - Click **"2FA Active"** to demonstrate RFC 6238 TOTP verification and signed ephemeral access tokens.
 
 ---
 
-## 📤 How to Submit & Push to GitHub
-
-This repository is pre-initialized and ready to be pushed to your GitHub account:
+## 📤 GitHub Repository
 
 ```bash
-cd C:\Users\ABHAY\LogisticsHandlerAI
-
-# 1. Add your GitHub repository as remote origin (replace with your repo URL)
-git remote add origin https://github.com/<YOUR_USERNAME>/<YOUR_REPOSITORY_NAME>.git
-
-# 2. Stage and commit all files
-git add .
-git commit -m "feat: complete LogiSwarm AI logistics handler for AI Agent Wars"
-
-# 3. Rename branch to main (if needed) and push
-git branch -M main
-git push -u origin main
+cd E:\LOGISTIC AGENT MCP
+git push origin main
 ```
-
-Share your GitHub link with the competition organizers to secure your submission!
+Live Repo: [https://github.com/devcrazy2812/LOGISTIC-AGENT-MCP](https://github.com/devcrazy2812/LOGISTIC-AGENT-MCP)

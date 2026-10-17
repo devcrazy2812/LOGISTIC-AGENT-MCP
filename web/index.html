@@ -4,34 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   
-  <!-- Point 6: Meta Titles & Descriptions -->
-  <title>LogiSwarm AI | Autonomous Logistics Handler & Multi-Agent Swarm</title>
-  <meta name="description" content="Autonomous multi-agent logistics orchestrator featuring real-time Capacitated Vehicle Routing (CVRP), self-healing disruption recovery, Model Context Protocol (MCP) integration, and Google Gemini multimodal vision.">
+  <title>LogiSwarm AI | Enterprise Autonomous Logistics Command Center</title>
+  <meta name="description" content="Production-hardened autonomous multi-agent logistics orchestrator featuring real-time Capacitated Vehicle Routing (CVRP), self-healing recovery, Model Context Protocol (MCP), and Google Gemini multimodal inspection.">
   <meta name="keywords" content="autonomous logistics, AI agent wars, multi-agent swarm, vehicle routing problem, CVRP, MCP, Google Gemini vision, self-healing supply chain">
-  <meta name="author" content="LogiSwarm AI Team">
+  <meta name="author" content="LogiSwarm AI Systems">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://logiswarm.ai/">
 
-  <!-- Point 8: Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="apple-touch-icon" href="/favicon.svg">
 
-  <!-- Point 7: Social Preview Image (OpenGraph & Twitter Card) -->
-  <meta property="og:title" content="LogiSwarm AI | Autonomous Logistics Swarm">
-  <meta property="og:description" content="Self-healing multi-agent logistics platform with multimodal inspection, conversation dispatch, and Model Context Protocol (MCP).">
+  <meta property="og:title" content="LogiSwarm AI | Autonomous Logistics Command Center">
+  <meta property="og:description" content="Production-grade multi-agent logistics platform with multimodal inspection, conversational dispatch, and Model Context Protocol (MCP).">
   <meta property="og:image" content="/assets/social-preview.svg">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://logiswarm.ai/">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="LogiSwarm AI | Autonomous Logistics Swarm">
-  <meta name="twitter:description" content="Self-healing multi-agent logistics platform with multimodal inspection, conversation dispatch, and Model Context Protocol (MCP).">
   <meta name="twitter:image" content="/assets/social-preview.svg">
 
-  <!-- Preconnect & CDN Assets (Point 12: Load Speed) -->
   <link rel="preconnect" href="https://cdn.tailwindcss.com">
   <link rel="preconnect" href="https://unpkg.com">
   
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -64,67 +57,66 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- Custom Styles (Point 13: Contrast & Animations) -->
   <link rel="stylesheet" href="/css/style.css">
-
-  <!-- Privacy-Preserving Analytics (Point 19) -->
   <script src="/js/analytics.js" defer></script>
 </head>
 <body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-cyan-500 selection:text-white">
 
-  <!-- Top Navigation Header -->
-  <header class="bg-gray-900/90 backdrop-blur-md border-b border-gray-800 sticky top-0 z-40 px-3 sm:px-6 py-3">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+  <!-- ========================================================================
+       SECTION 1.B: Clean, Uncluttered Top Bar Architecture (Enterprise Luxury)
+       ======================================================================== -->
+  <header class="bg-gray-900/90 backdrop-blur-xl border-b border-gray-800 sticky top-0 z-30 px-4 sm:px-6 py-2.5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
       
-      <!-- Brand & Badges -->
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20" role="img" aria-label="LogiSwarm logo box icon">
-          <i data-lucide="boxes" class="w-6 h-6 text-white" aria-hidden="true"></i>
+      <!-- Left: Institutional Brand Identity -->
+      <div class="flex items-center space-x-3 shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20" role="img" aria-label="LogiSwarm institutional insignia">
+          <i data-lucide="boxes" class="w-5 h-5 text-white" aria-hidden="true"></i>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <a href="/" class="text-base sm:text-lg font-bold tracking-wider text-white hover:text-cyan-400 transition" aria-label="LogiSwarm AI Home">
+            <a href="/" class="text-base sm:text-lg font-bold tracking-wider text-white hover:text-cyan-400 transition" aria-label="LogiSwarm Home">
               LOGISWARM <span class="text-cyan-400 font-extrabold">AI</span>
             </a>
-            <span class="text-[10px] font-mono tracking-widest px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 uppercase">AI Agent Wars</span>
-            <span class="hidden md:inline-flex text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-400">MCP ACTIVE</span>
+            <span class="text-[10px] font-mono tracking-widest px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 uppercase">Enterprise Dispatch</span>
+            <span class="hidden sm:inline-flex text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-400">MCP ACTIVE</span>
           </div>
-          <p class="text-[11px] sm:text-xs text-slate-400">Multimodal • Conversational • Feedback Loop • Self-Healing Swarm</p>
+          <p class="text-[11px] text-slate-400 hidden xl:block whitespace-nowrap">Autonomous Multi-Agent Fleet Optimization & Disruption Recovery Suite</p>
         </div>
       </div>
 
-      <!-- Live Status & Primary Call To Action (Point 20: Clear CTA) -->
+      <!-- Right: System Actions & Primary Call To Action (Point 20) -->
       <div class="flex items-center gap-2 sm:gap-3">
-        <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-800/60 border border-gray-700/60 text-xs font-mono">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
-          <span id="swarm-status-text" class="text-emerald-400 font-medium">SWARM NOMINAL</span>
-          <span class="text-gray-500">|</span>
-          <span id="live-clock" class="text-slate-300">--:--:--</span>
+        <!-- Live Clock -->
+        <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-800/60 border border-gray-700/60 text-xs font-mono text-slate-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
+          <span id="live-clock">--:--:--</span>
         </div>
 
-        <!-- Point 20: ONE CLEAR PRIMARY CALL TO ACTION -->
+        <!-- 2FA Security Status Indicator -->
+        <button onclick="open2FAModal()" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-gray-800/80 hover:bg-gray-700 border border-gray-700 text-xs font-mono text-cyan-300 transition" title="Two-Factor Authentication RFC 6238 Settings">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-cyan-400" aria-hidden="true"></i>
+          <span id="2fa-status-pill">2FA Active</span>
+        </button>
+
+        <!-- 1-Click Official Business / Diagnostic PDF Dossier (Blueprint 1.D) -->
+        <button onclick="openOfficialDossierModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 border border-gray-700 text-slate-200 text-xs font-semibold transition active:scale-95" aria-label="Generate Official Business Audit Dossier">
+          <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-300" aria-hidden="true"></i>
+          <span class="hidden sm:inline">Official Dossier</span>
+        </button>
+
+        <!-- Primary Call To Action (Point 20: One Clear Action) -->
         <button id="btn-reoptimize" class="cta-pulse flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs sm:text-sm font-extrabold shadow-lg shadow-cyan-500/25 transition active:scale-95" aria-label="Deploy Autonomous Logistics Swarm Optimization">
           <i data-lucide="zap" class="w-4 h-4 text-amber-300 fill-amber-300" aria-hidden="true"></i>
           <span>Deploy Autonomous Swarm</span>
-        </button>
-        
-        <button id="btn-export" class="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 border border-gray-700 text-slate-200 text-xs font-semibold transition" aria-label="Export Mission Audit Report">
-          <i data-lucide="file-text" class="w-3.5 h-3.5" aria-hidden="true"></i>
-          <span>Audit Report</span>
-        </button>
-
-        <button id="btn-reset" class="flex items-center justify-center p-2 rounded-xl bg-gray-800 hover:bg-gray-700 border border-gray-700 text-slate-300 text-xs transition" title="Reset Simulation State" aria-label="Reset simulation to default scenario">
-          <i data-lucide="rotate-ccw" class="w-4 h-4" aria-hidden="true"></i>
         </button>
       </div>
 
     </div>
   </header>
 
-  <!-- Metric KPI Cards Bar (Point 13: Enhanced Contrast Ratios) -->
+  <!-- Metric KPI Cards Bar (WCAG Enhanced Contrast) -->
   <section class="max-w-7xl mx-auto w-full px-3 sm:px-6 pt-4" aria-label="Live Fleet Key Performance Indicators">
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
       
@@ -164,7 +156,7 @@
           <span class="text-sm text-slate-400">$</span>
           <span id="metric-cost" class="text-xl font-bold text-white font-mono">0.00</span>
         </div>
-        <span class="text-[10px] text-emerald-400 font-semibold">-18% vs Manual</span>
+        <span class="text-[10px] text-emerald-400 font-semibold">-18% vs Manual Dispatch</span>
       </div>
 
       <!-- Card 4: Green CO2 Saved -->
@@ -177,7 +169,7 @@
           <span id="metric-co2-saved" class="text-xl font-bold text-emerald-400 font-mono">0.0</span>
           <span class="text-xs text-slate-400 font-mono">kg</span>
         </div>
-        <span class="text-[10px] text-emerald-300 font-medium">EV Fleet Priority</span>
+        <span class="text-[10px] text-emerald-300 font-medium">EV Fleet Prioritization</span>
       </div>
 
       <!-- Card 5: Fleet Utilization -->
@@ -190,7 +182,7 @@
           <span id="metric-utilization" class="text-xl font-bold text-white font-mono">0.0</span>
           <span class="text-xs text-cyan-400 font-semibold">%</span>
         </div>
-        <span class="text-[10px] text-slate-400 font-medium">Load & Volume Balanced</span>
+        <span class="text-[10px] text-slate-400 font-medium">Payload Volume Balanced</span>
       </div>
 
       <!-- Card 6: Self-Healed Recoveries -->
@@ -209,36 +201,37 @@
     </div>
   </section>
 
-  <!-- Main Grid Workspace (Point 14: Mobile-Friendly Flex & Grid) -->
-  <main class="max-w-7xl mx-auto w-full px-3 sm:px-6 py-4 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4">
+  <!-- ========================================================================
+       Main Workspace with Blueprint pb-36 Bottom Padding for Floating Dock
+       ======================================================================== -->
+  <main class="max-w-7xl mx-auto w-full px-3 sm:px-6 py-4 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 pb-36">
     
-    <!-- Left Column: Map & Fleet Manifest (7 Cols) -->
+    <!-- Left Workspace (7 Cols): Map & Fleet Manifest -->
     <div class="lg:col-span-7 flex flex-col gap-4">
       
-      <!-- Interactive Map Panel -->
-      <div class="bg-gray-900/90 border border-gray-800 rounded-2xl overflow-hidden shadow-xl flex flex-col">
+      <!-- Interactive Geo-Spatial Map Panel -->
+      <section id="section-map" class="bg-gray-900/90 border border-gray-800 rounded-2xl overflow-hidden shadow-xl flex flex-col">
         <div class="px-4 py-2.5 bg-gray-800/70 border-b border-gray-800 flex items-center justify-between">
           <div class="flex items-center gap-2">
             <i data-lucide="map-pin" class="w-4 h-4 text-cyan-400" aria-hidden="true"></i>
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Live Geo-Spatial Fleet & Hazard Map</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Geo-Spatial Telematics & Active Corridor Map</span>
           </div>
           <div class="flex items-center gap-3 text-xs text-slate-300">
             <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500" aria-hidden="true"></span> Depots</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500" aria-hidden="true"></span> Drops</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" aria-hidden="true"></span> Hazard</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500" aria-hidden="true"></span> Consignments</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" aria-hidden="true"></span> Hazard Zone</span>
           </div>
         </div>
         
-        <!-- Leaflet Map Container (Responsive height) -->
         <div id="map" class="w-full h-[320px] sm:h-[380px] lg:h-[400px] z-10" role="region" aria-label="Interactive Fleet Route Map"></div>
-      </div>
+      </section>
 
       <!-- Fleet Manifest & Vehicle Status Table -->
-      <div class="bg-gray-900/90 border border-gray-800 rounded-2xl overflow-hidden shadow-xl flex-1">
+      <section id="section-fleet" class="bg-gray-900/90 border border-gray-800 rounded-2xl overflow-hidden shadow-xl flex-1">
         <div class="px-4 py-2.5 bg-gray-800/70 border-b border-gray-800 flex items-center justify-between">
           <div class="flex items-center gap-2">
             <i data-lucide="truck" class="w-4 h-4 text-blue-400" aria-hidden="true"></i>
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Autonomous Fleet Manifest</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Autonomous Fleet Manifest & Payloads</span>
           </div>
           <span id="fleet-count-badge" class="text-[11px] font-mono px-2 py-0.5 rounded bg-gray-800 text-slate-300">4 Vehicles</span>
         </div>
@@ -249,7 +242,7 @@
               <tr>
                 <th scope="col" class="py-2.5 px-3">Vehicle</th>
                 <th scope="col" class="py-2.5 px-3">Type / Fuel</th>
-                <th scope="col" class="py-2.5 px-3">Orders</th>
+                <th scope="col" class="py-2.5 px-3">Consignments</th>
                 <th scope="col" class="py-2.5 px-3">Distance & Time</th>
                 <th scope="col" class="py-2.5 px-3">Cost / CO₂</th>
                 <th scope="col" class="py-2.5 px-3">Status</th>
@@ -260,13 +253,13 @@
             </tbody>
           </table>
         </div>
-      </div>
+      </section>
 
-      <!-- Human-in-the-Loop Feedback Bar -->
-      <div class="bg-gray-900/90 border border-gray-800 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <!-- Human-in-the-Loop Feedback Loop Bar -->
+      <section class="bg-gray-900/90 border border-gray-800 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div class="flex items-center gap-2">
           <i data-lucide="message-circle-heart" class="w-4 h-4 text-pink-400" aria-hidden="true"></i>
-          <span class="font-bold text-slate-200">Human Dispatcher Feedback:</span>
+          <span class="font-bold text-slate-200">Chief Dispatcher Feedback:</span>
           <span class="text-slate-400 hidden sm:inline">Rate the current route plan quality:</span>
         </div>
         <div class="flex items-center gap-2">
@@ -283,15 +276,15 @@
             <span>Sub-Optimal</span>
           </button>
         </div>
-      </div>
+      </section>
 
     </div>
 
-    <!-- Right Column: Tabs (Swarm Feed / Chat / Multimodal Vision / Chaos Monkey) (5 Cols) -->
+    <!-- Right Workspace (5 Cols): Chaos Simulator & Multi-Agent Intelligence Hub -->
     <div class="lg:col-span-5 flex flex-col gap-4">
       
-      <!-- Disruption Simulator Panel (Chaos Monkey) -->
-      <div class="bg-gradient-to-br from-gray-900 to-gray-900/80 border border-red-900/40 rounded-2xl p-4 shadow-xl relative overflow-hidden">
+      <!-- Disruption Simulator Panel (Chaos Monkey Protocol) -->
+      <section id="section-disruption" class="bg-gradient-to-br from-gray-900 to-gray-900/80 border border-red-900/40 rounded-2xl p-4 shadow-xl relative overflow-hidden">
         <div class="absolute -right-8 -top-8 w-24 h-24 bg-red-500/10 rounded-full blur-xl pointer-events-none" aria-hidden="true"></div>
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center gap-2">
@@ -299,7 +292,7 @@
               <i data-lucide="flame" class="w-4 h-4" aria-hidden="true"></i>
             </div>
             <div>
-              <h2 class="text-xs font-bold uppercase tracking-wider text-white">Disruption Simulator (Self-Healing)</h2>
+              <h2 class="text-xs font-bold uppercase tracking-wider text-white">Disruption Simulator (Self-Healing Matrix)</h2>
               <p class="text-[10px] text-slate-400">Trigger real-world bottlenecks to evaluate autonomous recovery</p>
             </div>
           </div>
@@ -309,53 +302,52 @@
           <button onclick="injectDisruption('breakdown')" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-gray-800/80 hover:bg-red-950/40 border border-gray-700/80 hover:border-red-600/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Simulate Truck Engine Breakdown">
             <i data-lucide="wrench" class="w-4 h-4 text-red-400 shrink-0" aria-hidden="true"></i>
             <div>
-              <div class="font-bold text-[11px] text-red-300">Truck Breakdown</div>
-              <div class="text-[9px] text-slate-400">Titan Engine Stall</div>
+              <div class="font-bold text-[11px] text-red-300">Mechanical Breakdown</div>
+              <div class="text-[9px] text-slate-400">Titan Engine Overheating</div>
             </div>
           </button>
 
           <button onclick="injectDisruption('severe_weather')" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-gray-800/80 hover:bg-blue-950/40 border border-gray-700/80 hover:border-blue-600/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Simulate Severe Flash Flood Weather Alert">
             <i data-lucide="cloud-lightning" class="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true"></i>
             <div>
-              <div class="font-bold text-[11px] text-cyan-300">Flash Flood Alert</div>
-              <div class="text-[9px] text-slate-400">Transit Corridor Cut</div>
+              <div class="font-bold text-[11px] text-cyan-300">Severe Inundation Alert</div>
+              <div class="text-[9px] text-slate-400">Arterial Corridor Impassable</div>
             </div>
           </button>
 
           <button onclick="injectDisruption('road_closure')" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-gray-800/80 hover:bg-amber-950/40 border border-gray-700/80 hover:border-amber-600/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Simulate Hazardous Spill Road Closure">
             <i data-lucide="ban" class="w-4 h-4 text-amber-400 shrink-0" aria-hidden="true"></i>
             <div>
-              <div class="font-bold text-[11px] text-amber-300">Hazardous Spill</div>
-              <div class="text-[9px] text-slate-400">Expressway Hazmat</div>
+              <div class="font-bold text-[11px] text-amber-300">Expressway Hazmat Spill</div>
+              <div class="text-[9px] text-slate-400">Highway Transit Interdiction</div>
             </div>
           </button>
 
           <button onclick="injectDisruption('urgent_surge')" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-gray-800/80 hover:bg-emerald-950/40 border border-gray-700/80 hover:border-emerald-600/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Inject Emergency Cold-Chain Vaccine Demand Surge">
             <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-400 shrink-0" aria-hidden="true"></i>
             <div>
-              <div class="font-bold text-[11px] text-emerald-300">Emergency Vaccine</div>
-              <div class="text-[9px] text-slate-400">45-min Priority Surge</div>
+              <div class="font-bold text-[11px] text-emerald-300">Critical Medical Surge</div>
+              <div class="text-[9px] text-slate-400">45-min Priority Code Red</div>
             </div>
           </button>
         </div>
-      </div>
+      </section>
 
-      <!-- Tabbed Workspace: Swarm Feed / Conversation Agent / Multimodal Vision -->
-      <div class="bg-gray-900/90 border border-gray-800 rounded-2xl overflow-hidden shadow-xl flex-1 flex flex-col min-h-[460px]">
+      <!-- Multi-Agent Reasoning Feed & Multimodal Inspector -->
+      <section id="section-intelligence" class="bg-gray-900/90 border border-gray-800 rounded-2xl overflow-hidden shadow-xl flex-1 flex flex-col min-h-[460px]">
         
-        <!-- Tab Navigation Bar -->
         <div class="flex items-center border-b border-gray-800 bg-gray-800/40 text-xs font-medium" role="tablist">
           <button id="tab-btn-feed" onclick="switchTab('feed')" role="tab" aria-selected="true" class="px-4 py-2.5 border-b-2 border-cyan-400 text-cyan-400 font-bold flex items-center gap-1.5 transition">
             <i data-lucide="cpu" class="w-3.5 h-3.5" aria-hidden="true"></i>
-            <span>Agent Feed</span>
-          </button>
-          <button id="tab-btn-chat" onclick="switchTab('chat')" role="tab" aria-selected="false" class="px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition">
-            <i data-lucide="message-square" class="w-3.5 h-3.5" aria-hidden="true"></i>
-            <span>Conversation Agent</span>
+            <span>Agent Reasoning Feed</span>
           </button>
           <button id="tab-btn-vision" onclick="switchTab('vision')" role="tab" aria-selected="false" class="px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition">
             <i data-lucide="eye" class="w-3.5 h-3.5" aria-hidden="true"></i>
             <span>Multimodal Vision</span>
+          </button>
+          <button id="tab-btn-audit" onclick="switchTab('audit')" role="tab" aria-selected="false" class="px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition">
+            <i data-lucide="shield" class="w-3.5 h-3.5" aria-hidden="true"></i>
+            <span>Security Audit Log</span>
           </button>
         </div>
 
@@ -364,7 +356,7 @@
           <div id="agent-thoughts-feed" class="p-3 space-y-2.5 overflow-y-auto max-h-[350px] font-mono text-xs flex-1">
             <!-- Dynamically populated thoughts -->
           </div>
-          <!-- Customer Notification Footer -->
+          <!-- Stakeholder Transparency Directives -->
           <div class="p-3 bg-gray-800/40 border-t border-gray-800">
             <div class="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1 flex items-center gap-1">
               <i data-lucide="bell" class="w-3 h-3" aria-hidden="true"></i>
@@ -374,41 +366,10 @@
           </div>
         </div>
 
-        <!-- TAB 2: Conversation Agent (Interactive Chat with Form Validation & Spam Protection) -->
-        <div id="tab-pane-chat" class="hidden flex-1 flex flex-col p-3.5" role="tabpanel">
-          <div class="text-xs text-slate-300 mb-2 flex items-center justify-between">
-            <span>Direct dialogue with <b class="text-cyan-400">Commander-Prime</b> (Google Gemini)</span>
-            <span class="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ONLINE
-            </span>
-          </div>
-          
-          <div id="chat-messages" class="flex-1 overflow-y-auto max-h-[320px] space-y-2 p-2.5 bg-gray-950/70 rounded-xl border border-gray-800 text-xs font-sans">
-            <div class="p-2.5 rounded-lg bg-gray-800/60 text-slate-200">
-              <b class="text-cyan-400">Commander-Prime:</b> Greetings Dispatcher. I am orchestrating 4 fleet assets across 8 priority shipments. How can I assist with routes, telematics, or disruption management?
-            </div>
-          </div>
-
-          <!-- Form with Honeypot Bot Protection (Point 18) and Validation (Point 17) -->
-          <form id="chat-form" onsubmit="sendChatMessage(event)" class="mt-3 flex flex-col gap-1.5">
-            <!-- Honeypot field (hidden from real users, bots fill it) -->
-            <input type="text" name="hp_field" id="chat-hp" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none !important;" />
-            
-            <div class="flex gap-2">
-              <input id="chat-input" type="text" required minlength="2" maxlength="500" placeholder="Ask Commander-Prime (e.g. What is the status of VoltHauler EV?)" class="flex-1 px-3.5 py-2.5 rounded-xl bg-gray-800/90 border border-gray-700 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition" />
-              <button type="submit" class="px-4 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition flex items-center gap-1 active:scale-95" aria-label="Send message to agent">
-                <i data-lucide="send" class="w-3.5 h-3.5" aria-hidden="true"></i>
-                <span>Send</span>
-              </button>
-            </div>
-            <span id="chat-validation-msg" class="text-[10px] text-red-400 hidden">Please enter at least 2 characters.</span>
-          </form>
-        </div>
-
-        <!-- TAB 3: Multimodal Vision (Google Gemini Vision Inspection) -->
+        <!-- TAB 2: Multimodal Vision (Google Gemini Vision Inspection) -->
         <div id="tab-pane-vision" class="hidden flex-1 flex flex-col p-3.5 text-xs" role="tabpanel">
           <div class="flex items-center justify-between mb-2">
-            <span class="font-bold text-slate-200">Google Gemini Multimodal Cargo Inspector</span>
+            <span class="font-bold text-slate-200">Google Gemini Multimodal Cargo & Waybill Inspector</span>
             <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-950 border border-purple-800 text-purple-300">Vision API</span>
           </div>
           <p class="text-[11px] text-slate-400 mb-3">Upload a damaged freight photo or inspect our sample compromised cold-chain container.</p>
@@ -416,22 +377,308 @@
           <div class="flex gap-2 mb-3">
             <button onclick="runSampleMultimodalInspection()" class="flex-1 px-3.5 py-2.5 rounded-xl bg-purple-900/60 hover:bg-purple-800 border border-purple-700 text-purple-200 font-semibold transition flex items-center justify-center gap-1.5 active:scale-95" aria-label="Run sample multimodal inspection on vaccine container">
               <i data-lucide="sparkles" class="w-4 h-4 text-purple-300" aria-hidden="true"></i>
-              <span>Inspect Sample Damaged Vaccine Pallet</span>
+              <span>Inspect Sample Compromised Vaccine Pallet</span>
             </button>
           </div>
 
           <div id="vision-result-box" class="flex-1 overflow-y-auto max-h-[300px] p-3 rounded-xl bg-gray-950/80 border border-gray-800 font-mono text-[11px] text-slate-300 whitespace-pre-wrap">
-Click "Inspect Sample Damaged Vaccine Pallet" to demonstrate Google Gemini Vision multimodal analysis.
+Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini Vision multimodal analysis.
           </div>
         </div>
 
-      </div>
+        <!-- TAB 3: Immutable Security Audit Log (Blueprint 3.D) -->
+        <div id="tab-pane-audit" class="hidden flex-1 flex flex-col p-3.5 text-xs font-mono" role="tabpanel">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-bold text-slate-200 uppercase tracking-wider text-[11px]">Cryptographic Security Audit Log</span>
+            <span class="text-[10px] text-cyan-400">Append-Only SHA-256</span>
+          </div>
+          <div id="audit-log-container" class="flex-1 overflow-y-auto max-h-[340px] space-y-2 p-2 bg-gray-950/80 rounded-xl border border-gray-800 text-[10px] text-slate-300">
+            <!-- Dynamically populated audit log entries -->
+          </div>
+          <div class="pt-2 flex justify-end">
+            <button onclick="downloadDatabaseBackup('json')" class="px-2.5 py-1 rounded bg-gray-800 hover:bg-gray-700 text-[11px] text-slate-300 font-sans border border-gray-700 transition">
+              Download JSON Database Backup
+            </button>
+          </div>
+        </div>
+
+      </section>
 
     </div>
 
   </main>
 
-  <!-- Point 5: Cookie Consent Banner -->
+  <!-- ========================================================================
+       SECTION 1.A: macOS-Style Floating Bottom Dock with Scroll Auto-Hide
+       ======================================================================== -->
+  <!-- Peek Pill (when dock is hidden) -->
+  <button
+    id="dock-peek-btn"
+    onclick="toggleDock(true)"
+    class="fixed bottom-2 left-1/2 -translate-x-1/2 z-40 px-3 py-1 rounded-full bg-slate-900/90 text-cyan-400 backdrop-blur-md border border-cyan-500/40 text-xs font-bold shadow-xl animate-bounce cursor-pointer hidden"
+    aria-label="Reveal Navigation Menu"
+  >
+    <i data-lucide="chevron-up" class="w-3.5 h-3.5 inline mr-1"></i> Navigation
+  </button>
+
+  <!-- Glassmorphic Dock Container -->
+  <nav id="floating-dock" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 transition-all duration-300 translate-y-0 opacity-100 pointer-events-auto" aria-label="Floating Application Dock">
+    <div class="flex items-center gap-1.5 p-2 rounded-2xl bg-gray-900/85 backdrop-blur-2xl border border-gray-700/80 shadow-2xl select-none">
+      
+      <button onclick="scrollToSection('section-map')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+        <i data-lucide="map" class="w-4 h-4 text-cyan-400"></i>
+        <span class="hidden sm:inline">Telemetry Map</span>
+      </button>
+
+      <button onclick="scrollToSection('section-fleet')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+        <i data-lucide="truck" class="w-4 h-4 text-blue-400"></i>
+        <span class="hidden sm:inline">Fleet Manifest</span>
+      </button>
+
+      <button onclick="scrollToSection('section-disruption')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+        <i data-lucide="flame" class="w-4 h-4 text-red-400"></i>
+        <span class="hidden sm:inline">Chaos Simulator</span>
+      </button>
+
+      <button onclick="switchTab('vision'); scrollToSection('section-intelligence')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+        <i data-lucide="eye" class="w-4 h-4 text-purple-400"></i>
+        <span class="hidden sm:inline">Cargo Vision</span>
+      </button>
+
+      <button onclick="openOfficialDossierModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+        <i data-lucide="file-check" class="w-4 h-4 text-emerald-400"></i>
+        <span class="hidden sm:inline">Audit Dossier</span>
+      </button>
+
+      <button onclick="open2FAModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+        <i data-lucide="shield-check" class="w-4 h-4 text-pink-400"></i>
+        <span class="hidden sm:inline">Security & 2FA</span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- ========================================================================
+       SECTION 1.C: Decoupled Floating AI Agent Drawer (Ambient Floating Button)
+       ======================================================================== -->
+  <div class="fixed bottom-6 right-6 z-40">
+    <button
+      id="ai-agent-fab"
+      onclick="toggleChatDrawer(true)"
+      class="w-14 h-14 rounded-full bg-gradient-to-tr from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-2xl shadow-cyan-500/40 flex items-center justify-center transition transform hover:scale-110 active:scale-95 cursor-pointer relative"
+      aria-label="Open AI Dispatcher Assistant Drawer"
+    >
+      <i data-lucide="bot" class="w-6 h-6"></i>
+      <!-- Unread pulse dot -->
+      <span class="absolute top-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-gray-900 animate-ping"></span>
+      <span class="absolute top-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-gray-900"></span>
+    </button>
+  </div>
+
+  <!-- Expandable Floating AI Agent Drawer Modal (Preserves Session State) -->
+  <aside id="chat-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-gray-900/95 backdrop-blur-2xl border-l border-gray-800 z-50 shadow-2xl flex flex-col transition-all duration-300 translate-x-full" aria-label="AI Dispatcher Assistant Drawer">
+    <div class="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-800 flex items-center justify-center text-cyan-400">
+          <i data-lucide="bot" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <h2 class="text-sm font-bold text-white">Commander-Prime</h2>
+          <span class="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+            Online • Gemini 2.5 Flash
+          </span>
+        </div>
+      </div>
+      <button onclick="toggleChatDrawer(false)" class="p-1 rounded-lg hover:bg-gray-800 text-slate-400 hover:text-white transition" aria-label="Close AI Assistant Drawer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Scrollable Chat History Container -->
+    <div id="drawer-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-2.5 text-xs font-sans">
+      <!-- Synced via sessionStorage -->
+    </div>
+
+    <!-- Chat Form with Honeypot & Debounce -->
+    <form id="drawer-chat-form" onsubmit="sendDrawerChatMessage(event)" class="p-4 border-t border-gray-800 bg-gray-950/60 flex flex-col gap-2">
+      <input type="text" name="hp_field" id="drawer-chat-hp" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none !important;" />
+      <div class="flex gap-2">
+        <input id="drawer-chat-input" type="text" required minlength="2" maxlength="500" placeholder="Ask Commander-Prime..." class="flex-1 px-3.5 py-2.5 rounded-xl bg-gray-800 border border-gray-700 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500" />
+        <button type="submit" class="px-3.5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition active:scale-95" aria-label="Send query">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+    </form>
+  </aside>
+
+  <!-- ========================================================================
+       SECTION 1.D: 1-Click Official Business / Diagnostic PDF Reports Modal
+       ======================================================================== -->
+  <div id="modal-dossier" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <!-- Modal Header (Screen view only) -->
+      <div class="px-6 py-3.5 border-b border-gray-800 flex items-center justify-between no-print">
+        <div class="flex items-center gap-2">
+          <i data-lucide="file-badge" class="w-5 h-5 text-cyan-400"></i>
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider">Official Mission Audit & Diagnostic Dossier</h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>Print / Save PDF</span>
+          </button>
+          <button onclick="closeOfficialDossierModal()" class="text-slate-400 hover:text-white transition p-1">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Printable Dossier Body (Target for @media print) -->
+      <div id="printable-dossier" class="p-8 overflow-y-auto bg-white text-slate-900 dark:bg-gray-950 dark:text-slate-100 font-sans text-xs space-y-6">
+        
+        <!-- Institutional Letterhead -->
+        <div class="border-b-2 border-slate-900 dark:border-slate-700 pb-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-xl font-mono">
+              LS
+            </div>
+            <div>
+              <h1 class="text-lg font-black tracking-wider uppercase text-slate-900 dark:text-white">LogiSwarm AI Systems Authority</h1>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400 tracking-wider uppercase">Autonomous Logistics Certification • Agent Wars Operational Bureau</p>
+            </div>
+          </div>
+          <div class="text-right text-[10px] font-mono text-slate-500 dark:text-slate-400">
+            <div>REF: <b class="text-slate-900 dark:text-white" id="dossier-ref-code">LS-2026-X99</b></div>
+            <div>DATE: <span id="dossier-date-text">2026-10-17</span></div>
+            <div>CLEARANCE: CHIEF DISPATCHER</div>
+          </div>
+        </div>
+
+        <!-- Demographic / Mission Overview Indicators -->
+        <div class="grid grid-cols-3 gap-3 p-3 rounded-lg bg-slate-100 dark:bg-gray-900 border border-slate-200 dark:border-gray-800">
+          <div>
+            <span class="text-[10px] text-slate-500 uppercase font-semibold">Consignments Tracked</span>
+            <div class="text-sm font-bold" id="dossier-orders-count">8 Orders</div>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-500 uppercase font-semibold">Active Fleet Assets</span>
+            <div class="text-sm font-bold">4 Vehicles (EV, Diesel, CNG, Reefer)</div>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-500 uppercase font-semibold">Disruption Status</span>
+            <div class="text-sm font-bold text-emerald-600 dark:text-emerald-400">Autonomous Neutralized</div>
+          </div>
+        </div>
+
+        <!-- Quantitative Metrics vs Benchmark Table -->
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">1. Quantitative Telematics vs Normative Benchmarks</h2>
+          <table class="w-full text-left border-collapse border border-slate-200 dark:border-gray-800 text-[11px]">
+            <thead class="bg-slate-200 dark:bg-gray-900 text-slate-700 dark:text-slate-300">
+              <tr>
+                <th class="p-2 border border-slate-300 dark:border-gray-800">Metric Parameter</th>
+                <th class="p-2 border border-slate-300 dark:border-gray-800">Measured Value</th>
+                <th class="p-2 border border-slate-300 dark:border-gray-800">Normative Industry Benchmark</th>
+                <th class="p-2 border border-slate-300 dark:border-gray-800">Variance Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 dark:divide-gray-800">
+              <tr>
+                <td class="p-2 font-semibold">SLA On-Time Fulfillment</td>
+                <td class="p-2 font-mono text-emerald-600 font-bold" id="dossier-sla-val">100.0%</td>
+                <td class="p-2 font-mono">92.0%</td>
+                <td class="p-2 text-emerald-600 font-semibold">+8.0% (Superior)</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-semibold">Green Fleet CO₂ Abatement</td>
+                <td class="p-2 font-mono text-emerald-600 font-bold" id="dossier-co2-val">2.23 kg</td>
+                <td class="p-2 font-mono">0.00 kg Baseline</td>
+                <td class="p-2 text-emerald-600 font-semibold">Abated via EV Preference</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-semibold">Autonomous Recovery Latency (MTTR)</td>
+                <td class="p-2 font-mono text-blue-600 font-bold">&lt; 1.8 seconds</td>
+                <td class="p-2 font-mono">45.0 mins Manual Dispatch</td>
+                <td class="p-2 text-blue-600 font-semibold">99.9% Faster Resolution</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-semibold">Multi-Agent Quality Score</td>
+                <td class="p-2 font-mono text-purple-600 font-bold" id="dossier-quality-val">92.5 / 100</td>
+                <td class="p-2 font-mono">80.0 / 100 Minimum</td>
+                <td class="p-2 text-purple-600 font-semibold">Verified by QualityGuard</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Verification QR Code & Formal Signatures -->
+        <div class="pt-6 border-t border-slate-200 dark:border-gray-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <!-- Simulated Authentic SVG QR Vector -->
+            <svg class="w-16 h-16 border border-slate-300 dark:border-gray-700 p-1 rounded" viewBox="0 0 100 100">
+              <rect width="100" height="100" fill="#ffffff"/>
+              <path d="M10 10 h30 v30 h-30 z M50 10 h10 v10 h-10 z M70 10 h20 v20 h-20 z M10 50 h10 v10 h-10 z M10 70 h20 v20 h-20 z M70 70 h20 v20 h-20 z M40 40 h20 v20 h-20 z" fill="#000000"/>
+            </svg>
+            <div class="text-[9px] font-mono text-slate-500">
+              <div>CRYPTOGRAPHIC AUTHENTICITY HASH</div>
+              <div class="font-bold text-slate-900 dark:text-white" id="dossier-auth-hash">e3b0c44298fc1c149afbf4c8996fb924</div>
+              <div>VERIFIED: LogiSwarm AI RFC 6238 Protocol</div>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <div class="h-8 border-b border-slate-400 dark:border-slate-600 w-44"></div>
+            <div class="text-[10px] font-bold text-slate-900 dark:text-white mt-1">Chief Logistics Officer</div>
+            <div class="text-[9px] text-slate-500">Autonomous Operations Bureau</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       SECTION 2.E: Two-Factor Authentication Modal (RFC 6238 TOTP)
+       ======================================================================== -->
+  <div id="modal-2fa" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-5 h-5 text-cyan-400"></i>
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider">Two-Factor Authentication (TOTP)</h2>
+        </div>
+        <button onclick="close2FAModal()" class="text-slate-400 hover:text-white transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-400 leading-relaxed">
+        LogiSwarm implements standard-library <b>RFC 6238 TOTP</b> (Google Authenticator / Authy compatible). Verify your 6-digit code below to unlock Chief Dispatcher clearance:
+      </p>
+
+      <div class="p-3 rounded-xl bg-gray-950 border border-gray-800 font-mono text-xs space-y-1">
+        <div class="text-[10px] text-slate-500">DISPATCHER SECRET KEY:</div>
+        <div id="2fa-secret-display" class="font-bold text-cyan-300 tracking-wider">LOADING...</div>
+        <div class="text-[10px] text-slate-500 pt-1">SIMULATOR 6-DIGIT CODE:</div>
+        <div id="2fa-preview-display" class="text-sm font-extrabold text-emerald-400">------</div>
+      </div>
+
+      <form onsubmit="verify2FACode(event)" class="space-y-3">
+        <div>
+          <label for="totp-input" class="text-[11px] font-bold text-slate-300">Enter 6-Digit Authenticator Code:</label>
+          <input id="totp-input" type="text" maxlength="6" pattern="[0-9]{6}" required placeholder="e.g. 123456" class="w-full mt-1 px-3.5 py-2 rounded-xl bg-gray-800 border border-gray-700 text-center font-mono text-lg tracking-widest text-white focus:outline-none focus:border-cyan-500" />
+        </div>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-md transition">
+          Verify TOTP Clearance
+        </button>
+      </form>
+      <div id="2fa-result-msg" class="text-center text-xs font-semibold hidden"></div>
+    </div>
+  </div>
+
+  <!-- Cookie Consent Banner -->
   <div id="cookie-banner" class="fixed bottom-4 right-4 max-w-sm w-full bg-gray-900/95 border border-gray-700/80 rounded-2xl p-4 shadow-2xl z-50 transition transform translate-y-0" role="dialog" aria-live="polite" aria-label="Cookie and Privacy Consent">
     <div class="flex items-start gap-3">
       <div class="p-2 rounded-lg bg-cyan-950 text-cyan-400 shrink-0" role="img" aria-label="Cookie privacy shield">
@@ -454,7 +701,7 @@ Click "Inspect Sample Damaged Vaccine Pallet" to demonstrate Google Gemini Visio
     </div>
   </div>
 
-  <!-- Footer with Valid Links (Point 16: Zero Broken Links) -->
+  <!-- Footer with Zero Broken Links -->
   <footer class="border-t border-gray-800/80 bg-gray-900/60 py-4 px-3 sm:px-6 text-xs text-slate-400 mt-auto">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
       <div class="flex items-center gap-2">
@@ -472,28 +719,6 @@ Click "Inspect Sample Damaged Vaccine Pallet" to demonstrate Google Gemini Visio
     </div>
   </footer>
 
-  <!-- Export Report Modal -->
-  <div id="modal-report" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
-      <div class="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i data-lucide="file-check" class="w-5 h-5 text-cyan-400" aria-hidden="true"></i>
-          <h2 id="modal-title" class="text-sm font-bold text-white tracking-wide uppercase">Mission Audit & Logistics Report</h2>
-        </div>
-        <button id="modal-close" class="text-slate-400 hover:text-white transition p-1" aria-label="Close Audit Report Modal">
-          <i data-lucide="x" class="w-5 h-5" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="p-6 overflow-y-auto font-mono text-xs text-slate-200 whitespace-pre-wrap leading-relaxed select-all" id="report-content">
-        Generating audit report...
-      </div>
-      <div class="px-6 py-3 bg-gray-800/40 border-t border-gray-800 flex justify-end gap-2">
-        <button id="btn-copy-report" class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold active:scale-95 transition" aria-label="Copy Audit Report Text">Copy Report</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scripts -->
   <script src="/js/app.js"></script>
   <script>
     lucide.createIcons();

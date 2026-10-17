@@ -4,6 +4,7 @@ let routeLayers = [];
 let markerLayers = [];
 let hazardLayers = [];
 let activeTab = 'feed';
+let lastSubmitTime = 0;
 
 const vehicleColors = {
   'FLEET-EV-01': '#10b981',    // Emerald Green (Electric)
@@ -25,12 +26,251 @@ document.addEventListener('DOMContentLoaded', () => {
   initMap();
   initClock();
   initEventListeners();
+  initFloatingDock();
   initCookieBanner();
+  initDrawerChat();
   fetchState();
   setInterval(fetchState, 4000);
 });
 
-/* Point 5: Cookie Consent Management */
+/* ==========================================================================
+   SECTION 1.A: macOS-Style Floating Bottom Dock with Scroll Auto-Hide
+   ========================================================================== */
+function initFloatingDock() {
+  const dock = document.getElementById('floating-dock');
+  const peekBtn = document.getElementById('dock-peek-btn');
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const currentY = window.scrollY;
+        if (currentY < 70) {
+          toggleDock(true);
+        } else if (currentY > lastScrollY && currentY - lastScrollY > 15) {
+          toggleDock(false); // Hide scrolling down
+        } else if (currentY < lastScrollY && lastScrollY - currentY > 15) {
+          toggleDock(true);  // Reveal scrolling up
+        }
+        lastScrollY = currentY;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Unhide dock when cursor moves near bottom 50px of viewport
+  window.addEventListener('mousemove', (e) => {
+    if (e.clientY > window.innerHeight - 50) {
+      toggleDock(true);
+    }
+  }, { passive: true });
+}
+
+function toggleDock(show) {
+  const dock = document.getElementById('floating-dock');
+  const peekBtn = document.getElementById('dock-peek-btn');
+  if (!dock) return;
+
+  if (show) {
+    dock.classList.remove('translate-y-28', 'opacity-0', 'pointer-events-none');
+    dock.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+    peekBtn?.classList.add('hidden');
+  } else {
+    dock.classList.add('translate-y-28', 'opacity-0', 'pointer-events-none');
+    dock.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+    peekBtn?.classList.remove('hidden');
+  }
+}
+
+function scrollToSection(sectionId) {
+  const el = document.getElementById(sectionId);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    toggleDock(true);
+  }
+}
+
+/* ==========================================================================
+   SECTION 1.C: Decoupled Floating AI Agent Drawer with sessionStorage Memory
+   ========================================================================== */
+function initDrawerChat() {
+  const container = document.getElementById('drawer-chat-messages');
+  if (!container) return;
+
+  let saved = [];
+  try {
+    const raw = sessionStorage.getItem('app_shared_chat_history');
+    if (raw) saved = JSON.parse(raw);
+  } catch (e) {}
+
+  if (!saved.length) {
+    saved = [
+      { role: 'assistant', content: 'Greetings Dispatcher. I am Commander-Prime. Autonomous telemetry, CVRP optimization, and disruption healing are active. How can I assist?' }
+    ];
+    sessionStorage.setItem('app_shared_chat_history', JSON.stringify(saved));
+  }
+
+  renderDrawerMessages(saved);
+}
+
+function renderDrawerMessages(messages) {
+  const container = document.getElementById('drawer-chat-messages');
+  if (!container) return;
+
+  container.innerHTML = messages.map(m => {
+    const isUser = m.role === 'user';
+    return `
+      <div class="p-2.5 rounded-xl ${isUser ? 'bg-cyan-950/60 border border-cyan-900/50 text-slate-200 ml-6' : 'bg-gray-800/80 border border-gray-700/60 text-slate-200 mr-6'}">
+        <div class="text-[10px] font-bold ${isUser ? 'text-cyan-300' : 'text-emerald-400'} mb-0.5">
+          ${isUser ? 'Dispatcher' : 'Commander-Prime'}
+        </div>
+        <div>${escapeHtml(m.content)}</div>
+      </div>
+    `;
+  }).join('');
+
+  container.scrollTop = container.scrollHeight;
+}
+
+function toggleChatDrawer(open) {
+  const drawer = document.getElementById('chat-drawer');
+  if (!drawer) return;
+
+  if (open) {
+    drawer.classList.remove('translate-x-full');
+    drawer.classList.add('translate-x-0');
+    document.getElementById('drawer-chat-input')?.focus();
+  } else {
+    drawer.classList.add('translate-x-full');
+    drawer.classList.remove('translate-x-0');
+  }
+}
+
+async function sendDrawerChatMessage(e) {
+  e.preventDefault();
+  const input = document.getElementById('drawer-chat-input');
+  const hp = document.getElementById('drawer-chat-hp');
+  const msg = input.value.trim();
+
+  // Honeypot & Debounce Check (Blueprint 2.G)
+  if (hp && hp.value) return;
+  const now = Date.now();
+  if (now - lastSubmitTime < 1200) return;
+  lastSubmitTime = now;
+
+  if (!msg || msg.length < 2) return;
+
+  let history = [];
+  try {
+    history = JSON.parse(sessionStorage.getItem('app_shared_chat_history') || '[]');
+  } catch (e) {}
+
+  history.push({ role: 'user', content: msg });
+  sessionStorage.setItem('app_shared_chat_history', JSON.stringify(history));
+  renderDrawerMessages(history);
+  input.value = '';
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg, hp_field: hp ? hp.value : '' })
+    });
+    const data = await res.json();
+    const reply = data.data ? data.data.reply : 'Communication channel nominal.';
+    
+    history.push({ role: 'assistant', content: reply });
+    sessionStorage.setItem('app_shared_chat_history', JSON.stringify(history));
+    renderDrawerMessages(history);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/* ==========================================================================
+   SECTION 1.D: 1-Click Official Business / Diagnostic PDF Dossier
+   ========================================================================== */
+function openOfficialDossierModal() {
+  const modal = document.getElementById('modal-dossier');
+  if (!modal) return;
+
+  const now = new Date();
+  document.getElementById('dossier-date-text').textContent = now.toISOString().split('T')[0];
+  document.getElementById('dossier-ref-code').textContent = 'LS-' + now.getFullYear() + '-D' + Math.floor(Math.random() * 899 + 100);
+  document.getElementById('dossier-sla-val').textContent = document.getElementById('metric-sla').textContent + '%';
+  document.getElementById('dossier-co2-val').textContent = document.getElementById('metric-co2-saved').textContent + ' kg';
+  document.getElementById('dossier-quality-val').textContent = document.getElementById('metric-quality').textContent + ' / 100';
+
+  modal.classList.remove('hidden');
+}
+
+function closeOfficialDossierModal() {
+  document.getElementById('modal-dossier')?.classList.add('hidden');
+}
+
+/* ==========================================================================
+   SECTION 2.E: Standard-Library 2FA / TOTP RFC 6238 Verification
+   ========================================================================== */
+let active2FASecret = '';
+
+async function open2FAModal() {
+  const modal = document.getElementById('modal-2fa');
+  modal?.classList.remove('hidden');
+
+  try {
+    const res = await fetch('/api/auth/2fa/generate');
+    const data = await res.json();
+    active2FASecret = data.secret;
+    document.getElementById('2fa-secret-display').textContent = data.secret;
+    document.getElementById('2fa-preview-display').textContent = data.preview_code;
+    document.getElementById('totp-input').value = data.preview_code; // auto-populate preview for instant test
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function close2FAModal() {
+  document.getElementById('modal-2fa')?.classList.add('hidden');
+}
+
+async function verify2FACode(e) {
+  e.preventDefault();
+  const code = document.getElementById('totp-input').value.trim();
+  const msgEl = document.getElementById('2fa-result-msg');
+
+  try {
+    const res = await fetch('/api/auth/2fa/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: 'DISPATCHER-01', code: code })
+    });
+    const data = await res.json();
+
+    msgEl.classList.remove('hidden');
+    if (data.verified) {
+      msgEl.className = 'text-center text-xs font-semibold text-emerald-400';
+      msgEl.textContent = 'RFC 6238 TOTP Verified! Signed access token issued.';
+      document.getElementById('2fa-status-pill').textContent = '2FA VERIFIED';
+      setTimeout(close2FAModal, 1500);
+    } else {
+      msgEl.className = 'text-center text-xs font-semibold text-red-400';
+      msgEl.textContent = data.error || 'Invalid code.';
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/* ==========================================================================
+   SECTION 3.E: Administrative Database Backup Downloader
+   ========================================================================== */
+function downloadDatabaseBackup(format) {
+  window.open(`/api/admin/backup?format=${format}`, '_blank');
+}
+
+/* Cookie Consent */
 function initCookieBanner() {
   const consent = localStorage.getItem('logiswarm_cookie_consent');
   const banner = document.getElementById('cookie-banner');
@@ -42,39 +282,26 @@ function initCookieBanner() {
 function setCookieConsent(type) {
   localStorage.setItem('logiswarm_cookie_consent', type);
   const banner = document.getElementById('cookie-banner');
-  if (banner) {
-    banner.classList.add('hidden');
-  }
-  if (window.LogiAnalytics) {
-    window.LogiAnalytics.track('cookie_consent', { type: type });
-  }
+  if (banner) banner.classList.add('hidden');
+  if (window.LogiAnalytics) window.LogiAnalytics.track('cookie_consent', { type });
 }
 
 function initClock() {
   const clockEl = document.getElementById('live-clock');
   function update() {
     const now = new Date();
-    if (clockEl) {
-      clockEl.textContent = now.toTimeString().split(' ')[0] + ' UTC';
-    }
+    if (clockEl) clockEl.textContent = now.toTimeString().split(' ')[0] + ' UTC';
   }
   update();
   setInterval(update, 1000);
 }
 
 function initMap() {
-  map = L.map('map', {
-    zoomControl: true,
-    attributionControl: false
-  }).setView([19.0760, 72.8777], 11);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 18
-  }).addTo(map);
+  map = L.map('map', { zoomControl: true, attributionControl: false }).setView([19.0760, 72.8777], 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
 }
 
 function initEventListeners() {
-  // Point 20: Primary CTA Execution
   document.getElementById('btn-reoptimize')?.addEventListener('click', async () => {
     showStatusBadge('OPTIMIZING SWARM (FEEDBACK LOOP)...', 'bg-blue-900 border-blue-700 text-blue-300');
     if (window.LogiAnalytics) window.LogiAnalytics.track('optimize_swarm_cta');
@@ -98,33 +325,11 @@ function initEventListeners() {
       console.error(err);
     }
   });
-
-  document.getElementById('btn-export')?.addEventListener('click', async () => {
-    try {
-      const res = await fetch('/api/export');
-      const text = await res.text();
-      document.getElementById('report-content').textContent = text;
-      document.getElementById('modal-report').classList.remove('hidden');
-      if (window.LogiAnalytics) window.LogiAnalytics.track('export_audit_report');
-    } catch (err) {
-      console.error(err);
-    }
-  });
-
-  document.getElementById('modal-close')?.addEventListener('click', () => {
-    document.getElementById('modal-report').classList.add('hidden');
-  });
-
-  document.getElementById('btn-copy-report')?.addEventListener('click', () => {
-    const text = document.getElementById('report-content').textContent;
-    navigator.clipboard.writeText(text);
-    alert('Mission Audit Report copied to clipboard!');
-  });
 }
 
 function switchTab(tab) {
   activeTab = tab;
-  ['feed', 'chat', 'vision'].forEach(t => {
+  ['feed', 'vision', 'audit'].forEach(t => {
     const pane = document.getElementById(`tab-pane-${t}`);
     const btn = document.getElementById(`tab-btn-${t}`);
     if (t === tab) {
@@ -142,75 +347,21 @@ function switchTab(tab) {
   lucide.createIcons();
 }
 
-/* Point 17 & 18: Form Validation & Spam Bot Protection */
-async function sendChatMessage(e) {
-  e.preventDefault();
-  const input = document.getElementById('chat-input');
-  const hp = document.getElementById('chat-hp');
-  const valMsg = document.getElementById('chat-validation-msg');
-  const msg = input.value.trim();
-
-  // Spam Honeypot Check (Point 18)
-  if (hp && hp.value) {
-    console.warn('Bot submission blocked.');
-    return;
-  }
-
-  // Client Validation (Point 17)
-  if (!msg || msg.length < 2) {
-    valMsg?.classList.remove('hidden');
-    input.focus();
-    return;
-  }
-  valMsg?.classList.add('hidden');
-
-  const chatContainer = document.getElementById('chat-messages');
-  chatContainer.innerHTML += `
-    <div class="p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-900/40 text-slate-200">
-      <b class="text-slate-300">Dispatcher:</b> ${escapeHtml(msg)}
-    </div>
-  `;
-  input.value = '';
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-
-  if (window.LogiAnalytics) window.LogiAnalytics.track('chat_message_sent');
-
-  try {
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: msg, hp_field: hp ? hp.value : '' })
-    });
-    const data = await res.json();
-    const reply = data.data ? data.data.reply : data.error;
-    chatContainer.innerHTML += `
-      <div class="p-2.5 rounded-lg bg-gray-800/70 text-slate-200">
-        <b class="text-cyan-400">Commander-Prime:</b> ${escapeHtml(reply)}
-      </div>
-    `;
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
 function escapeHtml(text) {
   const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-  return text.replace(/[&<>"']/g, m => map[m]);
+  return String(text).replace(/[&<>"']/g, m => map[m]);
 }
 
 async function runSampleMultimodalInspection() {
   const resultBox = document.getElementById('vision-result-box');
-  resultBox.textContent = "Analyzing cargo imagery via Google Gemini Multimodal Vision API...";
+  resultBox.textContent = "Analyzing cargo imagery via Google Gemini Multimodal Vision API (Tier 2)...";
   if (window.LogiAnalytics) window.LogiAnalytics.track('multimodal_vision_inspect');
 
   try {
     const res = await fetch('/api/inspect_cargo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        image_base64: "SAMPLE_MOCK_BASE64_DATA"
-      })
+      body: JSON.stringify({ image_base64: "SAMPLE_MOCK_BASE64_DATA" })
     });
     const data = await res.json();
     resultBox.textContent = JSON.stringify(data.data, null, 2);
@@ -221,7 +372,7 @@ async function runSampleMultimodalInspection() {
 
 async function submitHumanFeedback(rating) {
   const comments = {
-    'positive': 'Optimal route plan approved by Human Dispatcher.',
+    'positive': 'Optimal route plan approved by Chief Dispatcher.',
     'rebalance': 'Human request: Prioritize EV allocation for upcoming legs.',
     'negative': 'Flagged sub-optimal stop sequence. Requested recalculation.'
   };
@@ -244,9 +395,7 @@ async function submitHumanFeedback(rating) {
 
 function showStatusBadge(text, classes) {
   const el = document.getElementById('swarm-status-text');
-  if (el) {
-    el.textContent = text;
-  }
+  if (el) el.textContent = text;
 }
 
 async function fetchState() {
@@ -283,7 +432,6 @@ async function injectDisruption(type) {
 function renderState(state) {
   if (!state) return;
 
-  // 1. Render Metrics
   const m = state.metrics || {};
   const fb = state.latest_feedback || {};
 
@@ -295,17 +443,11 @@ function renderState(state) {
   document.getElementById('metric-utilization').textContent = (m.fleet_utilization_rate || 0.0).toFixed(1);
   document.getElementById('metric-recoveries').textContent = m.autonomous_recovery_count || 0;
 
-  // 2. Render Map Layers
   renderMap(state);
-
-  // 3. Render Fleet Table
   renderFleetTable(state.vehicles || []);
-
-  // 4. Render Agent Thoughts Feed
   renderThoughts(state.agent_thoughts || []);
-
-  // 5. Render Notifications
   renderNotifications(state.notifications || []);
+  renderAuditLogs(state.audit_logs || []);
 }
 
 function renderMap(state) {
@@ -345,7 +487,7 @@ function renderMap(state) {
       className: 'custom-depot-marker',
       html: `
         <div class="w-8 h-8 rounded-lg bg-blue-600 border-2 border-white flex items-center justify-center shadow-lg text-white font-bold text-xs" role="img" aria-label="Depot marker">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
       `,
       iconSize: [32, 32],
@@ -380,7 +522,7 @@ function renderMap(state) {
     const icon = L.divIcon({
       className: 'custom-order-marker',
       html: `
-        <div class="w-5 h-5 rounded-full border-2 border-white shadow flex items-center justify-center text-[10px] font-bold text-white" style="background-color: ${pinColor};" role="img" aria-label="Order priority marker ${ord.priority}">
+        <div class="w-5 h-5 rounded-full border-2 border-white shadow flex items-center justify-center text-[10px] font-bold text-white" style="background-color: ${pinColor};" role="img" aria-label="Consignment marker ${ord.priority}">
           ${ord.priority[0]}
         </div>
       `,
@@ -414,9 +556,7 @@ function renderMap(state) {
         dashArray: v.type.includes('EV') ? '4, 4' : null
       }).addTo(map);
 
-      polyline.bindTooltip(`${v.name} (${v.assigned_orders.length} deliveries)`, {
-        sticky: true
-      });
+      polyline.bindTooltip(`${v.name} (${v.assigned_orders.length} deliveries)`, { sticky: true });
       routeLayers.push(polyline);
     }
   });
@@ -518,6 +658,28 @@ function renderNotifications(notifications) {
   box.innerHTML = notifications.slice(-3).map(n => `
     <div class="p-2 rounded-lg bg-amber-950/40 border border-amber-900/50 text-amber-200 leading-tight">
       ${n.message}
+    </div>
+  `).join('');
+}
+
+function renderAuditLogs(logs) {
+  const container = document.getElementById('audit-log-container');
+  if (!container) return;
+
+  if (!logs.length) {
+    container.innerHTML = `<div class="text-slate-500 italic">No audit records logged yet.</div>`;
+    return;
+  }
+
+  container.innerHTML = logs.slice(-15).reverse().map(l => `
+    <div class="p-1.5 rounded bg-gray-900 border border-gray-800 flex items-center justify-between text-[10px]">
+      <div>
+        <span class="text-cyan-400 font-bold">[${l.action}]</span> 
+        <span class="text-slate-300">${l.details}</span>
+      </div>
+      <div class="text-slate-500 text-[9px] font-mono shrink-0 ml-2">
+        ${l.timestamp.split(' ')[1]} • ${l.ip_address}
+      </div>
     </div>
   `).join('');
 }
