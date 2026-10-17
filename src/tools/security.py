@@ -41,6 +41,7 @@ ALLOWED_ORIGIN_REGEX = re.compile(
     r"http://127\.0\.0\.1(:\d+)?|"
     r"http://10\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?|"
     r"https://([a-zA-Z0-9\-]+\.)?github\.io|"
+    r"https://([a-zA-Z0-9\-]+\.)?vercel\.app|"
     r"https://([a-zA-Z0-9\-]+\.)?logiswarm\.ai)$"
 )
 
