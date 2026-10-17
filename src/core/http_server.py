@@ -140,6 +140,32 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
 
         # Administrative Multi-Format Database Backup (Blueprint 3.E)
         elif path == "/api/admin/backup":
+            auth_header = self.headers.get("Authorization", "")
+            token = ""
+            if auth_header.startswith("Bearer "):
+                token = auth_header[7:].strip()
+            elif "token" in query:
+                token = query["token"][0].strip()
+
+            client_ip = self._get_client_ip()
+            is_local = client_ip in ("127.0.0.1", "::1", "localhost")
+            is_authenticated = False
+
+            if token:
+                valid_admin, _ = verify_channel_token(token, "ADMIN_BACKUP")
+                valid_cmd, _ = verify_channel_token(token, "FLEET_COMMAND")
+                is_authenticated = valid_admin or valid_cmd
+
+            if not is_authenticated:
+                is_prod = os.environ.get("ENVIRONMENT", "").lower() in ("production", "prod") or os.environ.get("PRODUCTION") == "1"
+                if is_prod or not is_local:
+                    SecurityAuditLogger.log("DATABASE_BACKUP_UNAUTHORIZED", client_ip, "ANONYMOUS", "Rejected unauthenticated admin backup attempt")
+                    self._apply_security_headers(401, "application/json")
+                    self.wfile.write(json.dumps({"error": "Unauthorized: Valid signed admin token required"}).encode("utf-8"))
+                    return
+                else:
+                    SecurityAuditLogger.log("DATABASE_BACKUP_LOCAL_DEV", client_ip, "LOCAL_DEV", "Allowed database backup on localhost dev mode")
+
             fmt = query.get("format", ["json"])[0]
             backup_data = self.controller.export_database_backup(format_type=fmt)
             mime = "text/csv; charset=utf-8" if fmt == "csv" else "application/json"
@@ -263,7 +289,11 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
             if len(raw_msg) > 600:
                 raw_msg = raw_msg[:600]
 
-            chat_res = self.controller.chat_with_agent(raw_msg)
+            # Prompt injection defense: sanitize delimiters and bound within user dispatch query
+            sanitized_msg = raw_msg.replace("<user_dispatch_query>", "").replace("</user_dispatch_query>", "")
+            guarded_prompt = f"<user_dispatch_query>\n{sanitized_msg}\n</user_dispatch_query>"
+
+            chat_res = self.controller.chat_with_agent(guarded_prompt)
             self._apply_security_headers(200, "application/json")
             self.wfile.write(json.dumps({
                 "status": "success",
@@ -296,6 +326,9 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
 
         elif path == "/api/mcp":
             resp = self.mcp_server.handle_request(body)
+            if resp is None:
+                self._apply_security_headers(204, "application/json")
+                return
             self._apply_security_headers(200, "application/json")
             self.wfile.write(json.dumps(resp).encode("utf-8"))
 
