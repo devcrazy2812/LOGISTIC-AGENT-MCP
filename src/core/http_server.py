@@ -88,6 +88,23 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
         except Exception:
             return {}
 
+    def _resolve_request_path(self) -> Tuple[str, Dict[str, list]]:
+        parsed = urlparse(self.path)
+        query = parse_qs(parsed.query)
+
+        # Check __route__ parameter injected by Vercel rewrites
+        if "__route__" in query:
+            route_path = query.pop("__route__")[0]
+            return route_path, query
+
+        # Check proxy / Vercel headers for original path
+        for hdr in ("x-vercel-original-path", "x-matched-path", "x-forwarded-uri", "x-envoy-original-path"):
+            val = self.headers.get(hdr)
+            if val and val.startswith("/"):
+                return urlparse(val).path, query
+
+        return parsed.path, query
+
     def do_OPTIONS(self):
         self._apply_security_headers(200)
 
@@ -100,9 +117,7 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
             self.end_headers()
             return
 
-        parsed = urlparse(self.path)
-        path = parsed.path
-        query = parse_qs(parsed.query)
+        path, query = self._resolve_request_path()
 
         if path == "/api/state":
             self._apply_security_headers(200, "application/json")
@@ -221,8 +236,7 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({"error": "Too Many Requests. Rate limit exceeded."}).encode("utf-8"))
             return
 
-        parsed = urlparse(self.path)
-        path = parsed.path
+        path, _ = self._resolve_request_path()
         body = self._parse_json_body_defensive()
 
         # Bot / Spam Honeypot Check (Blueprint 2.G)
@@ -350,7 +364,8 @@ class LogisticsAPIHandler(BaseHTTPRequestHandler):
 
 def run_server(port: int = 8000, host: str = "127.0.0.1") -> ThreadingHTTPServer:
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    web_dir = os.path.join(base_dir, "web")
+    public_dir = os.path.join(base_dir, "public")
+    web_dir = public_dir if os.path.exists(public_dir) else os.path.join(base_dir, "web")
     
     controller = SwarmController()
     controller.run_initial_optimization()

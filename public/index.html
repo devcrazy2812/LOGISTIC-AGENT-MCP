@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  
+  <title>LogiSwarm TMS | Autonomous Multi-Agent Logistics Orchestration Suite</title>
+  <meta name="description" content="Enterprise transportation management suite featuring real-time Capacitated Vehicle Routing (CVRP), autonomous disruption recovery, Model Context Protocol (MCP) integration, and multimodal computer vision.">
+  <meta name="keywords" content="autonomous logistics, enterprise TMS, multi-agent swarm, vehicle routing problem, CVRP, MCP, Google Gemini vision, self-healing supply chain">
+  <meta name="author" content="LogiSwarm Systems Engineering">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://logiswarm.ai/">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+
+  <meta property="og:title" content="LogiSwarm TMS | Autonomous Logistics Orchestration Suite">
+  <meta property="og:description" content="Enterprise multi-agent logistics platform with multimodal inspection, conversational dispatch, and Model Context Protocol (MCP).">
+  <meta property="og:image" content="/assets/social-preview.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://logiswarm.ai/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/assets/social-preview.svg">
+
+  <!-- Tailwind CSS -->
+  <link rel="preconnect" href="https://cdn.tailwindcss.com">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985'
+            },
+            surface: {
+              app: '#080c14',
+              card: '#0f172a',
+              cardHover: '#131e36',
+              border: '#1e293b',
+              borderLight: '#334155'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Leaflet Maps CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/analytics.js" defer></script>
+</head>
+<body class="bg-[#080c14] text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-sky-600 selection:text-white">
+
+  <!-- ========================================================================
+       TOP BAR: Clean Institutional Header (Linear/Vercel Enterprise Standard)
+       ======================================================================== -->
+  <header class="bg-[#0b1120]/95 backdrop-blur-xl border-b border-surface-border sticky top-0 z-30 px-4 sm:px-6 py-2.5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      
+      <!-- Left: Enterprise Brand Identity -->
+      <div class="flex items-center space-x-3 shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-sky-600 flex items-center justify-center shadow-md shadow-sky-950/40 text-white" role="img" aria-label="LogiSwarm TMS Insignia">
+          <i data-lucide="boxes" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <a href="/" class="text-base sm:text-lg font-bold tracking-tight text-white hover:text-sky-400 transition" aria-label="LogiSwarm Home">
+              LOGISWARM <span class="text-sky-400 font-extrabold tracking-normal">TMS</span>
+            </a>
+            <span class="text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md bg-slate-800/80 border border-slate-700/80 text-slate-300 font-semibold uppercase">v2.5 Enterprise</span>
+            <span class="hidden sm:inline-flex text-[10px] font-mono px-2 py-0.5 rounded-md bg-emerald-950/70 border border-emerald-800/80 text-emerald-400 font-semibold">MCP ACTIVE</span>
+          </div>
+          <p class="text-[11px] text-slate-400 hidden xl:block whitespace-nowrap font-medium">Autonomous Multi-Agent Fleet Optimization & Disruption Resolution Suite</p>
+        </div>
+      </div>
+
+      <!-- Right: System Controls & Primary Actions -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Live System Clock -->
+        <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
+          <span id="live-clock">--:--:-- UTC</span>
+        </div>
+
+        <!-- Two-Factor Authentication Security Indicator -->
+        <button onclick="open2FAModal()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs font-mono text-sky-300 transition" title="Two-Factor Authentication RFC 6238 Settings">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-sky-400" aria-hidden="true"></i>
+          <span id="2fa-status-pill">2FA Active</span>
+        </button>
+
+        <!-- 1-Click Official Business / Consignment PDF Dossier -->
+        <button onclick="openOfficialDossierModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs font-semibold transition active:scale-95" aria-label="Generate Official Business Audit Dossier">
+          <i data-lucide="file-badge" class="w-3.5 h-3.5 text-slate-300" aria-hidden="true"></i>
+          <span class="hidden sm:inline">Official Dossier</span>
+        </button>
+
+        <!-- Primary Call To Action: Deploy Optimization -->
+        <button id="btn-reoptimize" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs sm:text-sm font-semibold shadow-md shadow-sky-950 transition active:scale-95 cursor-pointer" aria-label="Deploy Autonomous Logistics Swarm Optimization">
+          <i data-lucide="play" class="w-3.5 h-3.5 fill-white" aria-hidden="true"></i>
+          <span>Run Fleet Optimization</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       KEY PERFORMANCE INDICATORS (High Contrast, Clean Institutional Design)
+       ======================================================================== -->
+  <section class="max-w-7xl mx-auto w-full px-3 sm:px-6 pt-4" aria-label="Fleet Key Performance Indicators">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
+      
+      <!-- Card 1: SLA Compliance -->
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-slate-700 transition">
+        <div class="flex items-center justify-between text-slate-400 mb-1">
+          <span class="text-[11px] font-semibold tracking-wider uppercase">SLA Adherence</span>
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400" aria-hidden="true"></i>
+        </div>
+        <div class="flex items-baseline gap-1">
+          <span id="metric-sla" class="text-xl font-bold text-white font-mono">100.0</span>
+          <span class="text-xs text-emerald-400 font-semibold">%</span>
+        </div>
+        <span class="text-[10px] text-slate-400 font-medium">Zero Contract Penalties</span>
+      </div>
+
+      <!-- Card 2: Feedback Quality Score -->
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-slate-700 transition">
+        <div class="flex items-center justify-between text-slate-400 mb-1">
+          <span class="text-[11px] font-semibold tracking-wider uppercase">Quality Score</span>
+          <i data-lucide="award" class="w-4 h-4 text-sky-400" aria-hidden="true"></i>
+        </div>
+        <div class="flex items-baseline gap-1">
+          <span id="metric-quality" class="text-xl font-bold text-sky-400 font-mono">92.5</span>
+          <span class="text-xs text-slate-400 font-mono">/100</span>
+        </div>
+        <span class="text-[10px] text-slate-400 font-medium">Pareto Boundary Met</span>
+      </div>
+
+      <!-- Card 3: Operational Cost -->
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-slate-700 transition">
+        <div class="flex items-center justify-between text-slate-400 mb-1">
+          <span class="text-[11px] font-semibold tracking-wider uppercase">Operating Cost</span>
+          <i data-lucide="badge-dollar-sign" class="w-4 h-4 text-slate-300" aria-hidden="true"></i>
+        </div>
+        <div class="flex items-baseline gap-1">
+          <span class="text-sm text-slate-400 font-mono">$</span>
+          <span id="metric-cost" class="text-xl font-bold text-white font-mono">0.00</span>
+        </div>
+        <span class="text-[10px] text-emerald-400 font-medium">Optimized Dispatch</span>
+      </div>
+
+      <!-- Card 4: Green CO2 Saved -->
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-slate-700 transition">
+        <div class="flex items-center justify-between text-slate-400 mb-1">
+          <span class="text-[11px] font-semibold tracking-wider uppercase">CO₂ Abated</span>
+          <i data-lucide="leaf" class="w-4 h-4 text-emerald-400" aria-hidden="true"></i>
+        </div>
+        <div class="flex items-baseline gap-1">
+          <span id="metric-co2-saved" class="text-xl font-bold text-emerald-400 font-mono">0.0</span>
+          <span class="text-xs text-slate-400 font-mono">kg</span>
+        </div>
+        <span class="text-[10px] text-emerald-400 font-medium">EV Fleet Prioritized</span>
+      </div>
+
+      <!-- Card 5: Fleet Utilization -->
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-slate-700 transition">
+        <div class="flex items-center justify-between text-slate-400 mb-1">
+          <span class="text-[11px] font-semibold tracking-wider uppercase">Fleet Load</span>
+          <i data-lucide="truck" class="w-4 h-4 text-slate-300" aria-hidden="true"></i>
+        </div>
+        <div class="flex items-baseline gap-1">
+          <span id="metric-utilization" class="text-xl font-bold text-white font-mono">0.0</span>
+          <span class="text-xs text-slate-400 font-semibold">%</span>
+        </div>
+        <span class="text-[10px] text-slate-400 font-medium">Multi-Depot Balance</span>
+      </div>
+
+      <!-- Card 6: Self-Healed Recoveries -->
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-slate-700 transition">
+        <div class="flex items-center justify-between text-slate-400 mb-1">
+          <span class="text-[11px] font-semibold tracking-wider uppercase">Self-Healed MTTR</span>
+          <i data-lucide="zap" class="w-4 h-4 text-amber-400" aria-hidden="true"></i>
+        </div>
+        <div class="flex items-baseline gap-1">
+          <span id="metric-recoveries" class="text-xl font-bold text-white font-mono">&lt; 1.8</span>
+          <span class="text-xs text-amber-400 font-mono font-semibold">sec</span>
+        </div>
+        <span class="text-[10px] text-slate-400 font-medium">Autonomous Swarm</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       MAIN APPLICATION LAYOUT (pb-36 padding prevents dock overlap)
+       ======================================================================== -->
+  <main class="max-w-7xl mx-auto w-full px-3 sm:px-6 py-4 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 pb-36">
+    
+    <!-- Left Column (7 Cols): Telematics Map & Fleet Status -->
+    <div class="lg:col-span-7 flex flex-col gap-4">
+      
+      <!-- Interactive Geo-Spatial Map Panel -->
+      <section id="section-map" class="bg-surface-card border border-surface-border rounded-xl overflow-hidden shadow-lg flex flex-col">
+        <div class="px-4 py-2.5 bg-slate-900/90 border-b border-surface-border flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i data-lucide="map-pin" class="w-4 h-4 text-sky-400" aria-hidden="true"></i>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Active Transit Telematics & Corridor Map</span>
+          </div>
+          
+          <!-- Map Legend & Control Buttons -->
+          <div class="flex items-center gap-2.5 text-xs">
+            <div class="hidden sm:flex items-center gap-3 text-slate-300 font-medium">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500" aria-hidden="true"></span> Depots</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500" aria-hidden="true"></span> Consignments</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500" aria-hidden="true"></span> Hazard Zone</span>
+            </div>
+            <button onclick="recenterMap()" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-mono border border-slate-700 transition" title="Recenter View">
+              Recenter
+            </button>
+          </div>
+        </div>
+        
+        <div id="map" class="w-full h-[320px] sm:h-[380px] lg:h-[420px] z-10" role="region" aria-label="Interactive Fleet Route Map"></div>
+      </section>
+
+      <!-- Fleet Manifest & Vehicle Status Table -->
+      <section id="section-fleet" class="bg-surface-card border border-surface-border rounded-xl overflow-hidden shadow-lg flex-1">
+        <div class="px-4 py-2.5 bg-slate-900/90 border-b border-surface-border flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i data-lucide="truck" class="w-4 h-4 text-sky-400" aria-hidden="true"></i>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Autonomous Fleet Manifest & Telematics</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] text-slate-400">Click vehicle to focus route on map</span>
+            <span id="fleet-count-badge" class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-medium">4 Active Assets</span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-200" aria-label="Fleet vehicle manifest table">
+            <thead class="bg-slate-900/60 text-slate-400 uppercase text-[10px] tracking-wider border-b border-surface-border">
+              <tr>
+                <th scope="col" class="py-2.5 px-3">Vehicle</th>
+                <th scope="col" class="py-2.5 px-3">Type / Energy</th>
+                <th scope="col" class="py-2.5 px-3">Consignments</th>
+                <th scope="col" class="py-2.5 px-3">Transit Time</th>
+                <th scope="col" class="py-2.5 px-3">Cost / CO₂</th>
+                <th scope="col" class="py-2.5 px-3">Status</th>
+              </tr>
+            </thead>
+            <tbody id="fleet-table-body" class="divide-y divide-surface-border/60 font-sans">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Dispatcher Evaluator-Optimizer Feedback Bar -->
+      <section class="bg-surface-card border border-surface-border rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sliders" class="w-4 h-4 text-sky-400" aria-hidden="true"></i>
+          <span class="font-bold text-slate-200">Chief Dispatcher Oversight:</span>
+          <span class="text-slate-400 hidden sm:inline">Calibrate algorithmic multi-objective Pareto trade-offs:</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="submitHumanFeedback('positive')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-emerald-950/60 border border-slate-700 hover:border-emerald-600 text-emerald-400 font-semibold transition flex items-center gap-1.5 active:scale-95 cursor-pointer" aria-label="Rate route plan as Optimal">
+            <i data-lucide="check" class="w-3.5 h-3.5" aria-hidden="true"></i>
+            <span>Optimal</span>
+          </button>
+          <button onclick="submitHumanFeedback('rebalance')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-sky-950/60 border border-slate-700 hover:border-sky-600 text-sky-400 font-semibold transition flex items-center gap-1.5 active:scale-95 cursor-pointer" aria-label="Request Green Fleet Rebalance">
+            <i data-lucide="leaf" class="w-3.5 h-3.5" aria-hidden="true"></i>
+            <span>Prioritize EV</span>
+          </button>
+          <button onclick="submitHumanFeedback('negative')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-rose-950/60 border border-slate-700 hover:border-rose-600 text-rose-400 font-semibold transition flex items-center gap-1.5 active:scale-95 cursor-pointer" aria-label="Flag route plan for Recalculation">
+            <i data-lucide="rotate-cw" class="w-3.5 h-3.5" aria-hidden="true"></i>
+            <span>Refine Sequence</span>
+          </button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Right Column (5 Cols): Operational Stress Tests & Multi-Agent Intelligence Hub -->
+    <div class="lg:col-span-5 flex flex-col gap-4">
+      
+      <!-- Operational Stress Testing & Disruption Simulator -->
+      <section id="section-disruption" class="bg-surface-card border border-surface-border rounded-xl p-4 shadow-lg relative overflow-hidden">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 rounded-lg bg-rose-950/60 border border-rose-900/60 text-rose-400" role="img" aria-label="Incident radar icon">
+              <i data-lucide="alert-octagon" class="w-4 h-4" aria-hidden="true"></i>
+            </div>
+            <div>
+              <h2 class="text-xs font-bold uppercase tracking-wider text-white">Operational Stress Testing & Crisis Radar</h2>
+              <p class="text-[10px] text-slate-400">Inject transit disruptions to evaluate autonomous self-healing and MTTR</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Incident Banner (Dynamically shown when incident occurs) -->
+        <div id="active-incident-banner" class="hidden mb-3 p-3 rounded-lg bg-rose-950/50 border border-rose-800 text-xs text-rose-200">
+          <div class="flex items-center justify-between font-bold text-rose-300 mb-1">
+            <span class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+              <span id="incident-title">Active Disruption</span>
+            </span>
+            <button onclick="resetSwarmState()" class="px-2 py-0.5 rounded bg-rose-900/80 hover:bg-rose-800 text-rose-100 text-[10px] font-mono transition">
+              Resolve & Reset
+            </button>
+          </div>
+          <div id="incident-desc" class="text-[11px] text-slate-300">Evaluating swarm bypass routes...</div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <button onclick="injectDisruption('breakdown')" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs font-medium transition text-left active:scale-95 cursor-pointer" aria-label="Simulate Truck Mechanical Breakdown">
+            <i data-lucide="wrench" class="w-4 h-4 text-rose-400 shrink-0" aria-hidden="true"></i>
+            <div>
+              <div class="font-bold text-[11px] text-slate-200">Mechanical Breakdown</div>
+              <div class="text-[9px] text-slate-400">Titan Engine Overheating</div>
+            </div>
+          </button>
+
+          <button onclick="injectDisruption('severe_weather')" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs font-medium transition text-left active:scale-95 cursor-pointer" aria-label="Simulate Flash Flood Weather Alert">
+            <i data-lucide="cloud-rain" class="w-4 h-4 text-sky-400 shrink-0" aria-hidden="true"></i>
+            <div>
+              <div class="font-bold text-[11px] text-slate-200">Corridor Inundation</div>
+              <div class="text-[9px] text-slate-400">Low-lying Highway Blocked</div>
+            </div>
+          </button>
+
+          <button onclick="injectDisruption('road_closure')" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs font-medium transition text-left active:scale-95 cursor-pointer" aria-label="Simulate Hazmat Spill Road Closure">
+            <i data-lucide="ban" class="w-4 h-4 text-amber-400 shrink-0" aria-hidden="true"></i>
+            <div>
+              <div class="font-bold text-[11px] text-slate-200">Hazmat Expressway Spill</div>
+              <div class="text-[9px] text-slate-400">Hazard Bypass Protocol</div>
+            </div>
+          </button>
+
+          <button onclick="injectDisruption('urgent_surge')" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs font-medium transition text-left active:scale-95 cursor-pointer" aria-label="Inject Emergency Cold-Chain Demand Surge">
+            <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-400 shrink-0" aria-hidden="true"></i>
+            <div>
+              <div class="font-bold text-[11px] text-slate-200">Urgent Vaccine Surge</div>
+              <div class="text-[9px] text-slate-400">45-min Cold-Chain Priority</div>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Multi-Agent Reasoning Hub & Diagnostics -->
+      <section id="section-intelligence" class="bg-surface-card border border-surface-border rounded-xl overflow-hidden shadow-lg flex-1 flex flex-col min-h-[480px]">
+        
+        <div class="flex items-center border-b border-surface-border bg-slate-900/60 text-xs font-medium" role="tablist">
+          <button id="tab-btn-feed" onclick="switchTab('feed')" role="tab" aria-selected="true" class="px-4 py-2.5 border-b-2 border-sky-400 text-sky-400 font-bold flex items-center gap-1.5 transition cursor-pointer">
+            <i data-lucide="cpu" class="w-3.5 h-3.5" aria-hidden="true"></i>
+            <span>Agent Reasoning Feed</span>
+          </button>
+          <button id="tab-btn-vision" onclick="switchTab('vision')" role="tab" aria-selected="false" class="px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition cursor-pointer">
+            <i data-lucide="scan" class="w-3.5 h-3.5" aria-hidden="true"></i>
+            <span>Multimodal Cargo Vision</span>
+          </button>
+          <button id="tab-btn-audit" onclick="switchTab('audit')" role="tab" aria-selected="false" class="px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition cursor-pointer">
+            <i data-lucide="shield" class="w-3.5 h-3.5" aria-hidden="true"></i>
+            <span>Security Audit Log</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: Agent Swarm Reasoning Stream -->
+        <div id="tab-pane-feed" class="flex-1 flex flex-col p-0" role="tabpanel">
+          <div id="agent-thoughts-feed" class="p-3 space-y-2 overflow-y-auto max-h-[340px] font-mono text-xs flex-1">
+            <!-- Dynamically populated thoughts -->
+          </div>
+          <div class="p-3 bg-slate-900/70 border-t border-surface-border">
+            <div class="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+              <i data-lucide="bell" class="w-3 h-3" aria-hidden="true"></i>
+              <span>Customer Directives & Carrier Delay Notices:</span>
+            </div>
+            <div id="notifications-box" class="text-[11px] text-slate-300 space-y-1 font-sans"></div>
+          </div>
+        </div>
+
+        <!-- TAB 2: Multimodal Cargo Vision Diagnostics -->
+        <div id="tab-pane-vision" class="hidden flex-1 flex flex-col p-4 text-xs" role="tabpanel">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <span class="font-bold text-slate-200">Optical Cargo Damage & Integrity Diagnostics</span>
+              <p class="text-[11px] text-slate-400">Computer vision inspection for thermal breaches, pallet puncture, and insurance calculation</p>
+            </div>
+            <span id="vision-engine-badge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-950/80 border border-sky-800 text-sky-300">Tier 2 Multimodal</span>
+          </div>
+
+          <!-- Sample Selection Presets -->
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <button onclick="runPresetInspection('vaccine')" class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left transition cursor-pointer">
+              <div class="font-bold text-slate-200 text-[11px]">Vaccine Cold-Seal Puncture</div>
+              <div class="text-[10px] text-rose-400">Excursion &gt;8°C Breach</div>
+            </button>
+            <button onclick="runPresetInspection('machinery')" class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left transition cursor-pointer">
+              <div class="font-bold text-slate-200 text-[11px]">Pallet Impact & Crush</div>
+              <div class="text-[10px] text-amber-400">Industrial Container</div>
+            </button>
+          </div>
+
+          <!-- Drag and Drop Image Uploader -->
+          <div id="drop-zone" class="drag-drop-zone p-3 rounded-lg text-center cursor-pointer mb-3 flex flex-col items-center justify-center">
+            <input type="file" id="cargo-file-input" accept="image/*" class="hidden" onchange="handleFileSelected(event)" />
+            <i data-lucide="upload-cloud" class="w-5 h-5 text-slate-400 mb-1"></i>
+            <span class="text-[11px] text-slate-300 font-medium">Drop packaging photograph here or <span class="text-sky-400 underline">browse</span></span>
+            <span class="text-[9px] text-slate-500 mt-0.5">Supports PNG, JPEG, WebP up to 5MB</span>
+          </div>
+
+          <!-- Structured Results Card -->
+          <div id="vision-result-container" class="space-y-2">
+            <div id="vision-status-note" class="text-[11px] text-slate-400 italic">Select a sample or upload an image to execute diagnostic inspection.</div>
+            <div id="vision-card" class="hidden p-3 rounded-lg bg-slate-900/90 border border-slate-800 space-y-2">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <div class="flex items-center gap-2">
+                  <span id="vision-severity-pill" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase font-mono">SEVERITY</span>
+                  <span id="vision-action-pill" class="text-[10px] text-slate-400 font-semibold font-mono">ACTION</span>
+                </div>
+                <div class="text-[11px] font-mono text-emerald-400 font-bold" id="vision-liability-val">$0.00 Claim</div>
+              </div>
+              <div class="text-[11px] space-y-1">
+                <div><span class="text-slate-400">Root Cause:</span> <span id="vision-root-cause" class="text-slate-200 font-medium"></span></div>
+                <div><span class="text-slate-400">Package Integrity:</span> <span id="vision-integrity" class="text-slate-200"></span></div>
+                <div><span class="text-slate-400">Dispatch Directive:</span> <span id="vision-directive" class="text-sky-300"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: Immutable Security Audit Log (Blueprint 3.D) -->
+        <div id="tab-pane-audit" class="hidden flex-1 flex flex-col p-3.5 text-xs font-mono" role="tabpanel">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <span class="font-bold text-slate-200 uppercase tracking-wider text-[11px]">Cryptographic Security Audit Log</span>
+              <p class="text-[10px] text-slate-400 font-sans">Append-only SHA-256 chain tracking dispatch clearances and administrative operations</p>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="downloadDatabaseBackup('json')" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 border border-slate-700 transition cursor-pointer">
+                JSON
+              </button>
+              <button onclick="downloadDatabaseBackup('csv')" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 border border-slate-700 transition cursor-pointer">
+                CSV
+              </button>
+            </div>
+          </div>
+          <div id="audit-log-container" class="flex-1 overflow-y-auto max-h-[330px] space-y-1.5 p-2 bg-slate-950/80 rounded-lg border border-surface-border text-[10px] text-slate-300">
+            <!-- Dynamically populated audit log entries -->
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ========================================================================
+       FLOATING BOTTOM DOCK: Modern Glassmorphic Dock with Scroll Auto-Hide
+       ======================================================================== -->
+  <!-- Peek Button (shown when dock hides on scroll) -->
+  <button
+    id="dock-peek-btn"
+    onclick="toggleDock(true)"
+    class="fixed bottom-2 left-1/2 -translate-x-1/2 z-40 px-3 py-1 rounded-full bg-slate-900/95 text-sky-400 backdrop-blur-md border border-slate-700 text-xs font-bold shadow-xl cursor-pointer hidden"
+    aria-label="Reveal Navigation Menu"
+  >
+    <i data-lucide="chevron-up" class="w-3.5 h-3.5 inline mr-1"></i> Navigation
+  </button>
+
+  <!-- Glassmorphic Dock Container -->
+  <nav id="floating-dock" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 transition-all duration-300 translate-y-0 opacity-100 pointer-events-auto" aria-label="Floating Application Navigation">
+    <div class="flex items-center gap-1.5 p-1.5 rounded-2xl bg-slate-900/90 backdrop-blur-2xl border border-slate-700/80 shadow-2xl select-none">
+      
+      <button onclick="scrollToSection('section-map')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95 cursor-pointer">
+        <i data-lucide="map" class="w-4 h-4 text-sky-400"></i>
+        <span class="hidden sm:inline">Telemetry Map</span>
+      </button>
+
+      <button onclick="scrollToSection('section-fleet')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95 cursor-pointer">
+        <i data-lucide="truck" class="w-4 h-4 text-slate-400"></i>
+        <span class="hidden sm:inline">Fleet Manifest</span>
+      </button>
+
+      <button onclick="scrollToSection('section-disruption')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95 cursor-pointer">
+        <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400"></i>
+        <span class="hidden sm:inline">Incident Radar</span>
+      </button>
+
+      <button onclick="switchTab('vision'); scrollToSection('section-intelligence')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95 cursor-pointer">
+        <i data-lucide="scan" class="w-4 h-4 text-purple-400"></i>
+        <span class="hidden sm:inline">Cargo Vision</span>
+      </button>
+
+      <button onclick="openOfficialDossierModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95 cursor-pointer">
+        <i data-lucide="file-check" class="w-4 h-4 text-emerald-400"></i>
+        <span class="hidden sm:inline">Audit Dossier</span>
+      </button>
+
+      <button onclick="open2FAModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95 cursor-pointer">
+        <i data-lucide="shield-check" class="w-4 h-4 text-rose-400"></i>
+        <span class="hidden sm:inline">Security 2FA</span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- ========================================================================
+       FLOATING AI ASSISTANT DRAWER (Decoupled Enterprise Dialog)
+       ======================================================================== -->
+  <div class="fixed bottom-6 right-6 z-40">
+    <button
+      id="ai-agent-fab"
+      onclick="toggleChatDrawer(true)"
+      class="w-12 h-12 rounded-full bg-sky-600 hover:bg-sky-500 text-white shadow-xl shadow-sky-950 flex items-center justify-center transition transform hover:scale-105 active:scale-95 cursor-pointer relative"
+      aria-label="Open Chief Dispatcher Assistant Drawer"
+    >
+      <i data-lucide="bot" class="w-6 h-6"></i>
+      <span class="absolute top-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-slate-900"></span>
+    </button>
+  </div>
+
+  <!-- Expandable Floating AI Agent Drawer (Synced via sessionStorage) -->
+  <aside id="chat-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-slate-900/98 backdrop-blur-2xl border-l border-surface-border z-50 shadow-2xl flex flex-col transition-all duration-300 translate-x-full" aria-label="Chief Dispatcher Assistant Drawer">
+    <div class="px-5 py-3.5 border-b border-surface-border flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
+          <i data-lucide="bot" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <h2 class="text-sm font-bold text-white">Commander-Prime</h2>
+          <span id="chat-engine-pill" class="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            Telemetry Synchronized
+          </span>
+        </div>
+      </div>
+      <button onclick="toggleChatDrawer(false)" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer" aria-label="Close Assistant Drawer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Quick Question Chips -->
+    <div class="px-4 py-2 bg-slate-950/60 border-b border-slate-800 flex items-center gap-1.5 overflow-x-auto text-[10px] text-slate-300">
+      <button onclick="sendQuickChip('What is the current fleet status?')" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 whitespace-nowrap transition cursor-pointer">
+        Fleet Status
+      </button>
+      <button onclick="sendQuickChip('Simulate mechanical failure recovery')" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 whitespace-nowrap transition cursor-pointer">
+        Simulate Breakdown
+      </button>
+      <button onclick="sendQuickChip('Audit cold-chain warehouse inventory')" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 whitespace-nowrap transition cursor-pointer">
+        Audit Cold-Chain
+      </button>
+      <button onclick="sendQuickChip('Evaluate Pareto quality score')" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 whitespace-nowrap transition cursor-pointer">
+        Pareto Score
+      </button>
+    </div>
+
+    <!-- Scrollable Chat History Container -->
+    <div id="drawer-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-2.5 text-xs font-sans">
+      <!-- Synced via sessionStorage -->
+    </div>
+
+    <!-- Chat Form with Honeypot & Debounce -->
+    <form id="drawer-chat-form" onsubmit="sendDrawerChatMessage(event)" class="p-4 border-t border-surface-border bg-slate-950 flex flex-col gap-2">
+      <input type="text" name="hp_field" id="drawer-chat-hp" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none !important;" />
+      <div class="flex gap-2">
+        <input id="drawer-chat-input" type="text" required minlength="2" maxlength="500" placeholder="Instruct Commander-Prime..." class="flex-1 px-3.5 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-sky-500" />
+        <button type="submit" class="px-3.5 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition active:scale-95 cursor-pointer" aria-label="Send message">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+    </form>
+  </aside>
+
+  <!-- ========================================================================
+       1-CLICK OFFICIAL BUSINESS & DIAGNOSTIC PDF DOSSIER MODAL
+       ======================================================================== -->
+  <div id="modal-dossier" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-surface-card border border-surface-border rounded-xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <!-- Modal Header (Screen view only) -->
+      <div class="px-6 py-3.5 border-b border-surface-border flex items-center justify-between no-print">
+        <div class="flex items-center gap-2">
+          <i data-lucide="file-badge" class="w-5 h-5 text-sky-400"></i>
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider">Official Mission Audit & Diagnostic Dossier</h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md cursor-pointer">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>Print / Save PDF</span>
+          </button>
+          <button onclick="closeOfficialDossierModal()" class="text-slate-400 hover:text-white transition p-1 cursor-pointer">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Printable Dossier Body (Target for @media print) -->
+      <div id="printable-dossier" class="p-8 overflow-y-auto bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans text-xs space-y-6">
+        
+        <!-- Institutional Letterhead -->
+        <div class="border-b-2 border-slate-900 dark:border-slate-700 pb-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-xl font-mono">
+              LS
+            </div>
+            <div>
+              <h1 class="text-lg font-black tracking-wider uppercase text-slate-900 dark:text-white">LogiSwarm Systems Engineering</h1>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400 tracking-wider uppercase">Autonomous Logistics Certification • Operations & Dispatch Bureau</p>
+            </div>
+          </div>
+          <div class="text-right text-[10px] font-mono text-slate-500 dark:text-slate-400">
+            <div>REF: <b class="text-slate-900 dark:text-white" id="dossier-ref-code">LS-2026-X99</b></div>
+            <div>DATE: <span id="dossier-date-text">2026-10-17</span></div>
+            <div>CLEARANCE: CHIEF DISPATCHER</div>
+          </div>
+        </div>
+
+        <!-- Demographic / Mission Overview Indicators -->
+        <div class="grid grid-cols-3 gap-3 p-3 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <div>
+            <span class="text-[10px] text-slate-500 uppercase font-semibold">Consignments Monitored</span>
+            <div class="text-sm font-bold" id="dossier-orders-count">8 Orders</div>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-500 uppercase font-semibold">Active Fleet Assets</span>
+            <div class="text-sm font-bold">4 Vehicles (EV, Diesel, CNG, Reefer)</div>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-500 uppercase font-semibold">Disruption Status</span>
+            <div class="text-sm font-bold text-emerald-600 dark:text-emerald-400">Autonomous Neutralized</div>
+          </div>
+        </div>
+
+        <!-- Quantitative Metrics vs Benchmark Table -->
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">1. Quantitative Telematics vs Normative Benchmarks</h2>
+          <table class="w-full text-left border-collapse border border-slate-200 dark:border-slate-800 text-[11px]">
+            <thead class="bg-slate-200 dark:bg-slate-900 text-slate-700 dark:text-slate-300">
+              <tr>
+                <th class="p-2 border border-slate-300 dark:border-slate-800">Metric Parameter</th>
+                <th class="p-2 border border-slate-300 dark:border-slate-800">Measured Value</th>
+                <th class="p-2 border border-slate-300 dark:border-slate-800">Normative Industry Benchmark</th>
+                <th class="p-2 border border-slate-300 dark:border-slate-800">Variance Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+              <tr>
+                <td class="p-2 font-semibold">SLA On-Time Fulfillment</td>
+                <td class="p-2 font-mono text-emerald-600 font-bold" id="dossier-sla-val">100.0%</td>
+                <td class="p-2 font-mono">92.0%</td>
+                <td class="p-2 text-emerald-600 font-semibold">+8.0% (Superior)</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-semibold">Green Fleet CO₂ Abatement</td>
+                <td class="p-2 font-mono text-emerald-600 font-bold" id="dossier-co2-val">0.0 kg</td>
+                <td class="p-2 font-mono">0.00 kg Baseline</td>
+                <td class="p-2 text-emerald-600 font-semibold">Abated via EV Scheduling</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-semibold">Autonomous Recovery Latency (MTTR)</td>
+                <td class="p-2 font-mono text-blue-600 font-bold">&lt; 1.8 seconds</td>
+                <td class="p-2 font-mono">45.0 mins Manual Dispatch</td>
+                <td class="p-2 text-blue-600 font-semibold">99.9% Faster Resolution</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-semibold">Multi-Agent Quality Score</td>
+                <td class="p-2 font-mono text-purple-600 font-bold" id="dossier-quality-val">92.5 / 100</td>
+                <td class="p-2 font-mono">80.0 / 100 Minimum</td>
+                <td class="p-2 text-purple-600 font-semibold">Verified by QualityGuard</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Verification QR Code & Formal Signatures -->
+        <div class="pt-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <svg class="w-16 h-16 border border-slate-300 dark:border-slate-700 p-1 rounded" viewBox="0 0 100 100">
+              <rect width="100" height="100" fill="#ffffff"/>
+              <path d="M10 10 h30 v30 h-30 z M50 10 h10 v10 h-10 z M70 10 h20 v20 h-20 z M10 50 h10 v10 h-10 z M10 70 h20 v20 h-20 z M70 70 h20 v20 h-20 z M40 40 h20 v20 h-20 z" fill="#000000"/>
+            </svg>
+            <div class="text-[9px] font-mono text-slate-500">
+              <div>CRYPTOGRAPHIC AUTHENTICITY HASH</div>
+              <div class="font-bold text-slate-900 dark:text-white" id="dossier-auth-hash">e3b0c44298fc1c149afbf4c8996fb924</div>
+              <div>VERIFIED: LogiSwarm TMS Protocol</div>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <div class="h-8 border-b border-slate-400 dark:border-slate-600 w-44"></div>
+            <div class="text-[10px] font-bold text-slate-900 dark:text-white mt-1">Chief Logistics Officer</div>
+            <div class="text-[9px] text-slate-500">Operations & Dispatch Bureau</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       TWO-FACTOR AUTHENTICATION MODAL (RFC 6238 TOTP)
+       ======================================================================== -->
+  <div id="modal-2fa" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-surface-card border border-surface-border rounded-xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-surface-border pb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-5 h-5 text-sky-400"></i>
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider">Two-Factor Authentication (RFC 6238)</h2>
+        </div>
+        <button onclick="close2FAModal()" class="text-slate-400 hover:text-white transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-300 leading-relaxed">
+        LogiSwarm implements standard-library <b>RFC 6238 TOTP</b> (compatible with Google Authenticator and Authy). Verify your 6-digit code below to unlock Chief Dispatcher clearance:
+      </p>
+
+      <div class="p-3 rounded-lg bg-slate-950 border border-surface-border font-mono text-xs space-y-1">
+        <div class="text-[10px] text-slate-500">DISPATCHER SECRET KEY:</div>
+        <div id="2fa-secret-display" class="font-bold text-sky-300 tracking-wider">LOADING...</div>
+        <div class="text-[10px] text-slate-500 pt-1">SIMULATOR 6-DIGIT CODE:</div>
+        <div id="2fa-preview-display" class="text-sm font-extrabold text-emerald-400">------</div>
+      </div>
+
+      <form onsubmit="verify2FACode(event)" class="space-y-3">
+        <div>
+          <label for="totp-input" class="text-[11px] font-bold text-slate-300">Enter 6-Digit Authenticator Code:</label>
+          <input id="totp-input" type="text" maxlength="6" pattern="[0-9]{6}" required placeholder="e.g. 123456" class="w-full mt-1 px-3.5 py-2 rounded-lg bg-slate-800 border border-slate-700 text-center font-mono text-lg tracking-widest text-white focus:outline-none focus:border-sky-500" />
+        </div>
+        <button type="submit" class="w-full py-2.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs shadow-md transition cursor-pointer">
+          Verify TOTP Clearance
+        </button>
+      </form>
+      <div id="2fa-result-msg" class="text-center text-xs font-semibold hidden"></div>
+    </div>
+  </div>
+
+  <!-- Cookie Consent Banner -->
+  <div id="cookie-banner" class="fixed bottom-4 right-4 max-w-sm w-full bg-slate-900/98 border border-slate-700/80 rounded-xl p-4 shadow-2xl z-50 transition transform translate-y-0" role="dialog" aria-live="polite" aria-label="Cookie and Privacy Consent">
+    <div class="flex items-start gap-3">
+      <div class="p-2 rounded-lg bg-sky-950 text-sky-400 shrink-0" role="img" aria-label="Cookie privacy shield">
+        <i data-lucide="cookie" class="w-5 h-5"></i>
+      </div>
+      <div class="text-xs text-slate-300 space-y-1">
+        <div class="font-bold text-white">Telemetry & Storage Preferences</div>
+        <p class="text-slate-400 text-[11px] leading-relaxed">
+          We use local storage strictly for fleet dispatch preferences and zero-PII operational telemetry. Read our <a href="/privacy.html" class="text-sky-400 underline hover:text-sky-300">Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+    <div class="mt-3 flex items-center justify-end gap-2 text-xs">
+      <button onclick="setCookieConsent('essential')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition cursor-pointer">
+        Essential Only
+      </button>
+      <button onclick="setCookieConsent('all')" class="px-3.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-bold transition shadow-sm cursor-pointer">
+        Accept All
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" aria-live="assertive" role="status"></div>
+
+  <!-- Institutional Footer -->
+  <footer class="border-t border-surface-border bg-slate-950 py-4 px-3 sm:px-6 text-xs text-slate-400 mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-white">LogiSwarm TMS</span>
+        <span>• Autonomous Multi-Agent Logistics Orchestration Suite</span>
+      </div>
+      <div class="flex items-center gap-4 text-xs">
+        <a href="/privacy.html" class="hover:text-sky-400 transition">Privacy Policy</a>
+        <a href="/terms.html" class="hover:text-sky-400 transition">Terms & Conditions</a>
+        <a href="https://github.com/devcrazy2812/LOGISTIC-AGENT-MCP" target="_blank" rel="noopener noreferrer" class="hover:text-white transition flex items-center gap-1" aria-label="Visit LogiSwarm GitHub Repository">
+          <i data-lucide="github" class="w-3.5 h-3.5"></i>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/app.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

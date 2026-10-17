@@ -278,7 +278,7 @@ python mcp_server.py
 
 ---
 
-## 10. Automated Verification & Test Suite (45/45 Passing)
+## 10. Automated Verification & Test Suite (47/47 Passing)
 
 The project includes an automated test suite verifying all multi-agent workflows, cryptography, MCP specifications, and Gemini client behaviors:
 
@@ -294,6 +294,7 @@ python -m unittest discover -s tests -v
 - **`tests/test_security.py` (5 tests)**: RFC 6238 official test vectors, TOTP anti-replay cache rejection, Encrypt-then-MAC PII tamper resistance, signed channel token lifecycle, and cryptographic audit hash-chain verification.
 - **`tests/test_benchmark.py` (2 tests)**: Multi-scenario comparative simulation harness verifying static vs swarm SLA adherence, MTTR, and report generation.
 - **`tests/test_sentinel.py` (2 tests)**: Sentinel cold-chain pharmaceutical thermal excursion telemetry and route corridor weather radar signals.
+- **`tests/test_vercel_entrypoint.py` (2 tests)**: Vercel serverless entrypoint (`api/index.py`), handler export, and rewrite resolution.
 
 ---
 

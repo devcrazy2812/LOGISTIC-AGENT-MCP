@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy | LogiSwarm AI Autonomous Logistics</title>
+  <meta name="description" content="Privacy Policy for LogiSwarm AI autonomous logistics orchestrator and multi-agent fleet dispatch system.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#0b0f19] text-slate-200 min-h-screen flex flex-col font-sans antialiased selection:bg-cyan-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-gray-800 bg-gray-900/80 backdrop-blur-md sticky top-0 z-40 px-6 py-4">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 text-white hover:text-cyan-400 transition" aria-label="Return to LogiSwarm AI Home">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+          <i data-lucide="boxes" class="w-5 h-5 text-white"></i>
+        </div>
+        <span class="font-bold tracking-wider text-base">LOGISWARM <span class="text-cyan-400">AI</span></span>
+      </a>
+      <a href="/" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-slate-200 transition">
+        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+        <span>Command Center</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="flex-1 max-w-4xl mx-auto w-full px-6 py-12">
+    <div class="mb-8">
+      <h1 class="text-3xl font-extrabold text-white mb-2">Privacy Policy</h1>
+      <p class="text-xs font-mono text-cyan-400 uppercase tracking-widest">Effective Date: October 17, 2026 • Version 1.2</p>
+    </div>
+
+    <div class="space-y-8 text-sm text-slate-300 leading-relaxed">
+      
+      <section class="bg-gray-900/60 border border-gray-800 rounded-xl p-6">
+        <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+          <i data-lucide="shield" class="w-5 h-5 text-cyan-400"></i>
+          <span>1. Information We Collect</span>
+        </h2>
+        <p class="mb-3">LogiSwarm AI is committed to privacy and data minimization. We only collect telemetry and operational parameters necessary for automated fleet dispatch, including:</p>
+        <ul class="list-disc list-inside space-y-1 text-slate-400 ml-2">
+          <li>Vehicle GPS coordinates, speed vectors, and battery/fuel consumption levels.</li>
+          <li>Consignment metadata (dimensions, weight, cargo category, priority deadlines).</li>
+          <li>Audit logs of autonomous agent deliberations and human operator feedback.</li>
+          <li>Voluntary dispatcher prompts submitted via the conversational interface.</li>
+        </ul>
+      </section>
+
+      <section class="bg-gray-900/60 border border-gray-800 rounded-xl p-6">
+        <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+          <i data-lucide="cpu" class="w-5 h-5 text-purple-400"></i>
+          <span>2. AI & Multimodal Data Processing</span>
+        </h2>
+        <p class="mb-3">Our system utilizes Google Gemini models for natural language dialogue and multimodal cargo inspection:</p>
+        <ul class="list-disc list-inside space-y-1 text-slate-400 ml-2">
+          <li><strong>No Personal Identifiable Imagery:</strong> Cargo damage inspection images are restricted to non-personal physical freight, containers, and shipping labels.</li>
+          <li><strong>Zero Secret Transmission:</strong> API keys and secrets are strictly retained server-side. No credential tokens are exposed to the client-side browser context.</li>
+        </ul>
+      </section>
+
+      <section class="bg-gray-900/60 border border-gray-800 rounded-xl p-6">
+        <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+          <i data-lucide="cookie" class="w-5 h-5 text-amber-400"></i>
+          <span>3. Cookies & Local Storage</span>
+        </h2>
+        <p class="text-slate-400">We use local storage exclusively to save your UI preferences (such as dark mode contrast settings and cookie consent status). We do not deploy third-party advertising tracking cookies or behavioral tracking pixels.</p>
+      </section>
+
+      <section class="bg-gray-900/60 border border-gray-800 rounded-xl p-6">
+        <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+          <i data-lucide="lock" class="w-5 h-5 text-emerald-400"></i>
+          <span>4. Security & Data Protection</span>
+        </h2>
+        <p class="text-slate-400">All data in transit is protected using Strict-Transport-Security (HSTS), Content Security Policy (CSP), and TLS 1.3 encryption. Model Context Protocol (MCP) tool endpoints are isolated via JSON-RPC 2.0 validation.</p>
+      </section>
+
+      <section class="bg-gray-900/60 border border-gray-800 rounded-xl p-6">
+        <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+          <i data-lucide="mail" class="w-5 h-5 text-blue-400"></i>
+          <span>5. Contact & Data Inquiries</span>
+        </h2>
+        <p class="text-slate-400">For privacy compliance questions or data deletion requests, contact the LogiSwarm AI Operations Team at <code class="text-cyan-400 bg-gray-800 px-2 py-0.5 rounded">privacy@logiswarm.ai</code> or open an issue on our GitHub repository.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-800 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between px-6 gap-2">
+      <span>&copy; 2026 LogiSwarm AI. All rights reserved.</span>
+      <div class="flex gap-4">
+        <a href="/terms.html" class="text-slate-400 hover:text-white transition">Terms of Service</a>
+        <a href="/" class="text-slate-400 hover:text-white transition">Command Center</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
