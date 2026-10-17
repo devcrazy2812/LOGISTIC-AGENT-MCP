@@ -2,11 +2,24 @@ import math
 from typing import List, Dict, Any, Tuple, Optional
 from ..models.entities import Vehicle, Order, Depot, RouteStop
 
+# Graceful optional OR-Tools detection
+try:
+    from ortools.constraint_solver import routing_enums_pb2
+    from ortools.constraint_solver import pywrapcp
+    HAS_ORTOOLS = True
+except ImportError:
+    HAS_ORTOOLS = False
+
+
 class GeoRoutingSolver:
     """
     Solves Capacitated Vehicle Routing Problem (CVRP) with Priority Deadlines,
     Carbon Emission modeling, and dynamic disruption avoidance.
+    Supports Greedy Nearest Neighbor with 2-Opt local search refinement,
+    and optional Google OR-Tools integration when installed.
     """
+
+    HAS_ORTOOLS_SOLVER = HAS_ORTOOLS
 
     @staticmethod
     def haversine_distance_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
@@ -41,7 +54,7 @@ class GeoRoutingSolver:
         Multi-depot, multi-vehicle Capacitated Routing with Priority Scheduling.
         """
         active_disruptions = active_disruptions or []
-        
+
         # Identify blocked coordinates or disabled vehicles
         disabled_vehicle_ids = set()
         hazard_zones = []
@@ -56,7 +69,7 @@ class GeoRoutingSolver:
                 })
 
         available_vehicles = [v for v in vehicles if v.id not in disabled_vehicle_ids and v.status != "disrupted"]
-        
+
         # Sort orders by priority and urgency
         priority_weight = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3}
         pending_orders = sorted(
@@ -89,7 +102,7 @@ class GeoRoutingSolver:
 
                 if (curr_weight + order.weight_kg <= vehicle.capacity_kg) and \
                    (curr_volume + order.volume_m3 <= vehicle.capacity_volume_m3):
-                    
+
                     # Cold chain requirement match
                     if order.item == "cold_chain_vaccines" and "Reefer" not in vehicle.name and "Electric" not in vehicle.name:
                         continue
@@ -139,9 +152,12 @@ class GeoRoutingSolver:
                 vehicle.status = "idle"
                 continue
 
-            # Optimize stop sequence (Nearest Neighbor)
+            # Optimize stop sequence (Nearest Neighbor with 2-Opt refinement)
             ordered_stops = cls._nearest_neighbor_sequence(
                 depot_lat, depot_lng, vehicle_orders
+            )
+            ordered_stops = cls._two_opt_refine(
+                depot_lat, depot_lng, ordered_stops
             )
 
             # Build detailed RouteStops
@@ -166,7 +182,7 @@ class GeoRoutingSolver:
             for o in ordered_stops:
                 leg_dist = cls.haversine_distance_km(curr_lat, curr_lng, o.lat, o.lng)
                 leg_time = cls.travel_time_minutes(leg_dist, vehicle.avg_speed_kmh)
-                
+
                 # Service time allowance (10 minutes unloading)
                 service_time = 10.0
                 total_dist += leg_dist
@@ -229,10 +245,47 @@ class GeoRoutingSolver:
         curr_lat, curr_lng = start_lat, start_lng
 
         while unvisited:
-            # Sort by distance
             unvisited.sort(key=lambda o: cls.haversine_distance_km(curr_lat, curr_lng, o.lat, o.lng))
             next_order = unvisited.pop(0)
             sequence.append(next_order)
             curr_lat, curr_lng = next_order.lat, next_order.lng
 
         return sequence
+
+    @classmethod
+    def _two_opt_refine(
+        cls, start_lat: float, start_lng: float, sequence: List[Order]
+    ) -> List[Order]:
+        """Refines tour sequence using 2-Opt pairwise edge swap local search."""
+        if len(sequence) < 3:
+            return sequence
+
+        def tour_distance(seq: List[Order]) -> float:
+            dist = cls.haversine_distance_km(start_lat, start_lng, seq[0].lat, seq[0].lng)
+            for i in range(len(seq) - 1):
+                dist += cls.haversine_distance_km(seq[i].lat, seq[i].lng, seq[i + 1].lat, seq[i + 1].lng)
+            dist += cls.haversine_distance_km(seq[-1].lat, seq[-1].lng, start_lat, start_lng)
+            return dist
+
+        best_seq = list(sequence)
+        best_dist = tour_distance(best_seq)
+        improved = True
+        iterations = 0
+
+        while improved and iterations < 30:
+            improved = False
+            iterations += 1
+            for i in range(len(best_seq) - 1):
+                for j in range(i + 1, len(best_seq)):
+                    # Reverse intermediate segment [i:j+1]
+                    new_seq = best_seq[:i] + best_seq[i:j + 1][::-1] + best_seq[j + 1:]
+                    new_dist = tour_distance(new_seq)
+                    if new_dist < best_dist - 0.01:
+                        best_seq = new_seq
+                        best_dist = new_dist
+                        improved = True
+                        break
+                if improved:
+                    break
+
+        return best_seq

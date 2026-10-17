@@ -31,7 +31,7 @@ jobs:
           python -c "import src.mcp.logistics_mcp_server; print('MCP OK')"
           python -c "import src.tools.security; print('Security OK')"
 
-      - name: Execute Full Automated Test Suite (41 tests)
+      - name: Execute Full Automated Test Suite (45 tests)
         run: |
           python -m unittest discover -s tests -v
 

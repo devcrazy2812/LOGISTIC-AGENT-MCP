@@ -278,7 +278,7 @@ python mcp_server.py
 
 ---
 
-## 10. Automated Verification & Test Suite (41/41 Passing)
+## 10. Automated Verification & Test Suite (45/45 Passing)
 
 The project includes an automated test suite verifying all multi-agent workflows, cryptography, MCP specifications, and Gemini client behaviors:
 
@@ -292,6 +292,8 @@ python -m unittest discover -s tests -v
 - **`tests/test_mcp_protocol.py` (1 test)**: End-to-end stdio subprocess integration verifying full client-server handshake over standard I/O pipes.
 - **`tests/test_gemini_client.py` (8 tests)**: API key fallback, magic byte MIME detection, 5MB base64 validation, structured JSON output (`responseSchema`), HTTP 404 deprecation handling, HTTP 429 exponential backoff retries, malformed JSON fallback, and network timeout handling.
 - **`tests/test_security.py` (5 tests)**: RFC 6238 official test vectors, TOTP anti-replay cache rejection, Encrypt-then-MAC PII tamper resistance, signed channel token lifecycle, and cryptographic audit hash-chain verification.
+- **`tests/test_benchmark.py` (2 tests)**: Multi-scenario comparative simulation harness verifying static vs swarm SLA adherence, MTTR, and report generation.
+- **`tests/test_sentinel.py` (2 tests)**: Sentinel cold-chain pharmaceutical thermal excursion telemetry and route corridor weather radar signals.
 
 ---
 
@@ -301,10 +303,15 @@ python -m unittest discover -s tests -v
 LOGISTIC-AGENT-MCP/
 ├── run.py                       # Launch server & web dashboard on localhost:8000
 ├── start_app.bat                # Windows double-click shortcut
+├── benchmark.py                 # Multi-scenario comparative simulation runner
 ├── mcp_server.py                # Standalone Model Context Protocol (MCP) server
 ├── README.md                    # Comprehensive technical documentation
 ├── SECURITY.md                  # Security policy, cryptographic architecture & disclosure guidelines
 ├── requirements.txt             # Dependency specification (zero external deps required)
+├── pyproject.toml               # Modern packaging specification with optional extras
+├── Makefile                     # Developer automation targets
+├── Dockerfile                   # Non-root container image definition
+├── docker-compose.yml           # Production container orchestration
 ├── .env.example                 # Isolated environment secrets template
 │
 ├── data/
@@ -314,7 +321,7 @@ LOGISTIC-AGENT-MCP/
 │   ├── agents/                  # The 6 Autonomous Agent Modules
 │   │   ├── base_agent.py        # ReAct Chain-of-Thought foundation
 │   │   ├── orchestrator_agent.py# Commander-Prime (Master Dispatcher)
-│   │   ├── sentinel_agent.py    # Sentinel-Risk (Hazard Radar)
+│   │   ├── sentinel_agent.py    # Sentinel-Risk (Hazard Radar & Weather/Cold-Chain)
 │   │   ├── warehouse_agent.py   # StockMaster (Inventory Allocator)
 │   │   ├── router_agent.py      # RouteOptima (CVRP Routing Specialist)
 │   │   ├── liaison_agent.py     # CommLiaison (SLA Negotiator)
@@ -335,7 +342,8 @@ LOGISTIC-AGENT-MCP/
 │       ├── inventory_engine.py  # Multi-depot stock allocation & safety stock
 │       ├── disruption_engine.py # Stochastic disruption scenario generator
 │       ├── gemini_client.py     # Hardened Google Gemini Multimodal Vision & Chat client
-│       └── security.py          # TOTP RFC 6238, Signed Tokens, Authenticated PII & Audit Chain
+│       ├── security.py          # TOTP RFC 6238, Signed Tokens, Authenticated PII & Audit Chain
+│       └── benchmark.py         # Simulation benchmark harness
 │
 ├── web/                         # Production Web Interface
 │   ├── index.html               # Enterprise Command Suite with Floating Dock & Dossier
@@ -358,7 +366,9 @@ LOGISTIC-AGENT-MCP/
     ├── test_mcp_server.py       # MCP server unit tests (16 tests)
     ├── test_mcp_protocol.py     # MCP stdio subprocess integration test (1 test)
     ├── test_gemini_client.py    # Hardened Gemini client unit tests (8 tests)
-    └── test_security.py         # Cryptography & security audit test suite (5 tests)
+    ├── test_security.py         # Cryptography & security audit test suite (5 tests)
+    ├── test_benchmark.py        # Benchmark harness test suite (2 tests)
+    └── test_sentinel.py        # Sentinel cold-chain & weather radar test suite (2 tests)
 ```
 
 ---
