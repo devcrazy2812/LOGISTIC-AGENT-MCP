@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "logiswarm"
+version = "1.1.0"
+description = "Autonomous Multi-Agent Logistics Engine featuring Multimodal Vision, Conversational Dispatch, Dual Model Context Protocol (MCP 2026-07-28 / 2024-11-05), and Continuous Feedback Optimization."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "LogiSwarm Maintainers", email = "maintainers@logiswarm.ai" }
+]
+keywords = [
+    "multi-agent",
+    "logistics",
+    "mcp",
+    "model-context-protocol",
+    "cvrp",
+    "supply-chain",
+    "gemini",
+    "autonomous-agents"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5"
+]
+solver = [
+    "ortools>=9.8"
+]
+crypto = [
+    "cryptography>=41.0"
+]
+
+[project.scripts]
+logiswarm = "run:main"
+logiswarm-mcp = "mcp_server:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*", "data*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

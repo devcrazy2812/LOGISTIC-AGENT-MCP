@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  logiswarm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: logiswarm:latest
+    container_name: logiswarm_service
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - LOGISWARM_SECRET_KEY=${LOGISWARM_SECRET_KEY:-logiswarm_production_master_secret_2026}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.5-flash}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/state').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

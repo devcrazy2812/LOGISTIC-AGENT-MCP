@@ -1,0 +1,40 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main, feat/*, fix/*, docs/*, ci/*]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test (Python ${{ matrix.python-version }} on ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Verify Clean Module Imports
+        run: |
+          python -c "import src.core.swarm_controller; print('Core OK')"
+          python -c "import src.mcp.logistics_mcp_server; print('MCP OK')"
+          python -c "import src.tools.security; print('Security OK')"
+
+      - name: Execute Full Automated Test Suite (41 tests)
+        run: |
+          python -m unittest discover -s tests -v
+
+      - name: Verify MCP Stdio Protocol Subprocess
+        run: |
+          python -m unittest tests/test_mcp_protocol.py -v
