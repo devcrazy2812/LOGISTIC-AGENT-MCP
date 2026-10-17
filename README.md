@@ -2,7 +2,8 @@
 ### *Enterprise Transportation Management Suite featuring Multimodal Optical Diagnostics, Conversational Dispatch, Dual Model Context Protocol (MCP 2026-07-28 / 2024-11-05), and Continuous Feedback Optimization*
 
 **Engineering Standard:** Universal Full-Stack & AI Engineering Master Blueprint  
-**Deployment Link:** https://logistic-agent-m9bqx1d3s-abhay001goyals-projects.vercel.app/ -
+**Deployment Link:** https://logistic-agent-m9bqx1d3s-abhay001goyals-projects.vercel.app/
+
 **GitHub Repository:** [https://github.com/devcrazy2812/LOGISTIC-AGENT-MCP](https://github.com/devcrazy2812/LOGISTIC-AGENT-MCP)  
 **License:** [MIT License](LICENSE)  
 
