@@ -1,4 +1,9 @@
 import unittest
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from src.core.swarm_controller import SwarmController
 from src.mcp.logistics_mcp_server import LogisticsMCPServer
 from src.tools.security import (
