@@ -2,8 +2,8 @@
 ### *Enterprise Transportation Management Suite featuring Multimodal Optical Diagnostics, Conversational Dispatch, Dual Model Context Protocol (MCP 2026-07-28 / 2024-11-05), and Continuous Feedback Optimization*
 
 **Engineering Standard:** Universal Full-Stack & AI Engineering Master Blueprint  
-**Deployment Link:** https://logistic-agent-m9bqx1d3s-abhay001goyals-projects.vercel.app/
-
+**Live Production Deployment:** [https://logistic-agent-mcp.vercel.app](https://logistic-agent-mcp.vercel.app)  
+**Preview Deployment:** [https://logistic-agent-m9bqx1d3s-abhay001goyals-projects.vercel.app](https://logistic-agent-m9bqx1d3s-abhay001goyals-projects.vercel.app)  
 **GitHub Repository:** [https://github.com/devcrazy2812/LOGISTIC-AGENT-MCP](https://github.com/devcrazy2812/LOGISTIC-AGENT-MCP)  
 **License:** [MIT License](LICENSE)  
 
@@ -19,7 +19,7 @@
 7. [Quickstart Guide (Zero Dependencies)](#7-quickstart-guide-zero-dependencies)
 8. [Step-by-Step Live Demo & Evaluation Script](#8-step-by-step-live-demo--evaluation-script)
 9. [Model Context Protocol (MCP) Integration](#9-model-context-protocol-mcp-integration)
-10. [Automated Verification & Test Suite (41/41 Passing)](#10-automated-verification--test-suite-4141-passing)
+10. [Automated Verification & Test Suite (47/47 Passing)](#10-automated-verification--test-suite-4747-passing)
 11. [Repository Directory Structure](#11-repository-directory-structure)
 
 ---
