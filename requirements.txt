@@ -1,0 +1,12 @@
+# LogiSwarm AI - Autonomous Logistics Swarm
+# NOTE: The core application runs on standard Python 3.9+ with ZERO external dependencies!
+# The packages below are optional if you wish to run extended external LLM integrations or advanced data analysis.
+
+# Optional LLM integrations
+# openai>=1.0.0
+# google-generativeai>=0.4.0
+# anthropic>=0.18.0
+
+# Optional data science tools
+# ortools>=9.8.0
+# networkx>=3.0.0
