@@ -1,7 +1,11 @@
+from __future__ import annotations
 import sys
 import json
-from typing import Dict, Any, List
-from ..core.swarm_controller import SwarmController
+from typing import Dict, Any, List, Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..core.swarm_controller import SwarmController
+
 from ..tools.gemini_client import GoogleGeminiClient
 
 class LogisticsMCPServer:
@@ -69,7 +73,11 @@ class LogisticsMCPServer:
     ]
 
     def __init__(self, controller: Optional[SwarmController] = None):
-        self.controller = controller or SwarmController()
+        if controller is None:
+            from ..core.swarm_controller import SwarmController
+            self.controller = SwarmController()
+        else:
+            self.controller = controller
         self.gemini_client = GoogleGeminiClient()
 
     def handle_request(self, request: Dict[str, Any]) -> Dict[str, Any]:
@@ -138,7 +146,8 @@ class LogisticsMCPServer:
 
             elif tool_name == "inspect_cargo_multimodal":
                 img_b64 = args.get("image_base64")
-                analysis = self.gemini_client.analyze_multimodal_cargo(image_base64=img_b64)
+                cargo_id = args.get("cargo_id")
+                analysis = self.gemini_client.analyze_multimodal_cargo(image_base64=img_b64, cargo_id=cargo_id)
                 result_text = json.dumps(analysis, indent=2)
 
             elif tool_name == "evaluate_feedback_loop":
