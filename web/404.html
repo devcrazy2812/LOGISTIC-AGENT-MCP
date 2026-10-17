@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Waypoint Not Found | LogiSwarm AI</title>
+  <meta name="description" content="The requested logistics waypoint or resource could not be located in the LogiSwarm dispatch registry.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#0b0f19] text-slate-200 min-h-screen flex flex-col items-center justify-center font-sans antialiased p-6 selection:bg-cyan-500 selection:text-white">
+
+  <div class="max-w-md w-full text-center space-y-6 bg-gray-900/80 border border-gray-800 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+    <div class="absolute -right-12 -top-12 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
+    
+    <div class="w-16 h-16 mx-auto rounded-2xl bg-cyan-950/60 border border-cyan-800/80 flex items-center justify-center text-cyan-400">
+      <i data-lucide="compass" class="w-8 h-8 animate-spin" style="animation-duration: 12s;"></i>
+    </div>
+
+    <div>
+      <span class="text-xs font-mono font-bold tracking-widest text-cyan-400 uppercase">Error 404 • Coordinate Unknown</span>
+      <h1 class="text-2xl font-extrabold text-white mt-1">Waypoint Off-Grid</h1>
+      <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+        Our autonomous routing sensors could not locate the requested route or resource in the active logistics registry.
+      </p>
+    </div>
+
+    <div class="pt-2">
+      <a href="/" class="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-bold shadow-lg shadow-cyan-500/20 transition">
+        <i data-lucide="home" class="w-4 h-4"></i>
+        <span>Return to Command Center</span>
+      </a>
+    </div>
+
+    <div class="pt-4 border-t border-gray-800/80 flex items-center justify-center gap-4 text-xs text-slate-500">
+      <a href="/privacy.html" class="hover:text-slate-300 transition">Privacy Policy</a>
+      <span>•</span>
+      <a href="/terms.html" class="hover:text-slate-300 transition">Terms of Service</a>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

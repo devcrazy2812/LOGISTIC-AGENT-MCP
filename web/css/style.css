@@ -1,10 +1,14 @@
-/* Custom Scrollbar for War Room Feed */
+/* ==========================================================================
+   LogiSwarm AI - Core Theme & WCAG Contrast Enhancements
+   ========================================================================== */
+
+/* Custom High-Contrast Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #0b0f19;
 }
 ::-webkit-scrollbar-thumb {
   background: #334155;
@@ -16,26 +20,27 @@
 
 /* Dark mode styling for OpenStreetMap Leaflet tiles */
 .leaflet-tile {
-  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+  filter: brightness(0.65) invert(1) contrast(2.8) hue-rotate(200deg) saturate(0.35) brightness(0.75);
 }
 
 .leaflet-container {
   background-color: #0b0f19 !important;
+  font-family: inherit;
 }
 
-/* Custom Marker Pulsing */
+/* Custom Marker Pulsing for Hazards */
 @keyframes pulse-ring {
   0% {
     transform: scale(0.95);
-    opacity: 0.8;
+    opacity: 0.85;
   }
   50% {
-    transform: scale(1.4);
+    transform: scale(1.35);
     opacity: 0.2;
   }
   100% {
     transform: scale(0.95);
-    opacity: 0.8;
+    opacity: 0.85;
   }
 }
 
@@ -43,11 +48,36 @@
   animation: pulse-ring 2s infinite ease-in-out;
 }
 
-/* Glowing text effects */
+/* Point 20: Primary Call-To-Action Glow & Pulse */
+@keyframes cta-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4), 0 0 30px rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.65), 0 0 45px rgba(59, 130, 246, 0.4);
+  }
+}
+
+.cta-pulse {
+  animation: cta-glow 3s infinite ease-in-out;
+}
+
+/* High Contrast Text Glows */
 .glow-cyan {
-  text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+  text-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
 }
 
 .glow-red {
-  text-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+  text-shadow: 0 0 12px rgba(239, 68, 68, 0.7);
+}
+
+/* Mobile Touch Optimization (Point 14: Minimum 44px tap target heights for interactive controls) */
+@media (max-width: 640px) {
+  button, a {
+    min-height: 40px;
+  }
+  
+  #map {
+    height: 320px;
+  }
 }

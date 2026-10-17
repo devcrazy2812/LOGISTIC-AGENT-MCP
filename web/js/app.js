@@ -13,21 +13,42 @@ const vehicleColors = {
 };
 
 const agentBadges = {
-  'Commander-Prime': { color: 'bg-blue-950 border-blue-800 text-blue-300', icon: 'shield' },
-  'Sentinel-Risk': { color: 'bg-red-950 border-red-800 text-red-300', icon: 'alert-triangle' },
-  'StockMaster': { color: 'bg-purple-950 border-purple-800 text-purple-300', icon: 'package' },
-  'RouteOptima': { color: 'bg-emerald-950 border-emerald-800 text-emerald-300', icon: 'navigation' },
-  'CommLiaison': { color: 'bg-amber-950 border-amber-800 text-amber-300', icon: 'message-square' },
-  'QualityGuard': { color: 'bg-pink-950 border-pink-800 text-pink-300', icon: 'award' }
+  'Commander-Prime': { color: 'bg-blue-950 border-blue-800 text-blue-200', icon: 'shield' },
+  'Sentinel-Risk': { color: 'bg-red-950 border-red-800 text-red-200', icon: 'alert-triangle' },
+  'StockMaster': { color: 'bg-purple-950 border-purple-800 text-purple-200', icon: 'package' },
+  'RouteOptima': { color: 'bg-emerald-950 border-emerald-800 text-emerald-200', icon: 'navigation' },
+  'CommLiaison': { color: 'bg-amber-950 border-amber-800 text-amber-200', icon: 'message-square' },
+  'QualityGuard': { color: 'bg-pink-950 border-pink-800 text-pink-200', icon: 'award' }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
   initMap();
   initClock();
   initEventListeners();
+  initCookieBanner();
   fetchState();
   setInterval(fetchState, 4000);
 });
+
+/* Point 5: Cookie Consent Management */
+function initCookieBanner() {
+  const consent = localStorage.getItem('logiswarm_cookie_consent');
+  const banner = document.getElementById('cookie-banner');
+  if (consent && banner) {
+    banner.classList.add('hidden');
+  }
+}
+
+function setCookieConsent(type) {
+  localStorage.setItem('logiswarm_cookie_consent', type);
+  const banner = document.getElementById('cookie-banner');
+  if (banner) {
+    banner.classList.add('hidden');
+  }
+  if (window.LogiAnalytics) {
+    window.LogiAnalytics.track('cookie_consent', { type: type });
+  }
+}
 
 function initClock() {
   const clockEl = document.getElementById('live-clock');
@@ -53,8 +74,10 @@ function initMap() {
 }
 
 function initEventListeners() {
+  // Point 20: Primary CTA Execution
   document.getElementById('btn-reoptimize')?.addEventListener('click', async () => {
     showStatusBadge('OPTIMIZING SWARM (FEEDBACK LOOP)...', 'bg-blue-900 border-blue-700 text-blue-300');
+    if (window.LogiAnalytics) window.LogiAnalytics.track('optimize_swarm_cta');
     try {
       const res = await fetch('/api/optimize', { method: 'POST' });
       const data = await res.json();
@@ -82,6 +105,7 @@ function initEventListeners() {
       const text = await res.text();
       document.getElementById('report-content').textContent = text;
       document.getElementById('modal-report').classList.remove('hidden');
+      if (window.LogiAnalytics) window.LogiAnalytics.track('export_audit_report');
     } catch (err) {
       console.error(err);
     }
@@ -107,41 +131,61 @@ function switchTab(tab) {
       pane?.classList.remove('hidden');
       btn?.classList.add('border-cyan-400', 'text-cyan-400', 'font-bold');
       btn?.classList.remove('border-transparent', 'text-slate-400');
+      btn?.setAttribute('aria-selected', 'true');
     } else {
       pane?.classList.add('hidden');
       btn?.classList.remove('border-cyan-400', 'text-cyan-400', 'font-bold');
       btn?.classList.add('border-transparent', 'text-slate-400');
+      btn?.setAttribute('aria-selected', 'false');
     }
   });
   lucide.createIcons();
 }
 
+/* Point 17 & 18: Form Validation & Spam Bot Protection */
 async function sendChatMessage(e) {
   e.preventDefault();
   const input = document.getElementById('chat-input');
+  const hp = document.getElementById('chat-hp');
+  const valMsg = document.getElementById('chat-validation-msg');
   const msg = input.value.trim();
-  if (!msg) return;
+
+  // Spam Honeypot Check (Point 18)
+  if (hp && hp.value) {
+    console.warn('Bot submission blocked.');
+    return;
+  }
+
+  // Client Validation (Point 17)
+  if (!msg || msg.length < 2) {
+    valMsg?.classList.remove('hidden');
+    input.focus();
+    return;
+  }
+  valMsg?.classList.add('hidden');
 
   const chatContainer = document.getElementById('chat-messages');
   chatContainer.innerHTML += `
-    <div class="p-2 rounded bg-cyan-950/40 border border-cyan-900/40 text-slate-200">
-      <b class="text-slate-300">Dispatcher:</b> ${msg}
+    <div class="p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-900/40 text-slate-200">
+      <b class="text-slate-300">Dispatcher:</b> ${escapeHtml(msg)}
     </div>
   `;
   input.value = '';
   chatContainer.scrollTop = chatContainer.scrollHeight;
 
+  if (window.LogiAnalytics) window.LogiAnalytics.track('chat_message_sent');
+
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: msg })
+      body: JSON.stringify({ message: msg, hp_field: hp ? hp.value : '' })
     });
     const data = await res.json();
-    const reply = data.data.reply;
+    const reply = data.data ? data.data.reply : data.error;
     chatContainer.innerHTML += `
-      <div class="p-2 rounded bg-gray-800/60 text-slate-300">
-        <b class="text-cyan-400">Commander-Prime:</b> ${reply}
+      <div class="p-2.5 rounded-lg bg-gray-800/70 text-slate-200">
+        <b class="text-cyan-400">Commander-Prime:</b> ${escapeHtml(reply)}
       </div>
     `;
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -150,10 +194,16 @@ async function sendChatMessage(e) {
   }
 }
 
+function escapeHtml(text) {
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  return text.replace(/[&<>"']/g, m => map[m]);
+}
+
 async function runSampleMultimodalInspection() {
   const resultBox = document.getElementById('vision-result-box');
   resultBox.textContent = "Analyzing cargo imagery via Google Gemini Multimodal Vision API...";
-  
+  if (window.LogiAnalytics) window.LogiAnalytics.track('multimodal_vision_inspect');
+
   try {
     const res = await fetch('/api/inspect_cargo', {
       method: 'POST',
@@ -175,6 +225,8 @@ async function submitHumanFeedback(rating) {
     'rebalance': 'Human request: Prioritize EV allocation for upcoming legs.',
     'negative': 'Flagged sub-optimal stop sequence. Requested recalculation.'
   };
+  if (window.LogiAnalytics) window.LogiAnalytics.track('human_feedback', { rating });
+
   try {
     const res = await fetch('/api/feedback', {
       method: 'POST',
@@ -210,6 +262,8 @@ async function fetchState() {
 
 async function injectDisruption(type) {
   showStatusBadge('CRISIS INJECTED - HEALING...', 'bg-red-950 border-red-800 text-red-400 animate-pulse');
+  if (window.LogiAnalytics) window.LogiAnalytics.track('disruption_injected', { type });
+
   try {
     const res = await fetch('/api/disruption', {
       method: 'POST',
@@ -276,9 +330,9 @@ function renderMap(state) {
 
       circle.bindPopup(`
         <div class="text-xs">
-          <strong class="text-red-500 font-bold uppercase">Hazard Corridor</strong><br/>
-          <strong>${d.title}</strong><br/>
-          ${d.description}
+          <strong class="text-red-400 font-bold uppercase">Hazard Corridor</strong><br/>
+          <strong class="text-white">${d.title}</strong><br/>
+          <span class="text-slate-300">${d.description}</span>
         </div>
       `);
       hazardLayers.push(circle);
@@ -290,8 +344,8 @@ function renderMap(state) {
     const icon = L.divIcon({
       className: 'custom-depot-marker',
       html: `
-        <div class="w-8 h-8 rounded-lg bg-blue-600 border-2 border-white flex items-center justify-center shadow-lg text-white font-bold text-xs">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="w-8 h-8 rounded-lg bg-blue-600 border-2 border-white flex items-center justify-center shadow-lg text-white font-bold text-xs" role="img" aria-label="Depot marker">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
       `,
       iconSize: [32, 32],
@@ -306,8 +360,8 @@ function renderMap(state) {
     marker.bindPopup(`
       <div class="text-xs">
         <strong class="text-blue-400 font-bold uppercase">${depot.id}</strong><br/>
-        <span class="font-bold text-slate-800">${depot.name}</span><br/>
-        <div class="mt-1 pt-1 border-t border-gray-200">
+        <span class="font-bold text-slate-900">${depot.name}</span><br/>
+        <div class="mt-1 pt-1 border-t border-gray-300 text-slate-800">
           <strong>Available Stock:</strong><br/>
           ${stockList}
         </div>
@@ -326,7 +380,7 @@ function renderMap(state) {
     const icon = L.divIcon({
       className: 'custom-order-marker',
       html: `
-        <div class="w-5 h-5 rounded-full border-2 border-white shadow flex items-center justify-center text-[10px] font-bold text-white" style="background-color: ${pinColor};">
+        <div class="w-5 h-5 rounded-full border-2 border-white shadow flex items-center justify-center text-[10px] font-bold text-white" style="background-color: ${pinColor};" role="img" aria-label="Order priority marker ${ord.priority}">
           ${ord.priority[0]}
         </div>
       `,
@@ -336,8 +390,8 @@ function renderMap(state) {
 
     const marker = L.marker([ord.lat, ord.lng], { icon }).addTo(map);
     marker.bindPopup(`
-      <div class="text-xs">
-        <strong class="text-slate-800 font-bold">${ord.customer}</strong> (${ord.id})<br/>
+      <div class="text-xs text-slate-900">
+        <strong class="font-bold">${ord.customer}</strong> (${ord.id})<br/>
         <span>Cargo: ${ord.quantity}x ${ord.item} (${ord.weight_kg} kg)</span><br/>
         <span>Priority: <b style="color:${pinColor}">${ord.priority}</b></span><br/>
         <span>Status: <b>${ord.status.toUpperCase()}</b></span><br/>
@@ -356,7 +410,7 @@ function renderMap(state) {
       const polyline = L.polyline(latlngs, {
         color: color,
         weight: 3.5,
-        opacity: 0.85,
+        opacity: 0.9,
         dashArray: v.type.includes('EV') ? '4, 4' : null
       }).addTo(map);
 
@@ -375,10 +429,10 @@ function renderFleetTable(vehicles) {
   tbody.innerHTML = vehicles.map(v => {
     const isDisrupted = v.status === 'disrupted';
     const statusBadge = isDisrupted
-      ? `<span class="px-2 py-0.5 rounded-full bg-red-950 border border-red-800 text-red-400 font-bold">DISABLED</span>`
+      ? `<span class="px-2 py-0.5 rounded-full bg-red-950 border border-red-800 text-red-300 font-bold">DISABLED</span>`
       : v.assigned_orders.length > 0
-        ? `<span class="px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-400 font-semibold">EN ROUTE</span>`
-        : `<span class="px-2 py-0.5 rounded-full bg-gray-800 text-slate-400 font-medium">IDLE</span>`;
+        ? `<span class="px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-300 font-semibold">EN ROUTE</span>`
+        : `<span class="px-2 py-0.5 rounded-full bg-gray-800 text-slate-300 font-medium">IDLE</span>`;
 
     const colorDot = vehicleColors[v.id] || '#3b82f6';
 
@@ -388,25 +442,25 @@ function renderFleetTable(vehicles) {
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${colorDot}"></span>
             <div>
-              <div class="font-bold text-slate-200">${v.name}</div>
-              <div class="text-[10px] text-slate-500 font-mono">${v.id}</div>
+              <div class="font-bold text-slate-100">${v.name}</div>
+              <div class="text-[10px] text-slate-400 font-mono">${v.id}</div>
             </div>
           </div>
         </td>
         <td class="py-2.5 px-3">
-          <div class="text-slate-300 font-medium">${v.type}</div>
+          <div class="text-slate-200 font-medium">${v.type}</div>
           <div class="text-[10px] text-slate-400">${v.fuel_type} • ${v.capacity_kg} kg cap</div>
         </td>
         <td class="py-2.5 px-3">
           <span class="font-bold text-cyan-400">${v.assigned_orders.length}</span> orders
-          <div class="text-[10px] text-slate-500 font-mono">${v.assigned_orders.join(', ') || 'None'}</div>
+          <div class="text-[10px] text-slate-400 font-mono">${v.assigned_orders.join(', ') || 'None'}</div>
         </td>
         <td class="py-2.5 px-3">
-          <div class="font-mono">${v.total_distance_km} km</div>
+          <div class="font-mono text-slate-200">${v.total_distance_km} km</div>
           <div class="text-[10px] text-slate-400 font-mono">${v.total_time_min} mins</div>
         </td>
         <td class="py-2.5 px-3">
-          <div class="text-emerald-400 font-mono">$${v.total_cost_usd}</div>
+          <div class="text-emerald-400 font-mono font-bold">$${v.total_cost_usd}</div>
           <div class="text-[10px] text-slate-400 font-mono">${v.total_co2_kg} kg CO₂</div>
         </td>
         <td class="py-2.5 px-3">${statusBadge}</td>
@@ -422,7 +476,7 @@ function renderThoughts(thoughts) {
   const recent = thoughts.slice(-25);
 
   container.innerHTML = recent.map(t => {
-    const meta = agentBadges[t.agent_name] || { color: 'bg-gray-800 border-gray-700 text-slate-300', icon: 'bot' };
+    const meta = agentBadges[t.agent_name] || { color: 'bg-gray-800 border-gray-700 text-slate-200', icon: 'bot' };
     
     let phaseColor = 'text-cyan-400';
     if (t.phase === 'OBSERVE') phaseColor = 'text-blue-400';
@@ -430,18 +484,18 @@ function renderThoughts(thoughts) {
     else if (t.phase === 'ACTION') phaseColor = 'text-emerald-400';
 
     const toolsTags = (t.tools_used || []).map(tool => 
-      `<span class="px-1.5 py-0.5 rounded bg-gray-800 text-[9px] text-slate-400 border border-gray-700/60 font-mono">tool:${tool}</span>`
+      `<span class="px-1.5 py-0.5 rounded bg-gray-800 text-[9px] text-slate-300 border border-gray-700/60 font-mono">tool:${tool}</span>`
     ).join(' ');
 
     return `
-      <div class="p-2.5 rounded-lg bg-gray-800/40 border border-gray-800 hover:border-gray-700 transition space-y-1">
+      <div class="p-2.5 rounded-xl bg-gray-800/40 border border-gray-800 hover:border-gray-700 transition space-y-1">
         <div class="flex items-center justify-between text-[10px]">
           <span class="px-2 py-0.5 rounded border text-[10px] font-bold ${meta.color}">
             ${t.agent_name} (${t.role})
           </span>
-          <span class="text-slate-500 font-mono">${t.timestamp}</span>
+          <span class="text-slate-400 font-mono">${t.timestamp}</span>
         </div>
-        <div class="text-slate-300 leading-snug">
+        <div class="text-slate-200 leading-snug">
           <span class="font-bold ${phaseColor}">[${t.phase}]</span> ${t.content}
         </div>
         ${toolsTags ? `<div class="pt-1 flex flex-wrap gap-1">${toolsTags}</div>` : ''}
@@ -457,12 +511,12 @@ function renderNotifications(notifications) {
   if (!box) return;
 
   if (!notifications.length) {
-    box.innerHTML = `<span class="text-slate-500 italic">No crisis bulletins active. Routine dispatch clear.</span>`;
+    box.innerHTML = `<span class="text-slate-400 italic">No crisis bulletins active. Routine dispatch clear.</span>`;
     return;
   }
 
   box.innerHTML = notifications.slice(-3).map(n => `
-    <div class="p-1.5 rounded bg-amber-950/30 border border-amber-900/40 text-amber-200/90 leading-tight">
+    <div class="p-2 rounded-lg bg-amber-950/40 border border-amber-900/50 text-amber-200 leading-tight">
       ${n.message}
     </div>
   `).join('');
