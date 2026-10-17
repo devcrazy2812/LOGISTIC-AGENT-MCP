@@ -108,13 +108,67 @@ class GoogleGeminiClient:
         model: Optional[str] = None,
         state_provider: Optional[Callable[[], Dict[str, Any]]] = None
     ):
-        self.api_key = api_key if api_key is not None else os.environ.get("GEMINI_API_KEY", "")
-        self.model = model or os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
-        self.endpoint_base = "https://generativelanguage.googleapis.com/v1beta/models"
+        self.api_key = api_key if api_key is not None else (
+            os.environ.get("GEMINI_API_KEY") or
+            os.environ.get("GROQ_API_KEY") or
+            os.environ.get("LLM_API_KEY") or
+            ""
+        )
+        self.is_groq = bool(self.api_key and self.api_key.startswith("gsk_"))
+        if self.is_groq:
+            self.model = model or os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
+            self.endpoint_base = "https://api.groq.com/openai/v1"
+        else:
+            self.model = model or os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+            self.endpoint_base = "https://generativelanguage.googleapis.com/v1beta/models"
         self.state_provider = state_provider
 
     def is_configured(self) -> bool:
         return bool(self.api_key and self.api_key.strip())
+
+    def _make_groq_request(
+        self,
+        payload: Dict[str, Any],
+        max_retries: int = 2,
+        timeout: float = 12.0
+    ) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+        """
+        Executes HTTP request to Groq OpenAI-compatible API endpoint.
+        Returns (response_dict, error_reason).
+        """
+        url = f"{self.endpoint_base}/chat/completions"
+        data_bytes = json.dumps(payload).encode("utf-8")
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.api_key}",
+            "User-Agent": "LogiSwarm-TMS/1.1"
+        }
+
+        last_error = None
+        for attempt in range(max_retries + 1):
+            req = urllib.request.Request(url, data=data_bytes, headers=headers)
+            try:
+                with urllib.request.urlopen(req, timeout=timeout) as resp:
+                    raw = resp.read().decode("utf-8")
+                    return json.loads(raw), None
+            except urllib.error.HTTPError as e:
+                last_error = f"HTTP {e.code}: {e.reason}"
+                logger.warning("Groq API HTTP Error %d on %s: %s (attempt %d/%d)", e.code, self.model, e.reason, attempt + 1, max_retries + 1)
+                if e.code in (400, 401, 403, 404):
+                    return None, last_error
+                if attempt < max_retries:
+                    time.sleep(min(0.3 * (2 ** attempt), 1.5))
+            except urllib.error.URLError as e:
+                last_error = f"Network URLError: {e.reason}"
+                logger.warning("Groq Network URLError: %s (attempt %d/%d)", e.reason, attempt + 1, max_retries + 1)
+                if attempt < max_retries:
+                    time.sleep(0.3 * (2 ** attempt))
+            except Exception as e:
+                last_error = f"Unexpected Error: {e}"
+                logger.warning("Unexpected error communicating with Groq API: %s", e)
+                return None, last_error
+
+        return None, last_error
 
     def _make_request(
         self,
@@ -190,26 +244,79 @@ class GoogleGeminiClient:
         )
 
         if self.is_configured():
-            payload = {
-                "contents": [{
-                    "parts": [
-                        {"text": prompt},
+            if self.is_groq:
+                groq_payload = {
+                    "model": self.model,
+                    "messages": [
                         {
-                            "inline_data": {
-                                "mime_type": mime,
-                                "data": clean_b64
-                            }
+                            "role": "system",
+                            "content": (
+                                "You are an expert AI Logistics Quality Inspector. "
+                                "Analyze the inspected cargo condition and respond ONLY with a valid JSON object matching these exact keys: "
+                                "damage_severity (e.g. 'MINOR_TEAR', 'MODERATE_CRUSH', 'CRITICAL_LEAK', 'NOMINAL'), "
+                                "compromised_items (array of strings), "
+                                "box_integrity (string), "
+                                "root_cause (string), "
+                                "recommended_action (string), "
+                                "insurance_claim_estimate_usd (number), "
+                                "replacement_priority ('LOW', 'MEDIUM', 'HIGH', 'CRITICAL'), "
+                                "directive (string)."
+                            )
+                        },
+                        {
+                            "role": "user",
+                            "content": f"Inspect cargo {cargo_id or 'CONSIGNMENT-INSPECT-01'}. Context: {prompt}. Image size: {len(raw_bytes)} bytes."
                         }
-                    ]
-                }],
-                "generationConfig": {
-                    "temperature": 0.2,
-                    "response_mime_type": "application/json",
-                    "response_schema": self.CARGO_ANALYSIS_SCHEMA
+                    ],
+                    "response_format": {"type": "json_object"},
+                    "temperature": 0.2
                 }
-            }
+                resp_data, err_reason = self._make_groq_request(groq_payload, timeout=12.0)
+                if resp_data and "choices" in resp_data:
+                    try:
+                        content_str = resp_data["choices"][0]["message"]["content"]
+                        parsed_json = json.loads(content_str)
+                        analysis = CargoAnalysis(
+                            damage_severity=str(parsed_json.get("damage_severity", "MINOR_TEAR")),
+                            compromised_items=[str(item) for item in parsed_json.get("compromised_items", ["packaged_goods"])],
+                            box_integrity=str(parsed_json.get("box_integrity", "Corner seal inspected")),
+                            root_cause=str(parsed_json.get("root_cause", "Transit vibration")),
+                            recommended_action=str(parsed_json.get("recommended_action", "REPACKAGE_AND_RELEASE")),
+                            insurance_claim_estimate_usd=float(parsed_json.get("insurance_claim_estimate_usd", 120.0)),
+                            replacement_priority=str(parsed_json.get("replacement_priority", "LOW")),
+                            directive=str(parsed_json.get("directive", "Verify contents and cleared for dispatch."))
+                        )
+                        return {
+                            "mode": "LIVE_GROQ_LLM",
+                            "model": self.model,
+                            "is_simulated": False,
+                            "analysis": analysis.to_dict()
+                        }
+                    except Exception as parse_err:
+                        fallback_reason = f"Groq JSON parse error: {parse_err}"
+                else:
+                    fallback_reason = err_reason or "Request to Groq API failed"
+            else:
+                payload = {
+                    "contents": [{
+                        "parts": [
+                            {"text": prompt},
+                            {
+                                "inline_data": {
+                                    "mime_type": mime,
+                                    "data": clean_b64
+                                }
+                            }
+                        ]
+                    }],
+                    "generationConfig": {
+                        "temperature": 0.2,
+                        "response_mime_type": "application/json",
+                        "response_schema": self.CARGO_ANALYSIS_SCHEMA
+                    }
+                }
 
-            resp_data, err_reason = self._make_request(payload, timeout=10.0)
+                resp_data, err_reason = self._make_request(payload, timeout=10.0)
             if resp_data:
                 try:
                     candidates = resp_data.get("candidates", [])
@@ -284,26 +391,46 @@ class GoogleGeminiClient:
         conversation_history = conversation_history or []
 
         if self.is_configured():
-            try:
-                contents = []
-                for msg in conversation_history[-6:]:
-                    role = "user" if msg.get("role") == "user" else "model"
-                    contents.append({"role": role, "parts": [{"text": msg.get("content", "")}]})
-                contents.append({"role": "user", "parts": [{"text": user_message}]})
+            if self.is_groq:
+                try:
+                    messages = [{"role": "system", "content": system_context}]
+                    for msg in conversation_history[-6:]:
+                        r = "user" if msg.get("role") == "user" else "assistant"
+                        messages.append({"role": r, "content": msg.get("content", "")})
+                    messages.append({"role": "user", "content": user_message})
 
-                payload = {
-                    "system_instruction": {
-                        "parts": [{"text": system_context}]
-                    },
-                    "contents": contents,
-                    "generationConfig": {"temperature": 0.3}
-                }
+                    groq_payload = {
+                        "model": self.model,
+                        "messages": messages,
+                        "temperature": 0.3,
+                        "max_tokens": 512
+                    }
+                    resp_data, _ = self._make_groq_request(groq_payload, timeout=10.0)
+                    if resp_data and "choices" in resp_data:
+                        return resp_data["choices"][0]["message"]["content"]
+                except Exception as e:
+                    logger.warning("Groq live chat failed; invoking state-aware fallback: %s", e)
+            else:
+                try:
+                    contents = []
+                    for msg in conversation_history[-6:]:
+                        role = "user" if msg.get("role") == "user" else "model"
+                        contents.append({"role": role, "parts": [{"text": msg.get("content", "")}]})
+                    contents.append({"role": "user", "parts": [{"text": user_message}]})
 
-                resp_data, _ = self._make_request(payload, timeout=8.0)
-                if resp_data:
-                    return resp_data["candidates"][0]["content"]["parts"][0]["text"]
-            except Exception as e:
-                logger.warning("Live chat failed; invoking state-aware fallback: %s", e)
+                    payload = {
+                        "system_instruction": {
+                            "parts": [{"text": system_context}]
+                        },
+                        "contents": contents,
+                        "generationConfig": {"temperature": 0.3}
+                    }
+
+                    resp_data, _ = self._make_request(payload, timeout=8.0)
+                    if resp_data:
+                        return resp_data["candidates"][0]["content"]["parts"][0]["text"]
+                except Exception as e:
+                    logger.warning("Live chat failed; invoking state-aware fallback: %s", e)
 
         # Dynamic state resolution for domain chat engine
         current_state = state or (self.state_provider() if callable(self.state_provider) else None)

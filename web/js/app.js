@@ -98,10 +98,15 @@ function initMap() {
     preferCanvas: true
   }).setView([19.0760, 72.8777], 11);
 
-  // CartoDB Dark Matter tile layer (optimized for dark dashboards)
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
-    subdomains: 'abcd',
-    maxZoom: 19
+  // High-contrast clean dark GIS tiles (zero watermarks, zero API key required)
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 16,
+    attribution: 'Esri, HERE, Garmin, © OpenStreetMap contributors'
+  }).addTo(map);
+
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 16,
+    pane: 'overlayPane'
   }).addTo(map);
 }
 
