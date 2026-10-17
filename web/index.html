@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   
-  <title>LogiSwarm AI | Enterprise Autonomous Logistics Command Center</title>
-  <meta name="description" content="Production-hardened autonomous multi-agent logistics orchestrator featuring real-time Capacitated Vehicle Routing (CVRP), self-healing recovery, Model Context Protocol (MCP), and Google Gemini multimodal inspection.">
-  <meta name="keywords" content="autonomous logistics, AI agent wars, multi-agent swarm, vehicle routing problem, CVRP, MCP, Google Gemini vision, self-healing supply chain">
-  <meta name="author" content="LogiSwarm AI Systems">
+  <title>LogiSwarm TMS | Autonomous Multi-Agent Logistics Orchestration Suite</title>
+  <meta name="description" content="Enterprise-grade autonomous logistics management system featuring real-time Capacitated Vehicle Routing (CVRP), self-healing disruption recovery, Model Context Protocol (MCP) integration, and Google Gemini multimodal vision.">
+  <meta name="keywords" content="autonomous logistics, enterprise TMS, multi-agent swarm, vehicle routing problem, CVRP, MCP, Google Gemini vision, self-healing supply chain">
+  <meta name="author" content="LogiSwarm Systems Engineering">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://logiswarm.ai/">
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="apple-touch-icon" href="/favicon.svg">
 
-  <meta property="og:title" content="LogiSwarm AI | Autonomous Logistics Command Center">
+  <meta property="og:title" content="LogiSwarm TMS | Autonomous Logistics Orchestration Suite">
   <meta property="og:description" content="Production-grade multi-agent logistics platform with multimodal inspection, conversational dispatch, and Model Context Protocol (MCP).">
   <meta property="og:image" content="/assets/social-preview.svg">
   <meta property="og:type" content="website">
@@ -33,19 +33,15 @@
         extend: {
           colors: {
             brand: {
-              500: '#3b82f6',
-              600: '#2563eb'
+              500: '#0284c7',
+              600: '#0369a1'
             },
-            cyber: {
-              dark: '#0b0f19',
-              card: '#111827',
-              border: '#1f2937',
-              accent: '#06b6d4',
-              hazard: '#ef4444',
-              success: '#10b981',
-              warning: '#f59e0b',
-              purple: '#8b5cf6',
-              pink: '#ec4899'
+            surface: {
+              base: '#070b12',
+              card: '#0f172a',
+              cardHover: '#131e36',
+              border: '#1e293b',
+              borderLight: '#334155'
             }
           }
         }
@@ -61,53 +57,53 @@
   <link rel="stylesheet" href="/css/style.css">
   <script src="/js/analytics.js" defer></script>
 </head>
-<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-cyan-500 selection:text-white">
+<body class="bg-[#070b12] text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-cyan-600 selection:text-white">
 
   <!-- ========================================================================
-       SECTION 1.B: Clean, Uncluttered Top Bar Architecture (Enterprise Luxury)
+       TOP BAR: Clean Institutional Header (Linear/Vercel Enterprise Aesthetic)
        ======================================================================== -->
-  <header class="bg-gray-900/90 backdrop-blur-xl border-b border-gray-800 sticky top-0 z-30 px-4 sm:px-6 py-2.5">
+  <header class="bg-[#0b1120]/90 backdrop-blur-xl border-b border-surface-border sticky top-0 z-30 px-4 sm:px-6 py-2.5">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
       
-      <!-- Left: Institutional Brand Identity -->
+      <!-- Left: Enterprise Brand Identity -->
       <div class="flex items-center space-x-3 shrink-0">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20" role="img" aria-label="LogiSwarm institutional insignia">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-700 flex items-center justify-center shadow-lg shadow-cyan-900/30" role="img" aria-label="LogiSwarm TMS Insignia">
           <i data-lucide="boxes" class="w-5 h-5 text-white" aria-hidden="true"></i>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <a href="/" class="text-base sm:text-lg font-bold tracking-wider text-white hover:text-cyan-400 transition" aria-label="LogiSwarm Home">
-              LOGISWARM <span class="text-cyan-400 font-extrabold">AI</span>
+            <a href="/" class="text-base sm:text-lg font-bold tracking-tight text-white hover:text-cyan-400 transition" aria-label="LogiSwarm Home">
+              LOGISWARM <span class="text-cyan-400 font-extrabold tracking-normal">TMS</span>
             </a>
-            <span class="text-[10px] font-mono tracking-widest px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 uppercase">Enterprise Dispatch</span>
-            <span class="hidden sm:inline-flex text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-400">MCP ACTIVE</span>
+            <span class="text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md bg-slate-800 border border-slate-700 text-slate-300 font-semibold uppercase">v2.4 Enterprise</span>
+            <span class="hidden sm:inline-flex text-[10px] font-mono px-2 py-0.5 rounded-md bg-emerald-950/80 border border-emerald-800 text-emerald-400 font-semibold">MCP ACTIVE</span>
           </div>
-          <p class="text-[11px] text-slate-400 hidden xl:block whitespace-nowrap">Autonomous Multi-Agent Fleet Optimization & Disruption Recovery Suite</p>
+          <p class="text-[11px] text-slate-400 hidden xl:block whitespace-nowrap font-medium">Autonomous Multi-Agent Fleet Optimization & Disruption Resolution Suite</p>
         </div>
       </div>
 
-      <!-- Right: System Actions & Primary Call To Action (Point 20) -->
+      <!-- Right: System Controls & Primary Call To Action -->
       <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Live Clock -->
-        <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-800/60 border border-gray-700/60 text-xs font-mono text-slate-300">
+        <!-- Live System Clock -->
+        <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
           <span id="live-clock">--:--:--</span>
         </div>
 
-        <!-- 2FA Security Status Indicator -->
-        <button onclick="open2FAModal()" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-gray-800/80 hover:bg-gray-700 border border-gray-700 text-xs font-mono text-cyan-300 transition" title="Two-Factor Authentication RFC 6238 Settings">
+        <!-- Two-Factor Authentication Security Indicator -->
+        <button onclick="open2FAModal()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs font-mono text-cyan-300 transition" title="Two-Factor Authentication RFC 6238 Settings">
           <i data-lucide="shield-check" class="w-3.5 h-3.5 text-cyan-400" aria-hidden="true"></i>
           <span id="2fa-status-pill">2FA Active</span>
         </button>
 
-        <!-- 1-Click Official Business / Diagnostic PDF Dossier (Blueprint 1.D) -->
-        <button onclick="openOfficialDossierModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 border border-gray-700 text-slate-200 text-xs font-semibold transition active:scale-95" aria-label="Generate Official Business Audit Dossier">
-          <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-300" aria-hidden="true"></i>
+        <!-- 1-Click Official Business / Consignment PDF Dossier -->
+        <button onclick="openOfficialDossierModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs font-semibold transition active:scale-95" aria-label="Generate Official Business Audit Dossier">
+          <i data-lucide="file-badge" class="w-3.5 h-3.5 text-slate-300" aria-hidden="true"></i>
           <span class="hidden sm:inline">Official Dossier</span>
         </button>
 
-        <!-- Primary Call To Action (Point 20: One Clear Action) -->
-        <button id="btn-reoptimize" class="cta-pulse flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs sm:text-sm font-extrabold shadow-lg shadow-cyan-500/25 transition active:scale-95" aria-label="Deploy Autonomous Logistics Swarm Optimization">
+        <!-- Primary Call To Action: Deploy Optimization -->
+        <button id="btn-reoptimize" class="cta-pulse flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-cyan-900/40 transition active:scale-95" aria-label="Deploy Autonomous Logistics Swarm Optimization">
           <i data-lucide="zap" class="w-4 h-4 text-amber-300 fill-amber-300" aria-hidden="true"></i>
           <span>Deploy Autonomous Swarm</span>
         </button>
@@ -116,79 +112,79 @@
     </div>
   </header>
 
-  <!-- Metric KPI Cards Bar (WCAG Enhanced Contrast) -->
-  <section class="max-w-7xl mx-auto w-full px-3 sm:px-6 pt-4" aria-label="Live Fleet Key Performance Indicators">
+  <!-- Metric KPI Cards Bar (High Contrast, Clean Institutional Design) -->
+  <section class="max-w-7xl mx-auto w-full px-3 sm:px-6 pt-4" aria-label="Fleet Key Performance Indicators">
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
       
       <!-- Card 1: SLA Compliance -->
-      <div class="bg-gray-900/95 border border-gray-800 rounded-xl p-3 shadow-sm hover:border-cyan-500/60 transition">
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-cyan-500/60 transition">
         <div class="flex items-center justify-between text-slate-300 mb-1">
-          <span class="text-[11px] font-bold tracking-wide uppercase">SLA Compliance</span>
+          <span class="text-[11px] font-bold tracking-wider uppercase text-slate-400">SLA Adherence</span>
           <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400" aria-hidden="true"></i>
         </div>
         <div class="flex items-baseline gap-1">
           <span id="metric-sla" class="text-xl font-bold text-white font-mono">100.0</span>
           <span class="text-xs text-emerald-400 font-semibold">%</span>
         </div>
-        <span class="text-[10px] text-slate-400 font-medium">Zero Contract Breaches</span>
+        <span class="text-[10px] text-slate-400 font-medium">Zero SLA Penalties</span>
       </div>
 
       <!-- Card 2: Feedback Quality Score -->
-      <div class="bg-gray-900/95 border border-gray-800 rounded-xl p-3 shadow-sm hover:border-pink-500/60 transition">
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-pink-500/60 transition">
         <div class="flex items-center justify-between text-slate-300 mb-1">
-          <span class="text-[11px] font-bold tracking-wide uppercase">Feedback Score</span>
+          <span class="text-[11px] font-bold tracking-wider uppercase text-slate-400">Quality Index</span>
           <i data-lucide="award" class="w-4 h-4 text-pink-400" aria-hidden="true"></i>
         </div>
         <div class="flex items-baseline gap-1">
           <span id="metric-quality" class="text-xl font-bold text-pink-400 font-mono">92.5</span>
           <span class="text-xs text-slate-400 font-mono">/100</span>
         </div>
-        <span class="text-[10px] text-pink-300 font-mono">Loop Evaluator Validated</span>
+        <span class="text-[10px] text-pink-300 font-mono">Feedback Loop Audited</span>
       </div>
 
       <!-- Card 3: Operational Cost -->
-      <div class="bg-gray-900/95 border border-gray-800 rounded-xl p-3 shadow-sm hover:border-cyan-500/60 transition">
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-cyan-500/60 transition">
         <div class="flex items-center justify-between text-slate-300 mb-1">
-          <span class="text-[11px] font-bold tracking-wide uppercase">Route Cost</span>
+          <span class="text-[11px] font-bold tracking-wider uppercase text-slate-400">Operating Cost</span>
           <i data-lucide="badge-dollar-sign" class="w-4 h-4 text-blue-400" aria-hidden="true"></i>
         </div>
         <div class="flex items-baseline gap-1">
-          <span class="text-sm text-slate-400">$</span>
+          <span class="text-sm text-slate-400 font-mono">$</span>
           <span id="metric-cost" class="text-xl font-bold text-white font-mono">0.00</span>
         </div>
-        <span class="text-[10px] text-emerald-400 font-semibold">-18% vs Manual Dispatch</span>
+        <span class="text-[10px] text-emerald-400 font-semibold">-18% vs Static Plan</span>
       </div>
 
       <!-- Card 4: Green CO2 Saved -->
-      <div class="bg-gray-900/95 border border-gray-800 rounded-xl p-3 shadow-sm hover:border-cyan-500/60 transition">
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-cyan-500/60 transition">
         <div class="flex items-center justify-between text-slate-300 mb-1">
-          <span class="text-[11px] font-bold tracking-wide uppercase">CO₂ Abated</span>
+          <span class="text-[11px] font-bold tracking-wider uppercase text-slate-400">CO₂ Abated</span>
           <i data-lucide="leaf" class="w-4 h-4 text-green-400" aria-hidden="true"></i>
         </div>
         <div class="flex items-baseline gap-1">
           <span id="metric-co2-saved" class="text-xl font-bold text-emerald-400 font-mono">0.0</span>
           <span class="text-xs text-slate-400 font-mono">kg</span>
         </div>
-        <span class="text-[10px] text-emerald-300 font-medium">EV Fleet Prioritization</span>
+        <span class="text-[10px] text-emerald-300 font-medium">EV Fleet Preference</span>
       </div>
 
       <!-- Card 5: Fleet Utilization -->
-      <div class="bg-gray-900/95 border border-gray-800 rounded-xl p-3 shadow-sm hover:border-cyan-500/60 transition">
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-cyan-500/60 transition">
         <div class="flex items-center justify-between text-slate-300 mb-1">
-          <span class="text-[11px] font-bold tracking-wide uppercase">Fleet Utilization</span>
+          <span class="text-[11px] font-bold tracking-wider uppercase text-slate-400">Fleet Load</span>
           <i data-lucide="truck" class="w-4 h-4 text-cyan-400" aria-hidden="true"></i>
         </div>
         <div class="flex items-baseline gap-1">
           <span id="metric-utilization" class="text-xl font-bold text-white font-mono">0.0</span>
           <span class="text-xs text-cyan-400 font-semibold">%</span>
         </div>
-        <span class="text-[10px] text-slate-400 font-medium">Payload Volume Balanced</span>
+        <span class="text-[10px] text-slate-400 font-medium">Capacity Balanced</span>
       </div>
 
       <!-- Card 6: Self-Healed Recoveries -->
-      <div class="bg-gray-900/95 border border-gray-800 rounded-xl p-3 shadow-sm hover:border-cyan-500/60 transition">
+      <div class="bg-surface-card border border-surface-border rounded-xl p-3 shadow-sm hover:border-cyan-500/60 transition">
         <div class="flex items-center justify-between text-slate-300 mb-1">
-          <span class="text-[11px] font-bold tracking-wide uppercase">Self-Healed</span>
+          <span class="text-[11px] font-bold tracking-wider uppercase text-slate-400">Self-Healed</span>
           <i data-lucide="zap" class="w-4 h-4 text-amber-400" aria-hidden="true"></i>
         </div>
         <div class="flex items-baseline gap-1">
@@ -202,23 +198,23 @@
   </section>
 
   <!-- ========================================================================
-       Main Workspace with Blueprint pb-36 Bottom Padding for Floating Dock
+       Main Application Layout (pb-36 padding prevents dock overlap)
        ======================================================================== -->
   <main class="max-w-7xl mx-auto w-full px-3 sm:px-6 py-4 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 pb-36">
     
-    <!-- Left Workspace (7 Cols): Map & Fleet Manifest -->
+    <!-- Left Column (7 Cols): Telematics Map & Fleet Status -->
     <div class="lg:col-span-7 flex flex-col gap-4">
       
       <!-- Interactive Geo-Spatial Map Panel -->
-      <section id="section-map" class="bg-gray-900/90 border border-gray-800 rounded-2xl overflow-hidden shadow-xl flex flex-col">
-        <div class="px-4 py-2.5 bg-gray-800/70 border-b border-gray-800 flex items-center justify-between">
+      <section id="section-map" class="bg-surface-card border border-surface-border rounded-xl overflow-hidden shadow-lg flex flex-col">
+        <div class="px-4 py-2.5 bg-slate-900/80 border-b border-surface-border flex items-center justify-between">
           <div class="flex items-center gap-2">
             <i data-lucide="map-pin" class="w-4 h-4 text-cyan-400" aria-hidden="true"></i>
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Geo-Spatial Telematics & Active Corridor Map</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Active Transit Telematics & Corridor Map</span>
           </div>
-          <div class="flex items-center gap-3 text-xs text-slate-300">
+          <div class="flex items-center gap-3 text-xs text-slate-300 font-medium">
             <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500" aria-hidden="true"></span> Depots</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500" aria-hidden="true"></span> Consignments</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500" aria-hidden="true"></span> Drops</span>
             <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" aria-hidden="true"></span> Hazard Zone</span>
           </div>
         </div>
@@ -227,51 +223,51 @@
       </section>
 
       <!-- Fleet Manifest & Vehicle Status Table -->
-      <section id="section-fleet" class="bg-gray-900/90 border border-gray-800 rounded-2xl overflow-hidden shadow-xl flex-1">
-        <div class="px-4 py-2.5 bg-gray-800/70 border-b border-gray-800 flex items-center justify-between">
+      <section id="section-fleet" class="bg-surface-card border border-surface-border rounded-xl overflow-hidden shadow-lg flex-1">
+        <div class="px-4 py-2.5 bg-slate-900/80 border-b border-surface-border flex items-center justify-between">
           <div class="flex items-center gap-2">
             <i data-lucide="truck" class="w-4 h-4 text-blue-400" aria-hidden="true"></i>
             <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Autonomous Fleet Manifest & Payloads</span>
           </div>
-          <span id="fleet-count-badge" class="text-[11px] font-mono px-2 py-0.5 rounded bg-gray-800 text-slate-300">4 Vehicles</span>
+          <span id="fleet-count-badge" class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-medium">4 Active Assets</span>
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs text-slate-200" aria-label="Fleet vehicle table">
-            <thead class="bg-gray-800/50 text-slate-300 uppercase text-[10px] tracking-wider border-b border-gray-800">
+            <thead class="bg-slate-900/50 text-slate-400 uppercase text-[10px] tracking-wider border-b border-surface-border">
               <tr>
                 <th scope="col" class="py-2.5 px-3">Vehicle</th>
                 <th scope="col" class="py-2.5 px-3">Type / Fuel</th>
                 <th scope="col" class="py-2.5 px-3">Consignments</th>
-                <th scope="col" class="py-2.5 px-3">Distance & Time</th>
+                <th scope="col" class="py-2.5 px-3">Transit Time</th>
                 <th scope="col" class="py-2.5 px-3">Cost / CO₂</th>
                 <th scope="col" class="py-2.5 px-3">Status</th>
               </tr>
             </thead>
-            <tbody id="fleet-table-body" class="divide-y divide-gray-800/60 font-sans">
+            <tbody id="fleet-table-body" class="divide-y divide-surface-border/60 font-sans">
               <!-- Dynamically populated -->
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- Human-in-the-Loop Feedback Loop Bar -->
-      <section class="bg-gray-900/90 border border-gray-800 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <!-- Chief Dispatcher Evaluator Feedback Bar -->
+      <section class="bg-surface-card border border-surface-border rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div class="flex items-center gap-2">
           <i data-lucide="message-circle-heart" class="w-4 h-4 text-pink-400" aria-hidden="true"></i>
-          <span class="font-bold text-slate-200">Chief Dispatcher Feedback:</span>
-          <span class="text-slate-400 hidden sm:inline">Rate the current route plan quality:</span>
+          <span class="font-bold text-slate-200">Chief Dispatcher Oversight:</span>
+          <span class="text-slate-400 hidden sm:inline">Audit current algorithmic plan quality:</span>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="submitHumanFeedback('positive')" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-emerald-950 border border-gray-700 hover:border-emerald-700 text-emerald-400 font-semibold transition flex items-center gap-1.5 active:scale-95" aria-label="Rate route plan as Optimal">
+          <button onclick="submitHumanFeedback('positive')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-emerald-950/60 border border-slate-700 hover:border-emerald-600 text-emerald-400 font-semibold transition flex items-center gap-1.5 active:scale-95" aria-label="Rate route plan as Optimal">
             <i data-lucide="thumbs-up" class="w-3.5 h-3.5" aria-hidden="true"></i>
             <span>Optimal</span>
           </button>
-          <button onclick="submitHumanFeedback('rebalance')" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-amber-950 border border-gray-700 hover:border-amber-700 text-amber-400 font-semibold transition flex items-center gap-1.5 active:scale-95" aria-label="Request Green Fleet Rebalance">
+          <button onclick="submitHumanFeedback('rebalance')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-amber-950/60 border border-slate-700 hover:border-amber-600 text-amber-400 font-semibold transition flex items-center gap-1.5 active:scale-95" aria-label="Request Green Fleet Rebalance">
             <i data-lucide="sliders" class="w-3.5 h-3.5" aria-hidden="true"></i>
             <span>Prioritize EV</span>
           </button>
-          <button onclick="submitHumanFeedback('negative')" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-red-950 border border-gray-700 hover:border-red-700 text-red-400 font-semibold transition flex items-center gap-1.5 active:scale-95" aria-label="Flag route plan as Sub-Optimal">
+          <button onclick="submitHumanFeedback('negative')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-red-950/60 border border-slate-700 hover:border-red-600 text-red-400 font-semibold transition flex items-center gap-1.5 active:scale-95" aria-label="Flag route plan as Sub-Optimal">
             <i data-lucide="thumbs-down" class="w-3.5 h-3.5" aria-hidden="true"></i>
             <span>Sub-Optimal</span>
           </button>
@@ -280,63 +276,62 @@
 
     </div>
 
-    <!-- Right Workspace (5 Cols): Chaos Simulator & Multi-Agent Intelligence Hub -->
+    <!-- Right Column (5 Cols): Stochastic Stress Tests & Multi-Agent Intelligence Hub -->
     <div class="lg:col-span-5 flex flex-col gap-4">
       
-      <!-- Disruption Simulator Panel (Chaos Monkey Protocol) -->
-      <section id="section-disruption" class="bg-gradient-to-br from-gray-900 to-gray-900/80 border border-red-900/40 rounded-2xl p-4 shadow-xl relative overflow-hidden">
-        <div class="absolute -right-8 -top-8 w-24 h-24 bg-red-500/10 rounded-full blur-xl pointer-events-none" aria-hidden="true"></div>
+      <!-- Stochastic Disruption Simulator (De-Hyped, Institutional) -->
+      <section id="section-disruption" class="bg-surface-card border border-surface-border rounded-xl p-4 shadow-lg relative overflow-hidden">
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center gap-2">
-            <div class="p-1 rounded bg-red-500/20 text-red-400" role="img" aria-label="Crisis flame icon">
-              <i data-lucide="flame" class="w-4 h-4" aria-hidden="true"></i>
+            <div class="p-1.5 rounded-lg bg-red-950/50 border border-red-900/40 text-red-400" role="img" aria-label="Crisis radar icon">
+              <i data-lucide="alert-octagon" class="w-4 h-4" aria-hidden="true"></i>
             </div>
             <div>
-              <h2 class="text-xs font-bold uppercase tracking-wider text-white">Disruption Simulator (Self-Healing Matrix)</h2>
-              <p class="text-[10px] text-slate-400">Trigger real-world bottlenecks to evaluate autonomous recovery</p>
+              <h2 class="text-xs font-bold uppercase tracking-wider text-white">Stochastic Disruption Simulator</h2>
+              <p class="text-[10px] text-slate-400">Trigger transit bottlenecks to evaluate autonomous multi-agent recovery</p>
             </div>
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-2 mt-2">
-          <button onclick="injectDisruption('breakdown')" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-gray-800/80 hover:bg-red-950/40 border border-gray-700/80 hover:border-red-600/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Simulate Truck Engine Breakdown">
+          <button onclick="injectDisruption('breakdown')" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-900/80 hover:bg-red-950/30 border border-slate-800 hover:border-red-700/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Simulate Truck Mechanical Breakdown">
             <i data-lucide="wrench" class="w-4 h-4 text-red-400 shrink-0" aria-hidden="true"></i>
             <div>
-              <div class="font-bold text-[11px] text-red-300">Mechanical Breakdown</div>
-              <div class="text-[9px] text-slate-400">Titan Engine Overheating</div>
+              <div class="font-bold text-[11px] text-red-300">Mechanical Failure</div>
+              <div class="text-[9px] text-slate-400">Titan Engine Stall</div>
             </div>
           </button>
 
-          <button onclick="injectDisruption('severe_weather')" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-gray-800/80 hover:bg-blue-950/40 border border-gray-700/80 hover:border-blue-600/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Simulate Severe Flash Flood Weather Alert">
+          <button onclick="injectDisruption('severe_weather')" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-900/80 hover:bg-blue-950/30 border border-slate-800 hover:border-blue-700/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Simulate Flash Flood Weather Alert">
             <i data-lucide="cloud-lightning" class="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true"></i>
             <div>
-              <div class="font-bold text-[11px] text-cyan-300">Severe Inundation Alert</div>
-              <div class="text-[9px] text-slate-400">Arterial Corridor Impassable</div>
+              <div class="font-bold text-[11px] text-cyan-300">Flash Flood Inundation</div>
+              <div class="text-[9px] text-slate-400">Arterial Highway Blocked</div>
             </div>
           </button>
 
-          <button onclick="injectDisruption('road_closure')" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-gray-800/80 hover:bg-amber-950/40 border border-gray-700/80 hover:border-amber-600/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Simulate Hazardous Spill Road Closure">
+          <button onclick="injectDisruption('road_closure')" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-900/80 hover:bg-amber-950/30 border border-slate-800 hover:border-amber-700/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Simulate Hazmat Spill Road Closure">
             <i data-lucide="ban" class="w-4 h-4 text-amber-400 shrink-0" aria-hidden="true"></i>
             <div>
-              <div class="font-bold text-[11px] text-amber-300">Expressway Hazmat Spill</div>
-              <div class="text-[9px] text-slate-400">Highway Transit Interdiction</div>
+              <div class="font-bold text-[11px] text-amber-300">Hazmat Chemical Spill</div>
+              <div class="text-[9px] text-slate-400">Expressway Hazmat Protocol</div>
             </div>
           </button>
 
-          <button onclick="injectDisruption('urgent_surge')" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-gray-800/80 hover:bg-emerald-950/40 border border-gray-700/80 hover:border-emerald-600/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Inject Emergency Cold-Chain Vaccine Demand Surge">
+          <button onclick="injectDisruption('urgent_surge')" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-900/80 hover:bg-emerald-950/30 border border-slate-800 hover:border-emerald-700/60 text-slate-200 text-xs font-medium transition text-left active:scale-95" aria-label="Inject Emergency Cold-Chain Demand Surge">
             <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-400 shrink-0" aria-hidden="true"></i>
             <div>
               <div class="font-bold text-[11px] text-emerald-300">Critical Medical Surge</div>
-              <div class="text-[9px] text-slate-400">45-min Priority Code Red</div>
+              <div class="text-[9px] text-slate-400">45-min Cold-Chain Requisition</div>
             </div>
           </button>
         </div>
       </section>
 
-      <!-- Multi-Agent Reasoning Feed & Multimodal Inspector -->
-      <section id="section-intelligence" class="bg-gray-900/90 border border-gray-800 rounded-2xl overflow-hidden shadow-xl flex-1 flex flex-col min-h-[460px]">
+      <!-- Multi-Agent Reasoning Hub & Diagnostics -->
+      <section id="section-intelligence" class="bg-surface-card border border-surface-border rounded-xl overflow-hidden shadow-lg flex-1 flex flex-col min-h-[460px]">
         
-        <div class="flex items-center border-b border-gray-800 bg-gray-800/40 text-xs font-medium" role="tablist">
+        <div class="flex items-center border-b border-surface-border bg-slate-900/40 text-xs font-medium" role="tablist">
           <button id="tab-btn-feed" onclick="switchTab('feed')" role="tab" aria-selected="true" class="px-4 py-2.5 border-b-2 border-cyan-400 text-cyan-400 font-bold flex items-center gap-1.5 transition">
             <i data-lucide="cpu" class="w-3.5 h-3.5" aria-hidden="true"></i>
             <span>Agent Reasoning Feed</span>
@@ -351,38 +346,37 @@
           </button>
         </div>
 
-        <!-- TAB 1: Agent Swarm War Room Feed -->
+        <!-- TAB 1: Agent Swarm Reasoning Stream -->
         <div id="tab-pane-feed" class="flex-1 flex flex-col p-0" role="tabpanel">
           <div id="agent-thoughts-feed" class="p-3 space-y-2.5 overflow-y-auto max-h-[350px] font-mono text-xs flex-1">
             <!-- Dynamically populated thoughts -->
           </div>
-          <!-- Stakeholder Transparency Directives -->
-          <div class="p-3 bg-gray-800/40 border-t border-gray-800">
+          <div class="p-3 bg-slate-900/50 border-t border-surface-border">
             <div class="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1 flex items-center gap-1">
               <i data-lucide="bell" class="w-3 h-3" aria-hidden="true"></i>
-              <span>Customer Directives & Bulletins:</span>
+              <span>Customer Directives & Stakeholder Bulletins:</span>
             </div>
             <div id="notifications-box" class="text-[11px] text-slate-300 space-y-1 font-sans"></div>
           </div>
         </div>
 
-        <!-- TAB 2: Multimodal Vision (Google Gemini Vision Inspection) -->
+        <!-- TAB 2: Multimodal Vision Diagnostics -->
         <div id="tab-pane-vision" class="hidden flex-1 flex flex-col p-3.5 text-xs" role="tabpanel">
           <div class="flex items-center justify-between mb-2">
-            <span class="font-bold text-slate-200">Google Gemini Multimodal Cargo & Waybill Inspector</span>
+            <span class="font-bold text-slate-200">Google Gemini Multimodal Vision Inspection</span>
             <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-950 border border-purple-800 text-purple-300">Vision API</span>
           </div>
-          <p class="text-[11px] text-slate-400 mb-3">Upload a damaged freight photo or inspect our sample compromised cold-chain container.</p>
+          <p class="text-[11px] text-slate-400 mb-3">Audits package structural integrity, thermal breach indicators, and generates automated liability claims.</p>
 
           <div class="flex gap-2 mb-3">
-            <button onclick="runSampleMultimodalInspection()" class="flex-1 px-3.5 py-2.5 rounded-xl bg-purple-900/60 hover:bg-purple-800 border border-purple-700 text-purple-200 font-semibold transition flex items-center justify-center gap-1.5 active:scale-95" aria-label="Run sample multimodal inspection on vaccine container">
+            <button onclick="runSampleMultimodalInspection()" class="flex-1 px-3.5 py-2.5 rounded-lg bg-purple-950/60 hover:bg-purple-900 border border-purple-800 text-purple-200 font-semibold transition flex items-center justify-center gap-1.5 active:scale-95" aria-label="Run sample multimodal inspection on vaccine container">
               <i data-lucide="sparkles" class="w-4 h-4 text-purple-300" aria-hidden="true"></i>
               <span>Inspect Sample Compromised Vaccine Pallet</span>
             </button>
           </div>
 
-          <div id="vision-result-box" class="flex-1 overflow-y-auto max-h-[300px] p-3 rounded-xl bg-gray-950/80 border border-gray-800 font-mono text-[11px] text-slate-300 whitespace-pre-wrap">
-Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini Vision multimodal analysis.
+          <div id="vision-result-box" class="flex-1 overflow-y-auto max-h-[300px] p-3 rounded-lg bg-slate-950/80 border border-surface-border font-mono text-[11px] text-slate-300 whitespace-pre-wrap">
+Click "Inspect Sample Compromised Vaccine Pallet" to execute Google Gemini Vision multimodal analysis.
           </div>
         </div>
 
@@ -392,11 +386,11 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
             <span class="font-bold text-slate-200 uppercase tracking-wider text-[11px]">Cryptographic Security Audit Log</span>
             <span class="text-[10px] text-cyan-400">Append-Only SHA-256</span>
           </div>
-          <div id="audit-log-container" class="flex-1 overflow-y-auto max-h-[340px] space-y-2 p-2 bg-gray-950/80 rounded-xl border border-gray-800 text-[10px] text-slate-300">
+          <div id="audit-log-container" class="flex-1 overflow-y-auto max-h-[340px] space-y-2 p-2 bg-slate-950/80 rounded-lg border border-surface-border text-[10px] text-slate-300">
             <!-- Dynamically populated audit log entries -->
           </div>
           <div class="pt-2 flex justify-end">
-            <button onclick="downloadDatabaseBackup('json')" class="px-2.5 py-1 rounded bg-gray-800 hover:bg-gray-700 text-[11px] text-slate-300 font-sans border border-gray-700 transition">
+            <button onclick="downloadDatabaseBackup('json')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 font-sans border border-slate-700 transition">
               Download JSON Database Backup
             </button>
           </div>
@@ -423,34 +417,34 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
 
   <!-- Glassmorphic Dock Container -->
   <nav id="floating-dock" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 transition-all duration-300 translate-y-0 opacity-100 pointer-events-auto" aria-label="Floating Application Dock">
-    <div class="flex items-center gap-1.5 p-2 rounded-2xl bg-gray-900/85 backdrop-blur-2xl border border-gray-700/80 shadow-2xl select-none">
+    <div class="flex items-center gap-1.5 p-2 rounded-2xl bg-slate-900/90 backdrop-blur-2xl border border-slate-700/80 shadow-2xl select-none">
       
-      <button onclick="scrollToSection('section-map')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+      <button onclick="scrollToSection('section-map')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95">
         <i data-lucide="map" class="w-4 h-4 text-cyan-400"></i>
         <span class="hidden sm:inline">Telemetry Map</span>
       </button>
 
-      <button onclick="scrollToSection('section-fleet')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+      <button onclick="scrollToSection('section-fleet')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95">
         <i data-lucide="truck" class="w-4 h-4 text-blue-400"></i>
         <span class="hidden sm:inline">Fleet Manifest</span>
       </button>
 
-      <button onclick="scrollToSection('section-disruption')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+      <button onclick="scrollToSection('section-disruption')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95">
         <i data-lucide="flame" class="w-4 h-4 text-red-400"></i>
         <span class="hidden sm:inline">Chaos Simulator</span>
       </button>
 
-      <button onclick="switchTab('vision'); scrollToSection('section-intelligence')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+      <button onclick="switchTab('vision'); scrollToSection('section-intelligence')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95">
         <i data-lucide="eye" class="w-4 h-4 text-purple-400"></i>
         <span class="hidden sm:inline">Cargo Vision</span>
       </button>
 
-      <button onclick="openOfficialDossierModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+      <button onclick="openOfficialDossierModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95">
         <i data-lucide="file-check" class="w-4 h-4 text-emerald-400"></i>
         <span class="hidden sm:inline">Audit Dossier</span>
       </button>
 
-      <button onclick="open2FAModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-gray-800 transition active:scale-95">
+      <button onclick="open2FAModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95">
         <i data-lucide="shield-check" class="w-4 h-4 text-pink-400"></i>
         <span class="hidden sm:inline">Security & 2FA</span>
       </button>
@@ -465,19 +459,18 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
     <button
       id="ai-agent-fab"
       onclick="toggleChatDrawer(true)"
-      class="w-14 h-14 rounded-full bg-gradient-to-tr from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-2xl shadow-cyan-500/40 flex items-center justify-center transition transform hover:scale-110 active:scale-95 cursor-pointer relative"
-      aria-label="Open AI Dispatcher Assistant Drawer"
+      class="w-13 h-13 rounded-full bg-gradient-to-tr from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-xl shadow-cyan-950 flex items-center justify-center transition transform hover:scale-105 active:scale-95 cursor-pointer relative"
+      aria-label="Open Chief Dispatcher Assistant Drawer"
     >
       <i data-lucide="bot" class="w-6 h-6"></i>
-      <!-- Unread pulse dot -->
-      <span class="absolute top-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-gray-900 animate-ping"></span>
-      <span class="absolute top-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-gray-900"></span>
+      <span class="absolute top-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-slate-900 animate-ping"></span>
+      <span class="absolute top-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-slate-900"></span>
     </button>
   </div>
 
-  <!-- Expandable Floating AI Agent Drawer Modal (Preserves Session State) -->
-  <aside id="chat-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-gray-900/95 backdrop-blur-2xl border-l border-gray-800 z-50 shadow-2xl flex flex-col transition-all duration-300 translate-x-full" aria-label="AI Dispatcher Assistant Drawer">
-    <div class="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
+  <!-- Expandable Floating AI Agent Drawer (Synced via sessionStorage) -->
+  <aside id="chat-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-slate-900/95 backdrop-blur-2xl border-l border-surface-border z-50 shadow-2xl flex flex-col transition-all duration-300 translate-x-full" aria-label="Chief Dispatcher Assistant Drawer">
+    <div class="px-5 py-4 border-b border-surface-border flex items-center justify-between">
       <div class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-800 flex items-center justify-center text-cyan-400">
           <i data-lucide="bot" class="w-4 h-4"></i>
@@ -490,7 +483,7 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
           </span>
         </div>
       </div>
-      <button onclick="toggleChatDrawer(false)" class="p-1 rounded-lg hover:bg-gray-800 text-slate-400 hover:text-white transition" aria-label="Close AI Assistant Drawer">
+      <button onclick="toggleChatDrawer(false)" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition" aria-label="Close Assistant Drawer">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
     </div>
@@ -501,11 +494,11 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
     </div>
 
     <!-- Chat Form with Honeypot & Debounce -->
-    <form id="drawer-chat-form" onsubmit="sendDrawerChatMessage(event)" class="p-4 border-t border-gray-800 bg-gray-950/60 flex flex-col gap-2">
+    <form id="drawer-chat-form" onsubmit="sendDrawerChatMessage(event)" class="p-4 border-t border-surface-border bg-slate-950/80 flex flex-col gap-2">
       <input type="text" name="hp_field" id="drawer-chat-hp" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none !important;" />
       <div class="flex gap-2">
-        <input id="drawer-chat-input" type="text" required minlength="2" maxlength="500" placeholder="Ask Commander-Prime..." class="flex-1 px-3.5 py-2.5 rounded-xl bg-gray-800 border border-gray-700 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500" />
-        <button type="submit" class="px-3.5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition active:scale-95" aria-label="Send query">
+        <input id="drawer-chat-input" type="text" required minlength="2" maxlength="500" placeholder="Ask Commander-Prime..." class="flex-1 px-3.5 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-500" />
+        <button type="submit" class="px-3.5 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition active:scale-95" aria-label="Send query">
           <i data-lucide="send" class="w-3.5 h-3.5"></i>
         </button>
       </div>
@@ -513,13 +506,13 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
   </aside>
 
   <!-- ========================================================================
-       SECTION 1.D: 1-Click Official Business / Diagnostic PDF Reports Modal
+       SECTION 1.D: 1-Click Official Business / Diagnostic PDF Dossier Modal
        ======================================================================== -->
   <div id="modal-dossier" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+    <div class="bg-surface-card border border-surface-border rounded-xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
       
       <!-- Modal Header (Screen view only) -->
-      <div class="px-6 py-3.5 border-b border-gray-800 flex items-center justify-between no-print">
+      <div class="px-6 py-3.5 border-b border-surface-border flex items-center justify-between no-print">
         <div class="flex items-center gap-2">
           <i data-lucide="file-badge" class="w-5 h-5 text-cyan-400"></i>
           <h2 class="text-sm font-bold text-white uppercase tracking-wider">Official Mission Audit & Diagnostic Dossier</h2>
@@ -536,7 +529,7 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
       </div>
 
       <!-- Printable Dossier Body (Target for @media print) -->
-      <div id="printable-dossier" class="p-8 overflow-y-auto bg-white text-slate-900 dark:bg-gray-950 dark:text-slate-100 font-sans text-xs space-y-6">
+      <div id="printable-dossier" class="p-8 overflow-y-auto bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans text-xs space-y-6">
         
         <!-- Institutional Letterhead -->
         <div class="border-b-2 border-slate-900 dark:border-slate-700 pb-4 flex items-center justify-between">
@@ -545,8 +538,8 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
               LS
             </div>
             <div>
-              <h1 class="text-lg font-black tracking-wider uppercase text-slate-900 dark:text-white">LogiSwarm AI Systems Authority</h1>
-              <p class="text-[10px] text-slate-500 dark:text-slate-400 tracking-wider uppercase">Autonomous Logistics Certification • Agent Wars Operational Bureau</p>
+              <h1 class="text-lg font-black tracking-wider uppercase text-slate-900 dark:text-white">LogiSwarm Systems Engineering</h1>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400 tracking-wider uppercase">Autonomous Logistics Certification • Operations & Dispatch Bureau</p>
             </div>
           </div>
           <div class="text-right text-[10px] font-mono text-slate-500 dark:text-slate-400">
@@ -557,9 +550,9 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
         </div>
 
         <!-- Demographic / Mission Overview Indicators -->
-        <div class="grid grid-cols-3 gap-3 p-3 rounded-lg bg-slate-100 dark:bg-gray-900 border border-slate-200 dark:border-gray-800">
+        <div class="grid grid-cols-3 gap-3 p-3 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
           <div>
-            <span class="text-[10px] text-slate-500 uppercase font-semibold">Consignments Tracked</span>
+            <span class="text-[10px] text-slate-500 uppercase font-semibold">Consignments Monitored</span>
             <div class="text-sm font-bold" id="dossier-orders-count">8 Orders</div>
           </div>
           <div>
@@ -575,16 +568,16 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
         <!-- Quantitative Metrics vs Benchmark Table -->
         <div>
           <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">1. Quantitative Telematics vs Normative Benchmarks</h2>
-          <table class="w-full text-left border-collapse border border-slate-200 dark:border-gray-800 text-[11px]">
-            <thead class="bg-slate-200 dark:bg-gray-900 text-slate-700 dark:text-slate-300">
+          <table class="w-full text-left border-collapse border border-slate-200 dark:border-slate-800 text-[11px]">
+            <thead class="bg-slate-200 dark:bg-slate-900 text-slate-700 dark:text-slate-300">
               <tr>
-                <th class="p-2 border border-slate-300 dark:border-gray-800">Metric Parameter</th>
-                <th class="p-2 border border-slate-300 dark:border-gray-800">Measured Value</th>
-                <th class="p-2 border border-slate-300 dark:border-gray-800">Normative Industry Benchmark</th>
-                <th class="p-2 border border-slate-300 dark:border-gray-800">Variance Status</th>
+                <th class="p-2 border border-slate-300 dark:border-slate-800">Metric Parameter</th>
+                <th class="p-2 border border-slate-300 dark:border-slate-800">Measured Value</th>
+                <th class="p-2 border border-slate-300 dark:border-slate-800">Normative Industry Benchmark</th>
+                <th class="p-2 border border-slate-300 dark:border-slate-800">Variance Status</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-200 dark:divide-gray-800">
+            <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
               <tr>
                 <td class="p-2 font-semibold">SLA On-Time Fulfillment</td>
                 <td class="p-2 font-mono text-emerald-600 font-bold" id="dossier-sla-val">100.0%</td>
@@ -595,7 +588,7 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
                 <td class="p-2 font-semibold">Green Fleet CO₂ Abatement</td>
                 <td class="p-2 font-mono text-emerald-600 font-bold" id="dossier-co2-val">2.23 kg</td>
                 <td class="p-2 font-mono">0.00 kg Baseline</td>
-                <td class="p-2 text-emerald-600 font-semibold">Abated via EV Preference</td>
+                <td class="p-2 text-emerald-600 font-semibold">Abated via EV Scheduling</td>
               </tr>
               <tr>
                 <td class="p-2 font-semibold">Autonomous Recovery Latency (MTTR)</td>
@@ -614,24 +607,23 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
         </div>
 
         <!-- Verification QR Code & Formal Signatures -->
-        <div class="pt-6 border-t border-slate-200 dark:border-gray-800 flex items-center justify-between">
+        <div class="pt-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <!-- Simulated Authentic SVG QR Vector -->
-            <svg class="w-16 h-16 border border-slate-300 dark:border-gray-700 p-1 rounded" viewBox="0 0 100 100">
+            <svg class="w-16 h-16 border border-slate-300 dark:border-slate-700 p-1 rounded" viewBox="0 0 100 100">
               <rect width="100" height="100" fill="#ffffff"/>
               <path d="M10 10 h30 v30 h-30 z M50 10 h10 v10 h-10 z M70 10 h20 v20 h-20 z M10 50 h10 v10 h-10 z M10 70 h20 v20 h-20 z M70 70 h20 v20 h-20 z M40 40 h20 v20 h-20 z" fill="#000000"/>
             </svg>
             <div class="text-[9px] font-mono text-slate-500">
               <div>CRYPTOGRAPHIC AUTHENTICITY HASH</div>
               <div class="font-bold text-slate-900 dark:text-white" id="dossier-auth-hash">e3b0c44298fc1c149afbf4c8996fb924</div>
-              <div>VERIFIED: LogiSwarm AI RFC 6238 Protocol</div>
+              <div>VERIFIED: LogiSwarm TMS Protocol</div>
             </div>
           </div>
 
           <div class="text-right">
             <div class="h-8 border-b border-slate-400 dark:border-slate-600 w-44"></div>
             <div class="text-[10px] font-bold text-slate-900 dark:text-white mt-1">Chief Logistics Officer</div>
-            <div class="text-[9px] text-slate-500">Autonomous Operations Bureau</div>
+            <div class="text-[9px] text-slate-500">Operations & Dispatch Bureau</div>
           </div>
         </div>
 
@@ -643,22 +635,22 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
        SECTION 2.E: Two-Factor Authentication Modal (RFC 6238 TOTP)
        ======================================================================== -->
   <div id="modal-2fa" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+    <div class="bg-surface-card border border-surface-border rounded-xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-surface-border pb-3">
         <div class="flex items-center gap-2">
           <i data-lucide="shield-check" class="w-5 h-5 text-cyan-400"></i>
-          <h2 class="text-sm font-bold text-white uppercase tracking-wider">Two-Factor Authentication (TOTP)</h2>
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider">Two-Factor Authentication (RFC 6238)</h2>
         </div>
         <button onclick="close2FAModal()" class="text-slate-400 hover:text-white transition">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <p class="text-xs text-slate-400 leading-relaxed">
+      <p class="text-xs text-slate-300 leading-relaxed">
         LogiSwarm implements standard-library <b>RFC 6238 TOTP</b> (Google Authenticator / Authy compatible). Verify your 6-digit code below to unlock Chief Dispatcher clearance:
       </p>
 
-      <div class="p-3 rounded-xl bg-gray-950 border border-gray-800 font-mono text-xs space-y-1">
+      <div class="p-3 rounded-lg bg-slate-950 border border-surface-border font-mono text-xs space-y-1">
         <div class="text-[10px] text-slate-500">DISPATCHER SECRET KEY:</div>
         <div id="2fa-secret-display" class="font-bold text-cyan-300 tracking-wider">LOADING...</div>
         <div class="text-[10px] text-slate-500 pt-1">SIMULATOR 6-DIGIT CODE:</div>
@@ -668,9 +660,9 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
       <form onsubmit="verify2FACode(event)" class="space-y-3">
         <div>
           <label for="totp-input" class="text-[11px] font-bold text-slate-300">Enter 6-Digit Authenticator Code:</label>
-          <input id="totp-input" type="text" maxlength="6" pattern="[0-9]{6}" required placeholder="e.g. 123456" class="w-full mt-1 px-3.5 py-2 rounded-xl bg-gray-800 border border-gray-700 text-center font-mono text-lg tracking-widest text-white focus:outline-none focus:border-cyan-500" />
+          <input id="totp-input" type="text" maxlength="6" pattern="[0-9]{6}" required placeholder="e.g. 123456" class="w-full mt-1 px-3.5 py-2 rounded-lg bg-slate-800 border border-slate-700 text-center font-mono text-lg tracking-widest text-white focus:outline-none focus:border-cyan-500" />
         </div>
-        <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-md transition">
+        <button type="submit" class="w-full py-2.5 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-md transition">
           Verify TOTP Clearance
         </button>
       </form>
@@ -679,7 +671,7 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
   </div>
 
   <!-- Cookie Consent Banner -->
-  <div id="cookie-banner" class="fixed bottom-4 right-4 max-w-sm w-full bg-gray-900/95 border border-gray-700/80 rounded-2xl p-4 shadow-2xl z-50 transition transform translate-y-0" role="dialog" aria-live="polite" aria-label="Cookie and Privacy Consent">
+  <div id="cookie-banner" class="fixed bottom-4 right-4 max-w-sm w-full bg-slate-900/95 border border-slate-700/80 rounded-xl p-4 shadow-2xl z-50 transition transform translate-y-0" role="dialog" aria-live="polite" aria-label="Cookie and Privacy Consent">
     <div class="flex items-start gap-3">
       <div class="p-2 rounded-lg bg-cyan-950 text-cyan-400 shrink-0" role="img" aria-label="Cookie privacy shield">
         <i data-lucide="cookie" class="w-5 h-5" aria-hidden="true"></i>
@@ -692,7 +684,7 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
       </div>
     </div>
     <div class="mt-3 flex items-center justify-end gap-2 text-xs">
-      <button onclick="setCookieConsent('essential')" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-slate-300 font-medium transition">
+      <button onclick="setCookieConsent('essential')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition">
         Essential Only
       </button>
       <button onclick="setCookieConsent('all')" class="px-3.5 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition shadow-sm">
@@ -701,12 +693,12 @@ Click "Inspect Sample Compromised Vaccine Pallet" to demonstrate Google Gemini V
     </div>
   </div>
 
-  <!-- Footer with Zero Broken Links -->
-  <footer class="border-t border-gray-800/80 bg-gray-900/60 py-4 px-3 sm:px-6 text-xs text-slate-400 mt-auto">
+  <!-- Institutional Footer -->
+  <footer class="border-t border-surface-border bg-slate-950 py-4 px-3 sm:px-6 text-xs text-slate-400 mt-auto">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
       <div class="flex items-center gap-2">
-        <span class="font-bold text-white">LogiSwarm AI</span>
-        <span>• Autonomous Multi-Agent Logistics Swarm</span>
+        <span class="font-bold text-white">LogiSwarm TMS</span>
+        <span>• Autonomous Multi-Agent Logistics Engine</span>
       </div>
       <div class="flex items-center gap-4 text-xs">
         <a href="/privacy.html" class="hover:text-cyan-400 transition">Privacy Policy</a>
