@@ -13,6 +13,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from src.mcp.logistics_mcp_server import LogisticsMCPServer
 
-if __name__ == "__main__":
+
+def main():
     server = LogisticsMCPServer()
     server.run_stdio()
+
+
+if __name__ == "__main__":
+    main()
