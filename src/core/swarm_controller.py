@@ -58,8 +58,19 @@ class SwarmController:
 
     def __init__(self, data_path: Optional[str] = None):
         if not data_path:
-            base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-            data_path = os.path.join(base_dir, "data", "scenario.json")
+            base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            candidate = os.path.join(base_dir, "data", "scenario.json")
+            if not os.path.exists(candidate):
+                for alt in (
+                    os.path.join(os.getcwd(), "data", "scenario.json"),
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data", "scenario.json"),
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "scenario.json"),
+                    "/var/task/data/scenario.json",
+                ):
+                    if os.path.exists(alt):
+                        candidate = alt
+                        break
+            data_path = candidate
         self.data_path = data_path
 
         # Initialize sub-agents
@@ -98,9 +109,50 @@ class SwarmController:
         self.load_scenario()
 
     def load_scenario(self):
-        """Loads or resets initial scenario from JSON file."""
-        with open(self.data_path, "r", encoding="utf-8") as f:
-            raw = json.load(f)
+        """Loads or resets initial scenario from JSON file or embedded fallback."""
+        raw = None
+        candidate_paths = [
+            self.data_path,
+            os.path.join(os.getcwd(), "data", "scenario.json"),
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "data", "scenario.json"),
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data", "scenario.json"),
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "scenario.json"),
+            "/var/task/data/scenario.json",
+        ]
+        for p in candidate_paths:
+            if p and os.path.exists(p):
+                try:
+                    with open(p, "r", encoding="utf-8") as f:
+                        raw = json.load(f)
+                    self.data_path = p
+                    break
+                except Exception:
+                    pass
+
+        if not raw:
+            raw = {
+                "depots": [
+                    {"id": "DEPOT-CENTRAL", "name": "Central Metro Logistics Hub", "lat": 19.0760, "lng": 72.8777, "inventory": {"medical_kits": 500, "electronics": 350, "cold_chain_vaccines": 200, "industrial_parts": 400}},
+                    {"id": "DEPOT-NORTH", "name": "North Regional Distribution Center", "lat": 19.2183, "lng": 72.9781, "inventory": {"medical_kits": 300, "electronics": 600, "cold_chain_vaccines": 50, "industrial_parts": 600}},
+                    {"id": "DEPOT-SOUTH", "name": "South Harbor Gateway Depot", "lat": 18.9220, "lng": 72.8347, "inventory": {"medical_kits": 400, "electronics": 200, "cold_chain_vaccines": 300, "industrial_parts": 250}}
+                ],
+                "vehicles": [
+                    {"id": "FLEET-EV-01", "name": "VoltHauler Alpha (Electric)", "type": "EV Van", "capacity_kg": 1200, "capacity_volume_m3": 12.0, "depot_id": "DEPOT-CENTRAL", "current_lat": 19.0760, "current_lng": 72.8777, "fuel_type": "Electric", "co2_per_km_kg": 0.05, "cost_per_km": 1.20, "avg_speed_kmh": 40, "status": "idle"},
+                    {"id": "FLEET-TRK-02", "name": "Titan Heavy Cargo 02", "type": "Diesel Semi", "capacity_kg": 3500, "capacity_volume_m3": 30.0, "depot_id": "DEPOT-NORTH", "current_lat": 19.2183, "current_lng": 72.9781, "fuel_type": "Diesel", "co2_per_km_kg": 0.45, "cost_per_km": 2.80, "avg_speed_kmh": 45, "status": "idle"},
+                    {"id": "FLEET-MID-03", "name": "SwiftRunner Mid-Truck 03", "type": "CNG Medium", "capacity_kg": 2000, "capacity_volume_m3": 18.0, "depot_id": "DEPOT-CENTRAL", "current_lat": 19.0760, "current_lng": 72.8777, "fuel_type": "CNG", "co2_per_km_kg": 0.22, "cost_per_km": 1.85, "avg_speed_kmh": 42, "status": "idle"},
+                    {"id": "FLEET-COLD-04", "name": "PolarGuard Reefer 04 (Cold Chain)", "type": "Refrigerated Van", "capacity_kg": 1500, "capacity_volume_m3": 14.0, "depot_id": "DEPOT-SOUTH", "current_lat": 18.9220, "current_lng": 72.8347, "fuel_type": "Hybrid", "co2_per_km_kg": 0.18, "cost_per_km": 2.10, "avg_speed_kmh": 40, "status": "idle"}
+                ],
+                "orders": [
+                    {"id": "ORD-101", "customer": "Apex Health Hospital", "item": "cold_chain_vaccines", "quantity": 60, "weight_kg": 180, "volume_m3": 2.5, "lat": 19.0430, "lng": 72.8634, "priority": "HIGH", "deadline_minutes": 90, "sla_penalty_usd": 500},
+                    {"id": "ORD-102", "customer": "TechHub Data Center", "item": "electronics", "quantity": 40, "weight_kg": 450, "volume_m3": 4.0, "lat": 19.1170, "lng": 72.9050, "priority": "MEDIUM", "deadline_minutes": 180, "sla_penalty_usd": 200},
+                    {"id": "ORD-103", "customer": "Precision Auto Plant", "item": "industrial_parts", "quantity": 80, "weight_kg": 950, "volume_m3": 8.0, "lat": 19.1726, "lng": 72.9565, "priority": "HIGH", "deadline_minutes": 120, "sla_penalty_usd": 750},
+                    {"id": "ORD-104", "customer": "Bayside Pharma Clinic", "item": "medical_kits", "quantity": 70, "weight_kg": 210, "volume_m3": 3.0, "lat": 18.9633, "lng": 72.8122, "priority": "MEDIUM", "deadline_minutes": 240, "sla_penalty_usd": 150},
+                    {"id": "ORD-105", "customer": "Global Maritime Logistics", "item": "industrial_parts", "quantity": 100, "weight_kg": 1100, "volume_m3": 9.5, "lat": 18.9388, "lng": 72.8420, "priority": "MEDIUM", "deadline_minutes": 210, "sla_penalty_usd": 300},
+                    {"id": "ORD-106", "customer": "Nova City Supermall", "item": "electronics", "quantity": 55, "weight_kg": 620, "volume_m3": 5.2, "lat": 19.1360, "lng": 72.8310, "priority": "LOW", "deadline_minutes": 300, "sla_penalty_usd": 100},
+                    {"id": "ORD-107", "customer": "GreenCross Diagnostic Lab", "item": "cold_chain_vaccines", "quantity": 40, "weight_kg": 120, "volume_m3": 1.8, "lat": 19.1980, "lng": 72.8520, "priority": "CRITICAL", "deadline_minutes": 75, "sla_penalty_usd": 1000},
+                    {"id": "ORD-108", "customer": "Metro Community Relief Camp", "item": "medical_kits", "quantity": 90, "weight_kg": 270, "volume_m3": 3.8, "lat": 19.0720, "lng": 72.9000, "priority": "HIGH", "deadline_minutes": 100, "sla_penalty_usd": 600}
+                ]
+            }
 
         self.depots = {
             d["id"]: Depot(
